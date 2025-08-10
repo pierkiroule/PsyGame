@@ -38,7 +38,7 @@ export const MinimalHeader = () => {
                   size="sm"
                   className={`flex items-center gap-2 transition-all ${
                     location === href 
-                      ? "bg-emerald-600/90 hover:bg-emerald-600 text-white" 
+                      ? "bg-blue-600/90 hover:bg-blue-600 text-white" 
                       : "hover:bg-slate-800/50 text-slate-400 hover:text-slate-200"
                   }`}
                 >

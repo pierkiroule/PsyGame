@@ -52,8 +52,8 @@ export const Header = () => {
                     size="sm"
                     className={`flex items-center gap-2 transition-all duration-200 ${
                       location === href 
-                        ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg" 
-                        : "hover:bg-slate-800/50 hover:text-emerald-400"
+                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg" 
+                        : "hover:bg-slate-800/50 hover:text-blue-400"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -99,7 +99,7 @@ export const Header = () => {
                 <Button variant="ghost" className="flex items-center gap-2 p-2 hover:bg-slate-800/50">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={userProfile.avatar || undefined} />
-                    <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white text-sm">
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-700 text-white text-sm">
                       {userProfile.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -117,7 +117,7 @@ export const Header = () => {
                 <DropdownMenuLabel className="text-slate-200">
                   <div className="flex items-center gap-2">
                     <Avatar className="w-6 h-6">
-                      <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white text-xs">
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-700 text-white text-xs">
                         {userProfile.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
