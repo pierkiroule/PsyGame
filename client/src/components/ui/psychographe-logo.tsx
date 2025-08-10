@@ -92,44 +92,42 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
             </radialGradient>
           </defs>
 
-          {/* Cercles d'écho centrés sur 64,40 */}
+          {/* Ondes circulaires d'écho centrées sur 64,40 */}
           {animate && (
             <>
-              <circle cx="64" cy="40" r="8" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.2" className="opacity-80">
-                <animate attributeName="r" values="8; 20; 8" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.8; 0.1; 0.8" dur="3s" repeatCount="indefinite" />
+              {/* Première onde circulaire */}
+              <circle cx="64" cy="40" r="5" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2" className="opacity-90">
+                <animate attributeName="r" values="5; 35; 5" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.9; 0.1; 0.9" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="2; 0.5; 2" dur="3s" repeatCount="indefinite" />
               </circle>
-              <circle cx="64" cy="40" r="12" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="0.8" className="opacity-60">
-                <animate attributeName="r" values="12; 28; 12" dur="4s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.6; 0.05; 0.6" dur="4s" begin="0.8s" repeatCount="indefinite" />
+              
+              {/* Deuxième onde circulaire */}
+              <circle cx="64" cy="40" r="8" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.5" className="opacity-70">
+                <animate attributeName="r" values="8; 40; 8" dur="4s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.7; 0.05; 0.7" dur="4s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.5; 0.3; 1.5" dur="4s" begin="0.8s" repeatCount="indefinite" />
               </circle>
-              <circle cx="64" cy="40" r="16" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="0.5" className="opacity-40">
-                <animate attributeName="r" values="16; 40; 16" dur="5s" begin="1.6s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.4; 0.02; 0.4" dur="5s" begin="1.6s" repeatCount="indefinite" />
+              
+              {/* Troisième onde circulaire */}
+              <circle cx="64" cy="40" r="12" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.2" className="opacity-50">
+                <animate attributeName="r" values="12; 45; 12" dur="5s" begin="1.6s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.5; 0.02; 0.5" dur="5s" begin="1.6s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.2; 0.2; 1.2" dur="5s" begin="1.6s" repeatCount="indefinite" />
               </circle>
-            </>
-          )}
-
-          {/* Ondes horizontales */}
-          {animate && (
-            <>
-              <path d="M 20 40 Q 30 25, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
-                    stroke={`url(#echoWave-${size})`} strokeWidth="3" fill="none" className="opacity-90">
-                <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
-              </path>
-              <path d="M 20 40 Q 30 20, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
-                    stroke={`url(#echoWave-${size})`} strokeWidth="2" fill="none" className="opacity-60">
-                <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="0.6s" repeatCount="indefinite" />
-              </path>
-              <path d="M 20 40 Q 30 30, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
-                    stroke={`url(#echoWave-${size})`} strokeWidth="1.5" fill="none" className="opacity-40">
-                <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="1.2s" repeatCount="indefinite" />
-              </path>
-              <path d="M 20 40 Q 30 55, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
-                    stroke={`url(#echoWave-${size})`} strokeWidth="1" fill="none" className="opacity-25">
-                <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="1.8s" repeatCount="indefinite" />
-              </path>
+              
+              {/* Quatrième onde circulaire */}
+              <circle cx="64" cy="40" r="15" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="0.8" className="opacity-30">
+                <animate attributeName="r" values="15; 50; 15" dur="6s" begin="2.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3; 0.01; 0.3" dur="6s" begin="2.4s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="0.8; 0.1; 0.8" dur="6s" begin="2.4s" repeatCount="indefinite" />
+              </circle>
+              
+              {/* Cercle central pulsant */}
+              <circle cx="64" cy="40" r="3" fill={`url(#oEcho-${size})`} className="opacity-80">
+                <animate attributeName="r" values="3; 6; 3" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.8; 0.4; 0.8" dur="2s" repeatCount="indefinite" />
+              </circle>
             </>
           )}
         </svg>
