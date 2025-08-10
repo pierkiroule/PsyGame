@@ -3,7 +3,8 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { User, Library, Home, LogOut, Settings, Award, Bell, Sparkles, ChevronDown, Pen } from "lucide-react";
+import { LogoCompact } from "./Logo";
+import { User, Library, Home, LogOut, Settings, Award, Bell, ChevronDown, Pen } from "lucide-react";
 import { useState } from "react";
 
 export const Header = () => {
@@ -32,9 +33,7 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <Link href="/">
               <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
+                <LogoCompact size={40} />
                 <div className="hidden sm:block">
                   <h1 className="text-xl font-bold text-slate-100">Psychographe</h1>
                   <p className="text-xs text-slate-400 -mt-1">Créativité & Introspection</p>

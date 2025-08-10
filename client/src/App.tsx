@@ -7,6 +7,7 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import ProfilePage from "./pages/profile";
 import Psychotheque from "./pages/psychotheque";
+import Home from "./pages/home";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -81,7 +82,7 @@ const AppContent = () => {
             <AuthenticatedApp />
           </SessionProvider>
         ) : (
-          <LoginPage />
+          <Home />
         )}
       </Route>
       <Route component={NotFound} />
