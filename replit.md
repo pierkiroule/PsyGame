@@ -22,13 +22,13 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Component Structure**: Modular component architecture with reusable UI components in the `components/ui` directory and screen-specific components for each application state.
 
-**Gamification System**: Comprehensive badge and reward system with 6 creative dimensions (technique, poetique, psychologique, narratif, communautaire, suggestion) across 3 progressive levels. Features animated SVG badges, community voting, and AI-powered evaluation.
+**Gamification System**: Système simplifié de badges en 4 degrés poétiques (Éveil, Éclosion, Épanouissement, Rayonnement) avec progression naturelle et messages d'encouragement poétiques. Design minimaliste avec icônes emoji et couleurs cohérentes pour une approche plus accessible et inspirante.
 
 **Forum Communautaire**: Psychothèque publique transformée en forum avec système de Top 5 hebdomadaire, vote communautaire, commentaires, et système de tri avancé. Inclut galerie des meilleures créations et encouragement à la participation.
 
 **Visualisation Sémantique**: Dashboard de réseau de tags dans le profil utilisateur permettant de visualiser les co-occurrences et communautés thématiques. Utilise une représentation graphique interactive pour révéler les patterns créatifs et thématiques de l'utilisateur.
 
-**Navigation Avancée**: Menu principal redesigné avec logo, navigation contextuelle, profil utilisateur intégré, notifications et menu mobile responsive. Inclut tooltips informatifs et états visuels pour une expérience utilisateur optimale.
+**Navigation Avancée**: Menu principal redesigné avec logo à effet d'onde résonante, navigation contextuelle, profil utilisateur intégré, notifications et menu mobile responsive. Le logo présente des ondes naissant organiquement du "o" de Psychographe avec animations fluides et effet d'écho lumineux. Inclut tooltips informatifs et états visuels pour une expérience utilisateur optimale.
 
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.

@@ -27,9 +27,9 @@ export default function MinimalProfile() {
   };
 
   const recentBadges = [
-    { name: 'Virtuose de la Poésie', category: 'poétique', level: 3, color: 'text-purple-400' },
-    { name: 'Explorateur Créatif', category: 'technique', level: 2, color: 'text-blue-400' },
-    { name: 'Âme Connectée', category: 'communautaire', level: 1, color: 'text-emerald-400' }
+    { name: 'Artisan du Verbe', level: 3, color: 'text-purple-500', icon: '✨', description: 'Épanouissement' },
+    { name: 'Explorateur d\'Âmes', level: 2, color: 'text-blue-400', icon: '🔍', description: 'Éclosion' },
+    { name: 'Première Étincelle', level: 1, color: 'text-emerald-300', icon: '🌱', description: 'Éveil' }
   ];
 
   const progressPercent = Math.round((userStats.experience / userStats.nextLevelExp) * 100);
@@ -127,12 +127,12 @@ export default function MinimalProfile() {
               <div className="space-y-3">
                 {recentBadges.map((badge, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-slate-900/30 rounded-lg">
-                    <div className={`w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center ${badge.color}`}>
-                      <Award className="w-5 h-5" />
+                    <div className={`w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-lg`}>
+                      {badge.icon}
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-slate-200">{badge.name}</div>
-                      <div className="text-sm text-slate-500 capitalize">{badge.category} • Niveau {badge.level}</div>
+                      <div className={`font-medium ${badge.color}`}>{badge.name}</div>
+                      <div className="text-sm text-slate-500">{badge.description} • Niveau {badge.level}</div>
                     </div>
                   </div>
                 ))}
@@ -178,20 +178,34 @@ export default function MinimalProfile() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {['poétique', 'technique', 'psychologique', 'narratif', 'communautaire'].map(category => (
-                  <div key={category} className="p-4 bg-slate-900/30 rounded-lg">
-                    <h3 className="font-semibold text-slate-200 mb-3 capitalize">{category}</h3>
+                {[
+                  { name: 'Éveil', level: 1, progress: 100, color: 'text-emerald-300', icon: '🌱' },
+                  { name: 'Éclosion', level: 2, progress: 85, color: 'text-blue-400', icon: '🔍' },
+                  { name: 'Épanouissement', level: 3, progress: 60, color: 'text-purple-500', icon: '✨' },
+                  { name: 'Rayonnement', level: 4, progress: 25, color: 'text-amber-400', icon: '🌟' }
+                ].map(stage => (
+                  <div key={stage.name} className="p-4 bg-slate-900/30 rounded-lg">
+                    <h3 className={`font-semibold mb-3 ${stage.color} flex items-center gap-2`}>
+                      <span className="text-lg">{stage.icon}</span>
+                      {stage.name}
+                    </h3>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
-                          <Award className="w-4 h-4 text-white" />
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                          stage.progress === 100 ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-400'
+                        }`}>
+                          {stage.level}
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-slate-300">Niveau 2 débloqué</div>
-                          <div className="text-xs text-slate-500">En progression vers niveau 3</div>
+                          <div className="text-sm font-medium text-slate-300">
+                            {stage.progress === 100 ? 'Niveau maîtrisé' : `Progression: ${stage.progress}%`}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {stage.progress === 100 ? 'Explorez le niveau suivant' : 'En cours de découverte'}
+                          </div>
                         </div>
                       </div>
-                      <Progress value={65} className="h-1" />
+                      <Progress value={stage.progress} className="h-2" />
                     </div>
                   </div>
                 ))}
