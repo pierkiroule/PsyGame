@@ -69,8 +69,8 @@ export default function SimpleProfile() {
                 {userData.username.split(' ').map(n => n[0]).join('')}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-100">{userData.username}</h1>
-                <p className="text-slate-400 text-sm">Niveau {userData.level} • {userData.sessionsCompleted} sessions</p>
+                <h1 className="text-2xl font-bold text-white">{userData.username}</h1>
+                <p className="text-slate-300 text-sm">Niveau {userData.level} • {userData.sessionsCompleted} sessions</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -109,8 +109,8 @@ export default function SimpleProfile() {
               <div key={index} className="flex items-center gap-3 p-4 bg-slate-900/30 rounded-lg">
                 <div className="text-2xl">{badge.icon}</div>
                 <div>
-                  <div className="font-semibold text-slate-200">{badge.title}</div>
-                  <div className="text-sm text-slate-400">Niveau {badge.level}</div>
+                  <div className="font-semibold text-white">{badge.title}</div>
+                  <div className="text-sm text-slate-300">Niveau {badge.level}</div>
                 </div>
               </div>
             ))}
@@ -125,7 +125,7 @@ export default function SimpleProfile() {
             <Network className="w-6 h-6 text-blue-500" />
             Psychocatcher des Résonances
           </CardTitle>
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-300 text-sm">
             Réseau de vos associations créatives selon la méthode d'analyse des co-occurrences de Jean-Pierre Courtial
           </p>
         </CardHeader>
@@ -155,11 +155,11 @@ export default function SimpleProfile() {
                     <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-sm font-bold">
                       {index + 1}
                     </div>
-                    <span className="text-slate-200 font-medium">{item.tag}</span>
+                    <span className="text-white font-medium">{item.tag}</span>
                   </div>
                   <div className="text-right">
-                    <div className="text-slate-300 font-semibold">{item.count}</div>
-                    <div className="text-slate-500 text-sm">{item.percentage}%</div>
+                    <div className="text-slate-200 font-semibold">{item.count}</div>
+                    <div className="text-slate-400 text-sm">{item.percentage}%</div>
                   </div>
                 </div>
               ))}
@@ -180,7 +180,7 @@ export default function SimpleProfile() {
               {usageStats.denseClusters.map((cluster, index) => (
                 <div key={index} className="p-4 bg-slate-900/30 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-slate-200">{cluster.cluster}</h4>
+                    <h4 className="font-semibold text-white">{cluster.cluster}</h4>
                     <div className="flex gap-2">
                       <Badge variant="secondary" className="text-xs">
                         <Target className="w-3 h-3 mr-1" />
@@ -212,7 +212,7 @@ export default function SimpleProfile() {
       {/* Note explicative */}
       <Card className="mt-6 border-slate-800 bg-slate-950/30 backdrop-blur-sm">
         <CardContent className="p-4">
-          <p className="text-slate-400 text-sm text-center">
+          <p className="text-slate-300 text-sm text-center">
             <Star className="w-4 h-4 inline mr-1" />
             Le Psychocatcher révèle vos patterns créatifs en analysant les co-occurrences entre vos tags favoris, 
             révélant ainsi les communautés thématiques qui structurent votre imaginaire.
