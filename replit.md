@@ -8,14 +8,17 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
-**2025-01-10**: Enhanced PSYCHOGRAPHE logo with circular echo waves and blue color scheme
+**2025-01-10**: Comprehensive UI/UX redesign following ecodesign and modern ergonomic principles
+- Enhanced PSYCHOGRAPHE logo with circular echo waves and blue color scheme
 - Text "PSYCHOGRAPHE" with ResizeObserver-based alignment system ensuring "O" center matches wave center
 - Circular concentric echo waves originating from precise coordinates (64,40) in 128×80 viewBox
 - Blue color scheme (#3b82f6, #2563eb, #1d4ed8, #1e40af) replacing emerald green throughout application
-- Enhanced wave opacity (0.95-0.65 initial) and stroke width (2.5-1.5) for better visibility
-- Increased logo sizes: sm(20×20), md(32×32), lg(48×48), xl(80×80) for improved visual impact
-- Realistic echo effect with 4 animated concentric circles expanding at different rates
-- Enhanced "O" letter with blue gradient glow and multiple echo layers
+- **Page d'accueil**: Hero section redesigned with larger logo (120px), fluid buttons with hover animations, improved typography hierarchy
+- **En-tête navigation**: Modernized with smooth animations, rounded buttons, informative tooltips, and enhanced brand visibility
+- **Page profil**: Premium card design with backdrop-blur-xl, enhanced shadows, optimized spacing and hover effects
+- **Page connexion**: Improved visual hierarchy with better contrast and increased spacing for readability
+- **Global improvements**: Custom scrollbar, smooth scroll behavior, consistent button animations, enhanced visual feedback
+- "Psychocatcher des Résonances" title now in blue color for visual consistency
 
 ## User Preferences
 

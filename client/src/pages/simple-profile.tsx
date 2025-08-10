@@ -121,7 +121,7 @@ export default function SimpleProfile() {
       {/* Psychocatcher Network */}
       <Card className="mb-10 border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white text-xl font-bold">
+          <CardTitle className="flex items-center gap-2 text-blue-400 text-xl font-bold">
             <Network className="w-6 h-6 text-blue-400" />
             Psychocatcher des Résonances
           </CardTitle>
