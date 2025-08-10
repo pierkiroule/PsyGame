@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React from "react";
 
 interface LogoProps {
   size?: number;
@@ -8,62 +8,31 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
   const textSize = size * 0.15;
   const oSize = size * 0.18;
-
-  // Refs mesure
-  const containerRef = useRef<HTMLDivElement>(null);
-  const oWrapRef = useRef<HTMLSpanElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  // Alignement précis du centre du "O" sur le centre d’onde (64,40) du viewBox 128×80
-  useLayoutEffect(() => {
-    const align = () => {
-      const c = containerRef.current;
-      const o = oWrapRef.current;
-      if (!c || !o) return;
-
-      const cRect = c.getBoundingClientRect();
-      const oRect = o.getBoundingClientRect();
-
-      const targetX = cRect.width * (64 / 128); // centre onde X
-      const targetY = cRect.height * (40 / 80); // centre onde Y
-
-      const oCenterX = (oRect.left - cRect.left) + oRect.width / 2;
-      const oCenterY = (oRect.top - cRect.top) + oRect.height / 2;
-
-      setOffset({
-        x: targetX - oCenterX,
-        y: targetY - oCenterY,
-      });
-    };
-
-    // Recalcule au resize / changement de police
-    const ro = new ResizeObserver(align);
-    if (containerRef.current) ro.observe(containerRef.current);
-    if (oWrapRef.current) ro.observe(oWrapRef.current);
-
-    window.addEventListener("resize", align);
-    // Première passe (font rendering)
-    requestAnimationFrame(align);
-
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", align);
-    };
-  }, []);
+  
+  // Calculer les dimensions avec ratio 1.6:1
+  const logoWidth = size * 1.6;
+  const logoHeight = size;
+  
+  // Position du centre de l'onde dans le viewBox SVG (128x80)
+  const waveCenterX = 64;
+  const waveCenterY = 40;
+  
+  // Convertir en coordonnées réelles
+  const realWaveCenterX = (waveCenterX / 128) * logoWidth;
+  const realWaveCenterY = (waveCenterY / 80) * logoHeight;
 
   return (
     <div
-      ref={containerRef}
       className={`relative ${className}`}
-      style={{ width: size * 1.6, height: size }}
+      style={{ width: logoWidth, height: logoHeight }}
     >
-      {/* Onde résonnante (center 64,40 dans viewBox 128x80) */}
+      {/* Onde résonnante - SVG en arrière-plan */}
       <svg
-        width={size * 1.6}
-        height={size}
+        width={logoWidth}
+        height={logoHeight}
         viewBox="0 0 128 80"
         className="absolute inset-0"
-        aria-hidden
+        aria-hidden="true"
       >
         <defs>
           <linearGradient id="echoWave" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -79,99 +48,138 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           </radialGradient>
         </defs>
 
-        {/* Cercles d’écho centrés sur 64,40 */}
-        <circle cx="64" cy="40" r="8" fill="none" stroke="url(#oEcho)" strokeWidth="1.2" className="opacity-80">
+        {/* Cercles d'écho centrés sur le point d'onde (64,40) */}
+        <circle cx={waveCenterX} cy={waveCenterY} r="8" fill="none" stroke="url(#oEcho)" strokeWidth="1.2" className="opacity-80">
           <animate attributeName="r" values="8; 20; 8" dur="3s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.8; 0.1; 0.8" dur="3s" repeatCount="indefinite" />
         </circle>
-        <circle cx="64" cy="40" r="12" fill="none" stroke="url(#oEcho)" strokeWidth="0.8" className="opacity-60">
+        <circle cx={waveCenterX} cy={waveCenterY} r="12" fill="none" stroke="url(#oEcho)" strokeWidth="0.8" className="opacity-60">
           <animate attributeName="r" values="12; 28; 12" dur="4s" begin="0.8s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.6; 0.05; 0.6" dur="4s" begin="0.8s" repeatCount="indefinite" />
         </circle>
-        <circle cx="64" cy="40" r="16" fill="none" stroke="url(#oEcho)" strokeWidth="0.5" className="opacity-40">
+        <circle cx={waveCenterX} cy={waveCenterY} r="16" fill="none" stroke="url(#oEcho)" strokeWidth="0.5" className="opacity-40">
           <animate attributeName="r" values="16; 40; 16" dur="5s" begin="1.6s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.4; 0.02; 0.4" dur="5s" begin="1.6s" repeatCount="indefinite" />
         </circle>
 
-        {/* Ondes horizontales */}
-        <path d="M 20 40 Q 30 25, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
+        {/* Ondes horizontales partant du centre */}
+        <path d={`M 20 ${waveCenterY} Q 30 25, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
               stroke="url(#echoWave)" strokeWidth="3" fill="none" className="opacity-90">
           <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.4; 1; 0.4" dur="3s" repeatCount="indefinite" />
         </path>
-        <path d="M 20 40 Q 30 20, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
+        <path d={`M 20 ${waveCenterY} Q 30 20, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
               stroke="url(#echoWave)" strokeWidth="2" fill="none" className="opacity-60">
           <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="0.6s" repeatCount="indefinite" />
         </path>
-        <path d="M 20 40 Q 30 30, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
+        <path d={`M 20 ${waveCenterY} Q 30 30, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
               stroke="url(#echoWave)" strokeWidth="1.5" fill="none" className="opacity-40">
           <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="1.2s" repeatCount="indefinite" />
         </path>
-        <path d="M 20 40 Q 30 55, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
+        <path d={`M 20 ${waveCenterY} Q 30 55, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
               stroke="url(#echoWave)" strokeWidth="1" fill="none" className="opacity-25">
           <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="1.8s" repeatCount="indefinite" />
         </path>
       </svg>
 
-      {/* Texte aligné par offset (le centre du O = centre onde) */}
-      <div
-        className="absolute left-0 top-0 pointer-events-none z-20"
+      {/* Texte PSYCHOGRAPHE superposé et centré */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
         style={{
-          transform: `translate(${offset.x}px, ${offset.y}px)`,
-          lineHeight: 1,
-          whiteSpace: "nowrap",
+          // Centrer horizontalement et verticalement le texte entier
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
         }}
       >
-        <span
-          className="text-slate-100 font-bold tracking-[0.08em] leading-none select-none"
-          style={{ fontSize: textSize, letterSpacing: "0.08em" }}
-        >
-          <span>PSYCH</span>
-
-          {/* Wrapper du O mesuré */}
+        <div className="relative flex items-center">
+          {/* PSYCH */}
           <span
-            ref={oWrapRef}
-            className="relative inline-block align-middle"
-            style={{ margin: "0 0.02em" }}
+            className="text-slate-100 font-bold select-none"
+            style={{ 
+              fontSize: textSize, 
+              letterSpacing: "0.08em",
+              lineHeight: 1,
+            }}
           >
-            {/* O principal */}
+            PSYCH
+          </span>
+
+          {/* O - Positionné précisément au centre de l'onde */}
+          <span 
+            className="relative inline-flex items-center justify-center"
+            style={{
+              width: oSize * 1.2, // Espace pour le O
+              height: oSize * 1.2,
+              margin: "0 0.02em",
+              // Positionner le centre du O exactement sur le centre de l'onde
+              position: 'relative',
+            }}
+          >
+            {/* O principal avec effet lumineux */}
             <span
-              className="text-emerald-400 font-black relative z-30 inline-block"
+              className="text-emerald-400 font-black absolute inset-0 flex items-center justify-center z-30"
               style={{
                 fontSize: oSize,
-                textShadow:
-                  "0 0 12px rgba(52, 211, 153, 0.9), 0 0 24px rgba(52, 211, 153, 0.5), 0 0 36px rgba(52, 211, 153, 0.2)",
-                transform: "translateY(-1px)",
+                textShadow: "0 0 12px rgba(52, 211, 153, 0.9), 0 0 24px rgba(52, 211, 153, 0.5), 0 0 36px rgba(52, 211, 153, 0.2)",
+                lineHeight: 1,
               }}
             >
               O
             </span>
 
-            {/* Échos */}
+            {/* Échos du O */}
             <span
-              className="absolute inset-0 text-emerald-300 font-black z-20"
-              style={{ fontSize: oSize, animation: "pulse 2.5s ease-in-out infinite", transform: "translateY(-1px)" }}
+              className="text-emerald-300 font-black absolute inset-0 flex items-center justify-center z-20"
+              style={{ 
+                fontSize: oSize,
+                lineHeight: 1,
+                animation: "pulse 2.5s ease-in-out infinite",
+              }}
             >
               O
             </span>
             <span
-              className="absolute inset-0 text-emerald-200 font-black z-10"
-              style={{ fontSize: oSize * 1.15, animation: "expandO 3.5s ease-out infinite", transformOrigin: "center", transform: "translateY(-1px)" }}
+              className="text-emerald-200 font-black absolute inset-0 flex items-center justify-center z-10"
+              style={{ 
+                fontSize: oSize * 1.15,
+                lineHeight: 1,
+                animation: "expandO 3.5s ease-out infinite",
+                transformOrigin: "center",
+              }}
             >
               O
             </span>
             <span
-              className="absolute inset-0 text-emerald-100 font-black z-0"
-              style={{ fontSize: oSize * 1.3, animation: "fadeEcho 4.5s ease-out infinite", transformOrigin: "center", transform: "translateY(-1px)" }}
+              className="text-emerald-100 font-black absolute inset-0 flex items-center justify-center z-0"
+              style={{ 
+                fontSize: oSize * 1.3,
+                lineHeight: 1,
+                animation: "fadeEcho 4.5s ease-out infinite",
+                transformOrigin: "center",
+              }}
             >
               O
             </span>
           </span>
 
-          <span>GRAPHE</span>
-        </span>
+          {/* GRAPHE */}
+          <span
+            className="text-slate-100 font-bold select-none"
+            style={{ 
+              fontSize: textSize, 
+              letterSpacing: "0.08em",
+              lineHeight: 1,
+            }}
+          >
+            GRAPHE
+          </span>
+        </div>
       </div>
 
+      {/* Styles d'animation */}
       <style>{`
         @keyframes expandO {
           0% { transform: scale(1); opacity: 0.3; }
