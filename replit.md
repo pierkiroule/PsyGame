@@ -8,6 +8,14 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
+**2025-01-10**: Voice-to-Text Integration and UI/UX Enhancement
+- **Voice-to-Text System**: Complete integration of Web Speech Recognition API for native device voice input
+- VoiceInput component with real-time transcription, language detection (French), and seamless text/voice combination
+- Interactive voice demo page with guided creative process flow
+- Voice navigation added to both Header and MinimalHeader components
+- Error handling and browser compatibility checks for speech recognition
+- Real-time feedback with visual indicators for voice recording state
+
 **2025-01-10**: Comprehensive UI/UX redesign following ecodesign and modern ergonomic principles
 - Enhanced PSYCHOGRAPHE logo with circular echo waves and blue color scheme
 - Text "PSYCHOGRAPHE" with ResizeObserver-based alignment system ensuring "O" center matches wave center
@@ -43,6 +51,8 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 **Visualisation Sémantique**: Dashboard de réseau de tags dans le profil utilisateur permettant de visualiser les co-occurrences et communautés thématiques. Utilise une représentation graphique interactive pour révéler les patterns créatifs et thématiques de l'utilisateur.
 
 **Navigation Avancée**: Menu principal redesigné avec logo à effet d'onde résonante, navigation contextuelle, profil utilisateur intégré, notifications et menu mobile responsive. Le logo présente des ondes naissant organiquement du "o" de Psychographe avec animations fluides et effet d'écho lumineux. Inclut tooltips informatifs et états visuels pour une expérience utilisateur optimale.
+
+**Voice-to-Text Integration**: Système complet de reconnaissance vocale utilisant l'API Web Speech Recognition native pour la capture spontanée d'idées créatives. Interface fluide combinant saisie vocale et textuelle avec transcription temps réel, gestion d'erreurs et compatibilité navigateur. Page de démonstration interactive guidant l'utilisateur dans le processus créatif par étapes avec retour visuel immédiat.
 
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.

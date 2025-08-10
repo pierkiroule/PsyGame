@@ -72,7 +72,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
 
   if (!isSupported) {
     return (
-      <div className={cn("flex items-center gap-2 text-slate-400 text-sm", className)}>
+      <div className={clsx("flex items-center gap-2 text-slate-400 text-sm", className)}>
         <VolumeX className="w-4 h-4" />
         <span>Reconnaissance vocale non supportée par votre navigateur</span>
       </div>
