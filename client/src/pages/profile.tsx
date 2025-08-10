@@ -301,8 +301,8 @@ export default function Profile() {
                     <svg width="100%" height="100%" viewBox="0 0 400 300" className="absolute inset-0">
                       {/* Liens entre nodes */}
                       <g className="opacity-60">
-                        <line x1="100" y1="80" x2="180" y2="120" stroke="#10b981" strokeWidth="2"/>
-                        <line x1="100" y1="80" x2="120" y2="180" stroke="#10b981" strokeWidth="1.5"/>
+                        <line x1="100" y1="80" x2="180" y2="120" stroke="#3b82f6" strokeWidth="2"/>
+                        <line x1="100" y1="80" x2="120" y2="180" stroke="#3b82f6" strokeWidth="1.5"/>
                         <line x1="180" y1="120" x2="280" y2="100" stroke="#3b82f6" strokeWidth="3"/>
                         <line x1="180" y1="120" x2="320" y2="180" stroke="#3b82f6" strokeWidth="2"/>
                         <line x1="280" y1="100" x2="320" y2="180" stroke="#3b82f6" strokeWidth="1"/>
@@ -314,8 +314,8 @@ export default function Profile() {
                       {/* Nodes avec tailles variables */}
                       <g>
                         {/* Communauté Nature (vert) */}
-                        <circle cx="100" cy="80" r="18" fill="#10b981" className="opacity-80"/>
-                        <circle cx="120" cy="180" r="12" fill="#10b981" className="opacity-80"/>
+                        <circle cx="100" cy="80" r="18" fill="#3b82f6" className="opacity-80"/>
+                        <circle cx="120" cy="180" r="12" fill="#3b82f6" className="opacity-80"/>
                         
                         {/* Communauté Psychologie (bleu) */}
                         <circle cx="180" cy="120" r="20" fill="#3b82f6" className="opacity-80"/>

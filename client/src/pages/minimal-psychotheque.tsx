@@ -93,7 +93,7 @@ export default function MinimalPsychotheque() {
             <Badge 
               key={tag} 
               variant="outline" 
-              className="text-xs border-emerald-600/30 text-emerald-400"
+              className="text-xs border-blue-600/30 text-blue-400"
             >
               #{tag}
             </Badge>
@@ -124,7 +124,7 @@ export default function MinimalPsychotheque() {
       <div className="text-center mb-12">
         <h1 className="text-3xl font-light text-slate-100 mb-4">
           Découvrir la
-          <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
+          <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
             {' '}communauté
           </span>
         </h1>
@@ -141,7 +141,7 @@ export default function MinimalPsychotheque() {
             placeholder="Rechercher une psychographie..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-slate-950/50 border-slate-700/50 focus:border-emerald-600/50"
+            className="pl-10 bg-slate-950/50 border-slate-700/50 focus:border-blue-600/50"
           />
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function MinimalPsychotheque() {
           {/* Tags populaires */}
           <Card className="border-slate-800/50 bg-slate-950/30">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg text-emerald-400 flex items-center gap-2">
+              <CardTitle className="text-lg text-blue-400 flex items-center gap-2">
                 <Sparkles className="w-5 h-5" />
                 Thèmes populaires
               </CardTitle>
@@ -173,7 +173,7 @@ export default function MinimalPsychotheque() {
                   <Badge 
                     key={tag.name} 
                     variant="outline" 
-                    className="cursor-pointer hover:bg-emerald-600/20 border-emerald-600/30 text-emerald-400"
+                    className="cursor-pointer hover:bg-blue-600/20 border-blue-600/30 text-blue-400"
                   >
                     #{tag.name} ({tag.count})
                   </Badge>

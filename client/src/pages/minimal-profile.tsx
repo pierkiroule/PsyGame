@@ -29,7 +29,7 @@ export default function MinimalProfile() {
   const recentBadges = [
     { name: 'Virtuose de l\'Âme', level: 3, color: 'text-purple-600', icon: '🌟', description: 'Psychographe de génie' },
     { name: 'Créateur Inspiré', level: 2, color: 'text-blue-500', icon: '🎨', description: 'Psychographe de ouf !' },
-    { name: 'Première Psychographie', level: 1, color: 'text-emerald-400', icon: '🌱', description: 'Psychographe en herbe' }
+    { name: 'Première Psychographie', level: 1, color: 'text-blue-400', icon: '🌱', description: 'Psychographe en herbe' }
   ];
 
   const progressPercent = Math.round((userStats.experience / userStats.nextLevelExp) * 100);
@@ -41,7 +41,7 @@ export default function MinimalProfile() {
       <Card className="mb-8 border-slate-800/50 bg-slate-950/30">
         <CardContent className="p-8">
           <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center text-xl font-bold text-white">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-xl font-bold text-white">
               {profileData.firstName[0]}{profileData.lastName[0]}
             </div>
             
@@ -64,7 +64,7 @@ export default function MinimalProfile() {
               {/* Statistiques essentielles */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <div className="text-xl font-bold text-emerald-400">Niv. {userStats.level}</div>
+                  <div className="text-xl font-bold text-blue-400">Niv. {userStats.level}</div>
                   <div className="text-xs text-slate-500">Niveau</div>
                 </div>
                 <div className="text-center">

@@ -14,7 +14,7 @@ export interface Badge {
 }
 
 export const BADGE_LEVELS = {
-  1: { name: 'Psychographe en herbe', color: 'text-emerald-400', description: 'Premiers pas créatifs' },
+  1: { name: 'Psychographe en herbe', color: 'text-blue-400', description: 'Premiers pas créatifs' },
   2: { name: 'Psychographe de ouf !', color: 'text-blue-500', description: 'Créativité débridée' },
   3: { name: 'Psychographe de génie', color: 'text-purple-600', description: 'Maîtrise exceptionnelle' }
 } as const;
@@ -27,7 +27,7 @@ export const BADGES: Badge[] = [
     description: 'Vous venez de créer votre première psychographie !',
     level: 1,
     icon: '🌱',
-    color: 'text-emerald-400',
+    color: 'text-blue-400',
     requirements: { points: 25 }
   },
   {
@@ -36,7 +36,7 @@ export const BADGES: Badge[] = [
     description: 'Vous découvrez les mystères de la psychographie',
     level: 1,
     icon: '🔍',
-    color: 'text-emerald-400',
+    color: 'text-blue-400',
     requirements: { points: 75 }
   },
 

@@ -26,12 +26,12 @@ export const BADGE_CATEGORIES: Record<string, BadgeCategory> = {
         title: "Expert Psychographe",
         description: "Maîtrise confirmée des techniques créatives",
         icon: `<svg viewBox="0 0 24 24" class="w-8 h-8">
-          <circle cx="12" cy="12" r="10" fill="url(#grad2)" stroke="#059669" stroke-width="2">
+          <circle cx="12" cy="12" r="10" fill="url(#grad2)" stroke="#2563eb" stroke-width="2">
             <animate attributeName="opacity" dur="2s" values="0.7;1;0.7" repeatCount="indefinite"/>
           </circle>
           <path d="M9 12l2 2 4-4" stroke="#f0fdf4" stroke-width="2.5"/>
           <defs>
-            <linearGradient id="grad2"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+            <linearGradient id="grad2"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
           </defs>
         </svg>`,
         requirements: { sessionsCompleted: 10, avgCreativeScore: 4, publicVotes: 5 }
@@ -230,12 +230,12 @@ export const BADGE_CATEGORIES: Record<string, BadgeCategory> = {
         title: "Participant",
         description: "Membre actif de la communauté créative",
         icon: `<svg viewBox="0 0 24 24" class="w-8 h-8">
-          <circle cx="12" cy="8" r="3" fill="url(#grad13)" stroke="#059669"/>
-          <path d="M8 14s1-2 4-2 4 2 4 2v6H8z" fill="url(#grad13)" stroke="#059669">
+          <circle cx="12" cy="8" r="3" fill="url(#grad13)" stroke="#2563eb"/>
+          <path d="M8 14s1-2 4-2 4 2 4 2v6H8z" fill="url(#grad13)" stroke="#2563eb">
             <animate attributeName="fill-opacity" dur="3s" values="0.7;1;0.7" repeatCount="indefinite"/>
           </path>
           <defs>
-            <linearGradient id="grad13"><stop offset="0%" stop-color="#a7f3d0"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+            <linearGradient id="grad13"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
           </defs>
         </svg>`,
         requirements: { communityVotes: 5, commentsGiven: 3 }
@@ -245,15 +245,15 @@ export const BADGE_CATEGORIES: Record<string, BadgeCategory> = {
         title: "Mentor",
         description: "Guide et inspirateur pour les nouveaux créateurs",
         icon: `<svg viewBox="0 0 24 24" class="w-8 h-8">
-          <circle cx="9" cy="7" r="2" fill="url(#grad14)" stroke="#059669"/>
-          <circle cx="15" cy="7" r="2" fill="url(#grad14)" stroke="#059669"/>
-          <path d="M6 13s1-2 3-2 3 2 3 2v6H6z" fill="url(#grad14)" stroke="#059669"/>
-          <path d="M12 13s1-2 3-2 3 2 3 2v6h-6z" fill="url(#grad14)" stroke="#059669"/>
+          <circle cx="9" cy="7" r="2" fill="url(#grad14)" stroke="#2563eb"/>
+          <circle cx="15" cy="7" r="2" fill="url(#grad14)" stroke="#2563eb"/>
+          <path d="M6 13s1-2 3-2 3 2 3 2v6H6z" fill="url(#grad14)" stroke="#2563eb"/>
+          <path d="M12 13s1-2 3-2 3 2 3 2v6h-6z" fill="url(#grad14)" stroke="#2563eb"/>
           <path d="M9 19l3-3 3 3" stroke="#f0fdf4" stroke-width="1.5">
             <animate attributeName="stroke-dasharray" dur="2s" values="0,12;6,6;12,0" repeatCount="indefinite"/>
           </path>
           <defs>
-            <linearGradient id="grad14"><stop offset="0%" stop-color="#6ee7b7"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+            <linearGradient id="grad14"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
           </defs>
         </svg>`,
         requirements: { helpfulVotes: 15, mentoringSessions: 5, qualityComments: 20 }
@@ -263,15 +263,15 @@ export const BADGE_CATEGORIES: Record<string, BadgeCategory> = {
         title: "Pilier de la Communauté",
         description: "Architecte de l'esprit collectif créatif",
         icon: `<svg viewBox="0 0 24 24" class="w-8 h-8">
-          <rect x="4" y="10" width="16" height="10" fill="url(#grad15)" stroke="#059669"/>
-          <triangle points="12,2 20,10 4,10" fill="url(#grad15)" stroke="#059669">
+          <rect x="4" y="10" width="16" height="10" fill="url(#grad15)" stroke="#2563eb"/>
+          <triangle points="12,2 20,10 4,10" fill="url(#grad15)" stroke="#2563eb">
             <animate attributeName="fill-opacity" dur="4s" values="0.8;1;0.8" repeatCount="indefinite"/>
           </triangle>
           <rect x="7" y="12" width="2" height="6" fill="#f0fdf4"/>
           <rect x="11" y="12" width="2" height="6" fill="#f0fdf4"/>
           <rect x="15" y="12" width="2" height="6" fill="#f0fdf4"/>
           <defs>
-            <linearGradient id="grad15"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+            <linearGradient id="grad15"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
           </defs>
         </svg>`,
         requirements: { communityLeadership: 30, moderationActions: 10, communityEvents: 5 }
