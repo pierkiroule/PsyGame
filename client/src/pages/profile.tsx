@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AnimatedBadge } from '@/components/ui/animated-badge';
 import { Progress } from '@/components/ui/progress';
 import Psychocatcher from '@/components/ui/psychocatcher';
+import SimplePsychocatcher from '@/components/ui/simple-psychocatcher';
 import { User, Edit3, Award, TrendingUp, Calendar, Target, Star, Sparkles } from 'lucide-react';
 import { BADGE_CATEGORIES } from '@shared/gamification';
 
@@ -275,7 +276,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="network" className="space-y-6">
-            <Psychocatcher width={800} height={500} />
+            <SimplePsychocatcher width={800} height={500} />
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-6">

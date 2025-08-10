@@ -30,13 +30,12 @@ interface PsychocatcherProps {
   className?: string;
 }
 
-export default function Psychocatcher({ width = 800, height = 600, className = "" }: PsychocatcherProps) {
+export default function Psychocatcher({ width = 800, height = 500, className = "" }: PsychocatcherProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedNode, setSelectedNode] = useState<TagNode | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  console.log('Psychocatcher component rendering...', { width, height });
+  const [error, setError] = useState<string | null>(null);
 
   // Données simulées basées sur la méthode Courtial
   const nodes: TagNode[] = [
@@ -114,15 +113,13 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
   };
 
   useEffect(() => {
-    console.log('Psychocatcher useEffect triggered, svgRef.current:', svgRef.current);
-    
-    if (!svgRef.current) {
-      console.log('SVG ref not available, returning...');
-      return;
-    }
+    try {
+      if (!svgRef.current) {
+        setError("SVG ref non disponible");
+        return;
+      }
 
-    const svg = d3.select(svgRef.current);
-    console.log('D3 svg selection:', svg.node());
+      const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
     // Configuration des dimensions
@@ -306,15 +303,19 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
         .attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
-    // Marquer comme chargé
-    setIsLoaded(true);
-    console.log('Psychocatcher D3 setup completed');
+      // Marquer comme chargé
+      setIsLoaded(true);
+      setError(null);
 
-    // Nettoyage
-    return () => {
-      simulation.stop();
-    };
+      // Nettoyage
+      return () => {
+        simulation.stop();
+      };
 
+    } catch (err) {
+      setError(`Erreur D3: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
+      setIsLoaded(false);
+    }
   }, [width, height]);
 
   const handleZoomIn = () => {
@@ -385,16 +386,25 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
           )}
         </div>
         
-        <div className="relative bg-slate-900/30 rounded-lg overflow-hidden border-2 border-dashed border-blue-500/30">
-          {!isLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-blue-400">Chargement du réseau...</div>
+        <div className="relative bg-slate-900/30 rounded-lg overflow-hidden">
+          {error && (
+            <div className="p-4 text-center">
+              <div className="text-red-400 mb-2">⚠️ Erreur de chargement</div>
+              <div className="text-sm text-slate-400">{error}</div>
             </div>
           )}
+          
+          {!isLoaded && !error && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-blue-400 animate-pulse">Chargement du réseau...</div>
+            </div>
+          )}
+          
           <svg 
             ref={svgRef} 
-            className="w-full border border-red-500/50" 
-            style={{ height: `${height}px`, minHeight: '400px' }} 
+            className="w-full" 
+            style={{ height: `${height}px`, minHeight: '400px' }}
+            viewBox={`0 0 ${width} ${height}`}
           />
         </div>
 
