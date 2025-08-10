@@ -119,75 +119,91 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
         return;
       }
 
+      setError(null);
       const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
     // Configuration des dimensions
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    const margin = { top: 40, right: 40, bottom: 40, left: 40 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
+    // Configuration du SVG
+    svg.attr("width", width)
+       .attr("height", height)
+       .attr("viewBox", `0 0 ${width} ${height}`)
+       .style("border", "1px solid #334155");
+
     // Conteneur principal avec zoom
-    const container = svg
-      .attr("width", width)
-      .attr("height", height)
-      .call(d3.zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.3, 3])
-        .on("zoom", (event) => {
-          g.attr("transform", event.transform);
-          setZoomLevel(event.transform.k);
-        }))
-      .append("g")
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.3, 3])
+      .on("zoom", (event) => {
+        g.attr("transform", event.transform);
+        setZoomLevel(event.transform.k);
+      });
+
+    svg.call(zoom);
+
+    const g = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const g = container.append("g");
-
-    // Simulation de force
+    // Simulation de force pour le réseau
     const simulation = d3.forceSimulation<TagNode>(nodes)
       .force("link", d3.forceLink<TagNode, TagLink>(links)
         .id(d => d.id)
-        .distance(d => 80 + (1 - d.strength) * 60)
-        .strength(d => d.strength))
+        .distance(d => 100 + (1 - d.strength) * 100)
+        .strength(d => d.strength * 0.8))
       .force("charge", d3.forceManyBody<TagNode>()
-        .strength(d => -300 - d.size * 8))
+        .strength(d => -400 - d.size * 10))
       .force("center", d3.forceCenter(innerWidth / 2, innerHeight / 2))
       .force("collision", d3.forceCollide<TagNode>()
-        .radius(d => d.size + 5));
+        .radius(d => d.size + 10));
 
+    // Groupe pour les liens
+    const linkGroup = g.append("g").attr("class", "links");
+    
     // Création des liens avec épaisseur variable
-    const link = g.append("g")
+    const link = linkGroup
       .selectAll("line")
       .data(links)
       .enter().append("line")
-      .attr("stroke", "#64748b")
-      .attr("stroke-opacity", 0.4)
-      .attr("stroke-width", d => Math.sqrt(d.cooccurrence) * 1.5)
+      .attr("stroke", "#475569")
+      .attr("stroke-opacity", 0.6)
+      .attr("stroke-width", d => Math.max(1, Math.sqrt(d.cooccurrence) * 2))
       .style("cursor", "pointer");
 
     // Labels de cooccurrence sur les liens importants
-    const linkLabels = g.append("g")
+    const linkLabelGroup = g.append("g").attr("class", "link-labels");
+    
+    const linkLabels = linkLabelGroup
       .selectAll("text")
       .data(links.filter(d => d.cooccurrence >= 8))
       .enter().append("text")
-      .attr("font-size", "9px")
+      .attr("font-size", "10px")
       .attr("fill", "#94a3b8")
       .attr("text-anchor", "middle")
-      .attr("dy", -2)
+      .attr("dy", -3)
       .text(d => d.cooccurrence)
       .style("pointer-events", "none")
-      .style("opacity", 0.7);
+      .style("opacity", 0.8)
+      .style("font-weight", "bold");
 
-    // Groupes de nœuds avec effet de pulsation pour les communautés denses
-    const nodeGroups = g.append("g")
+    // Groupe pour les nœuds
+    const nodeGroup = g.append("g").attr("class", "nodes");
+    
+    // Groupes de nœuds avec drag and drop
+    const nodeGroups = nodeGroup
       .selectAll("g")
       .data(nodes)
       .enter().append("g")
-      .style("cursor", "pointer")
+      .attr("class", "node")
+      .style("cursor", "grab")
       .call(d3.drag<SVGGElement, TagNode>()
         .on("start", (event, d) => {
           if (!event.active) simulation.alphaTarget(0.3).restart();
           d.fx = d.x;
           d.fy = d.y;
+          d3.select(event.currentTarget).style("cursor", "grabbing");
         })
         .on("drag", (event, d) => {
           d.fx = event.x;
@@ -197,52 +213,56 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
           if (!event.active) simulation.alphaTarget(0);
           d.fx = null;
           d.fy = null;
+          d3.select(event.currentTarget).style("cursor", "grab");
         }));
 
-    // Cercles avec pulsation pour les nœuds centraux
+    // Cercles de pulsation pour les nœuds centraux
     const pulsingCircles = nodeGroups
-      .filter(d => d.occurrences > 30) // Nœuds les plus denses
+      .filter(d => d.occurrences > 30)
       .append("circle")
-      .attr("r", d => d.size + 8)
+      .attr("r", d => d.size + 12)
       .attr("fill", "none")
       .attr("stroke", d => groupColors[d.group])
-      .attr("stroke-width", 2)
-      .attr("stroke-opacity", 0.3);
+      .attr("stroke-width", 3)
+      .attr("stroke-opacity", 0.4)
+      .style("animation", "pulse 3s ease-in-out infinite");
 
-    // Animation de pulsation
-    pulsingCircles
-      .append("animateTransform")
-      .attr("attributeName", "transform")
-      .attr("type", "scale")
-      .attr("values", "1;1.2;1")
-      .attr("dur", "3s")
-      .attr("repeatCount", "indefinite");
-
-    pulsingCircles
-      .append("animate")
-      .attr("attributeName", "stroke-opacity")
-      .attr("values", "0.3;0.7;0.3")
-      .attr("dur", "3s")
-      .attr("repeatCount", "indefinite");
+    // CSS pour l'animation de pulsation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0%, 100% { 
+          stroke-opacity: 0.2; 
+          r: ${Math.max(...nodes.map(n => n.size)) + 8};
+        }
+        50% { 
+          stroke-opacity: 0.8; 
+          r: ${Math.max(...nodes.map(n => n.size)) + 15};
+        }
+      }
+    `;
+    document.head.appendChild(style);
 
     // Cercles principaux des nœuds
     const circles = nodeGroups.append("circle")
       .attr("r", d => d.size)
       .attr("fill", d => groupColors[d.group])
-      .attr("stroke", "#1e293b")
-      .attr("stroke-width", 2)
-      .style("opacity", 0.8);
+      .attr("stroke", "#0f172a")
+      .attr("stroke-width", 3)
+      .style("opacity", 0.9)
+      .style("filter", "drop-shadow(2px 2px 4px rgba(0,0,0,0.3))");
 
     // Labels des nœuds
     const labels = nodeGroups.append("text")
       .text(d => d.name)
-      .attr("font-size", d => Math.max(8, d.size * 0.6))
+      .attr("font-size", d => Math.max(10, Math.min(14, d.size * 0.7)))
       .attr("font-weight", "bold")
-      .attr("fill", "#f1f5f9")
+      .attr("fill", "#f8fafc")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .style("pointer-events", "none")
-      .style("text-shadow", "1px 1px 2px rgba(0,0,0,0.8)");
+      .style("text-shadow", "2px 2px 4px rgba(0,0,0,0.9)")
+      .style("user-select", "none");
 
     // Interactions
     nodeGroups

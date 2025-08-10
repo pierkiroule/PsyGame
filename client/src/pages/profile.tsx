@@ -275,7 +275,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="network" className="space-y-6">
-            <SimplePsychocatcher width={800} height={500} />
+            <Psychocatcher width={800} height={500} />
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-6">
