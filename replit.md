@@ -8,11 +8,13 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
-**2025-01-10**: Fixed critical syntax errors in Logo component that were preventing application startup
-- Removed duplicate SVG and JSX code in client/src/components/Logo.tsx
-- Fixed React component structure and export statements
-- Application now starts successfully without LSP errors
-- All core components are functioning properly
+**2025-01-10**: Updated logo components with perfect wave-centered text alignment
+- Completely rebuilt both Logo and PsychographeLogo components with proper text superposition
+- Wave animations now originate precisely from the center of letter "O" 
+- Text "PSYCHOGRAPHE" is vertically centered and superimposed over wave effects
+- Implemented consistent emerald green color scheme across both authenticated and unauthenticated logos
+- Enhanced "O" letter with multiple animation layers (glow, pulse, expand) for resonance effect
+- Used CSS flexbox for reliable cross-browser alignment instead of complex ResizeObserver system
 
 ## User Preferences
 
