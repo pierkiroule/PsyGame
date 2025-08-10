@@ -29,7 +29,7 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
               <Pen className="w-5 h-5 mr-2" />
               Créer ma première Psychographie
             </Button>

@@ -53,7 +53,7 @@ export const MinimalHeader = () => {
           <Button 
             id="create-button"
             size="sm" 
-            className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2"
+            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
           >
             <Pen className="w-4 h-4" />
             <span className="hidden sm:inline">Créer</span>

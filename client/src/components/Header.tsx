@@ -75,7 +75,7 @@ export const Header = () => {
             
             {/* Bouton de création rapide */}
             <Link href="/">
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white hidden sm:flex items-center gap-2">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white hidden sm:flex items-center gap-2">
                 <Pen className="w-4 h-4" />
                 Créer
               </Button>
