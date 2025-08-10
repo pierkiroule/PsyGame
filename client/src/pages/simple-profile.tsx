@@ -125,8 +125,8 @@ export default function SimpleProfile() {
             <Network className="w-6 h-6 text-blue-400" />
             Psychocatcher des Résonances
           </CardTitle>
-          <p className="text-slate-200 text-sm font-medium">
-            Réseau de vos associations créatives selon la méthode d'analyse des co-occurrences de Jean-Pierre Courtial
+          <p className="text-white text-sm font-medium">
+            Réseau interactif de vos tags basé sur les co-occurrences. Taille = fréquence d'usage, épaisseur des liens = force d'association.
           </p>
         </CardHeader>
         <CardContent>
