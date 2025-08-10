@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { GameFormat, GameStyle, CitationType } from '../types/session';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { Label } from './ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Textarea } from './ui/textarea';
+import { Switch } from './ui/switch';
+import { User, Users, Home, Target, Feather, Lightbulb, Flag, Play } from 'lucide-react';
 
 export const NewSessionScreen = () => {
   const { sessionConfig, updateSessionConfig, navigateToScreen, getPlayerCount } = useSession();
@@ -41,131 +50,180 @@ export const NewSessionScreen = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-8">
+    <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Nouvelle Session</h2>
-        <p className="text-gray-600">Configurez votre session créative</p>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent mb-2">
+          Nouvelle Session
+        </h2>
+        <p className="text-slate-400">Configurez votre exploration écho-créative</p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Format Selection */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-4">Format de jeu</label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { key: 'solo', label: 'Solo', icon: 'user', desc: '1 joueur' },
-              { key: 'duo', label: 'Duo', icon: 'user-friends', desc: '2 joueurs' },
-              { key: 'famille', label: 'Famille', icon: 'home', desc: '3-5 joueurs' },
-              { key: 'equipe', label: 'Équipe', icon: 'users', desc: '6-10 joueurs' },
-            ].map(format => (
-              <div key={format.key} className="relative">
-                <input
-                  type="radio"
-                  name="format"
-                  value={format.key}
-                  className="sr-only peer"
-                  checked={localConfig.format === format.key}
-                  onChange={() => handleFormatChange(format.key as GameFormat)}
-                />
-                <label className="flex flex-col items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
-                  <i className={`fas fa-${format.icon} text-2xl text-gray-400 mb-2`}></i>
-                  <span className="font-medium text-gray-900">{format.label}</span>
-                  <span className="text-xs text-gray-500">{format.desc}</span>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-slate-200 flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              Format de jeu
+            </CardTitle>
+            <p className="text-sm text-slate-400">Choisissez un seul format selon votre contexte</p>
+          </CardHeader>
+          <CardContent>
+            <RadioGroup
+              value={localConfig.format}
+              onValueChange={(value) => handleFormatChange(value as GameFormat)}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              {[
+                { key: 'solo', label: 'Solo', icon: User, desc: '1 joueur' },
+                { key: 'duo', label: 'Duo', icon: Users, desc: '2 joueurs' },
+                { key: 'famille', label: 'Famille', icon: Home, desc: '3-5 joueurs' },
+                { key: 'equipe', label: 'Équipe', icon: Users, desc: '6-10 joueurs' },
+              ].map(format => (
+                <div key={format.key} className="relative">
+                  <RadioGroupItem
+                    value={format.key}
+                    id={format.key}
+                    className="sr-only peer"
+                  />
+                  <Label
+                    htmlFor={format.key}
+                    className="flex flex-col items-center p-4 border-2 border-slate-700 rounded-xl cursor-pointer hover:border-slate-600 peer-data-[state=checked]:border-slate-500 peer-data-[state=checked]:bg-slate-800/50 transition-all"
+                  >
+                    <format.icon className="w-6 h-6 text-slate-400 mb-2" />
+                    <span className="font-medium text-slate-200">{format.label}</span>
+                    <span className="text-xs text-slate-500">{format.desc}</span>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </CardContent>
+        </Card>
 
         {/* Style Selection */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-4">Style de partie</label>
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { key: 'libre', label: 'Libre', icon: 'feather', desc: 'Expression créative sans contrainte' },
-              { key: 'inspirant', label: 'Inspirant', icon: 'lightbulb', desc: 'Guidé par une citation inspirante' },
-              { key: 'defi', label: 'Défi', icon: 'flag', desc: 'Avec une contrainte créative' },
-            ].map(style => (
-              <div key={style.key} className="relative">
-                <input
-                  type="radio"
-                  name="style"
-                  value={style.key}
-                  className="sr-only peer"
-                  checked={localConfig.style === style.key}
-                  onChange={() => handleStyleChange(style.key as GameStyle)}
-                />
-                <label className="flex flex-col p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-secondary peer-checked:border-secondary peer-checked:bg-secondary/5 transition-all">
-                  <i className={`fas fa-${style.icon} text-2xl text-secondary mb-3`}></i>
-                  <span className="font-semibold text-gray-900 mb-2">{style.label}</span>
-                  <span className="text-sm text-gray-600">{style.desc}</span>
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-slate-200 flex items-center gap-2">
+              <Feather className="w-5 h-5" />
+              Style de partie
+            </CardTitle>
+            <p className="text-sm text-slate-400">Choisissez votre approche créative</p>
+          </CardHeader>
+          <CardContent>
+            <RadioGroup
+              value={localConfig.style}
+              onValueChange={(value) => handleStyleChange(value as GameStyle)}
+              className="grid md:grid-cols-3 gap-4"
+            >
+              {[
+                { key: 'libre', label: 'Libre', icon: Feather, desc: 'Expression créative sans contrainte' },
+                { key: 'inspirant', label: 'Inspirant', icon: Lightbulb, desc: 'Guidé par une citation inspirante' },
+                { key: 'defi', label: 'Défi', icon: Flag, desc: 'Avec une contrainte créative' },
+              ].map(style => (
+                <div key={style.key} className="relative">
+                  <RadioGroupItem
+                    value={style.key}
+                    id={`style-${style.key}`}
+                    className="sr-only peer"
+                  />
+                  <Label
+                    htmlFor={`style-${style.key}`}
+                    className="flex flex-col p-6 border-2 border-slate-700 rounded-xl cursor-pointer hover:border-slate-600 peer-data-[state=checked]:border-slate-500 peer-data-[state=checked]:bg-slate-800/50 transition-all"
+                  >
+                    <style.icon className="w-8 h-8 text-slate-400 mb-3" />
+                    <span className="font-semibold text-slate-200 mb-2">{style.label}</span>
+                    <span className="text-sm text-slate-400">{style.desc}</span>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </CardContent>
+        </Card>
 
         {/* Additional Options for Inspirant Style */}
         {localConfig.style === 'inspirant' && (
-          <div className="bg-slate-50 rounded-xl p-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-4">Type de citation</label>
-            <select 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent"
-              value={localConfig.citationType || ''}
-              onChange={(e) => handleCitationTypeChange(e.target.value as CitationType)}
-            >
-              <option value="">Choisir un type...</option>
-              <option value="poetique">Poétique</option>
-              <option value="philosophique">Philosophique</option>
-              <option value="humoristique">Humoristique</option>
-              <option value="metaphorique">Métaphorique</option>
-              <option value="therapeutique">Thérapeutique</option>
-            </select>
-          </div>
+          <Card className="border-slate-800 bg-slate-950/30 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-200 text-lg">Configuration Citation</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <Label className="text-slate-300">Type de citation</Label>
+                <Select 
+                  value={localConfig.citationType || ''}
+                  onValueChange={(value) => handleCitationTypeChange(value as CitationType)}
+                >
+                  <SelectTrigger className="bg-slate-900/50 border-slate-700 text-slate-200">
+                    <SelectValue placeholder="Choisir un type..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-900 border-slate-700">
+                    <SelectItem value="poetique" className="text-slate-200">Poétique</SelectItem>
+                    <SelectItem value="philosophique" className="text-slate-200">Philosophique</SelectItem>
+                    <SelectItem value="humoristique" className="text-slate-200">Humoristique</SelectItem>
+                    <SelectItem value="metaphorique" className="text-slate-200">Métaphorique</SelectItem>
+                    <SelectItem value="therapeutique" className="text-slate-200">Thérapeutique</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Additional Options for Défi Style */}
         {localConfig.style === 'defi' && (
-          <div className="bg-slate-50 rounded-xl p-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-4">Contrainte créative</label>
-            <textarea 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent" 
-              rows={3}
-              placeholder="Décrivez la contrainte créative à appliquer..."
-              value={localConfig.constraint || ''}
-              onChange={(e) => handleConstraintChange(e.target.value)}
-            />
-          </div>
+          <Card className="border-slate-800 bg-slate-950/30 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-200 text-lg">Configuration Défi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <Label className="text-slate-300">Contrainte créative</Label>
+                <Textarea 
+                  className="bg-slate-900/50 border-slate-700 text-slate-200 placeholder:text-slate-500" 
+                  rows={3}
+                  placeholder="Décrivez la contrainte créative à appliquer..."
+                  value={localConfig.constraint || ''}
+                  onChange={(e) => handleConstraintChange(e.target.value)}
+                />
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Score Toggle */}
-        <div className="bg-gradient-to-r from-accent/10 to-orange-100 rounded-xl p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Score Créatif</h3>
-              <p className="text-gray-600">Évaluer la créativité et attribuer des badges</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only peer"
+        <Card className="border-slate-800 bg-gradient-to-r from-slate-950/50 to-slate-900/50 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                  <Badge variant="secondary" className="bg-slate-800 text-slate-300">
+                    Optionnel
+                  </Badge>
+                  Score Créatif
+                </h3>
+                <p className="text-slate-400">Évaluer la créativité et attribuer des badges écho-responsables</p>
+              </div>
+              <Switch
                 checked={localConfig.scoreEnabled}
-                onChange={(e) => handleScoreToggle(e.target.checked)}
+                onCheckedChange={handleScoreToggle}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
-            </label>
-          </div>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Submit Button */}
-        <div className="text-center pt-4">
-          <button 
+        <div className="text-center pt-6">
+          <Button 
             onClick={handleStartGame}
-            className="bg-gradient-to-r from-primary to-secondary text-white font-semibold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+            size="lg"
+            className="bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-slate-100 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-lg px-8 py-4 h-auto"
           >
-            <i className="fas fa-play mr-2"></i>
-            Commencer la Session
-          </button>
+            <Play className="w-5 h-5 mr-3" />
+            Commencer la Session Créative
+          </Button>
+          <p className="text-sm text-slate-500 mt-3">
+            Votre configuration sera sauvegardée pour les prochaines sessions
+          </p>
         </div>
       </div>
     </div>
