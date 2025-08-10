@@ -18,7 +18,7 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
     xl: 'w-64 h-64'
   };
 
-  // Wave center coordinates in the 200x200 viewBox
+  // Wave center coordinates in the 200x200 viewBox - aligned with O letter center
   const waveCenterX = 100;
   const waveCenterY = 100;
   
