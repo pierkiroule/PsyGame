@@ -34,6 +34,9 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
   const svgRef = useRef<SVGSVGElement>(null);
   const [selectedNode, setSelectedNode] = useState<TagNode | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  console.log('Psychocatcher component rendering...', { width, height });
 
   // Données simulées basées sur la méthode Courtial
   const nodes: TagNode[] = [
@@ -111,9 +114,15 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
   };
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    console.log('Psychocatcher useEffect triggered, svgRef.current:', svgRef.current);
+    
+    if (!svgRef.current) {
+      console.log('SVG ref not available, returning...');
+      return;
+    }
 
     const svg = d3.select(svgRef.current);
+    console.log('D3 svg selection:', svg.node());
     svg.selectAll("*").remove();
 
     // Configuration des dimensions
@@ -297,6 +306,10 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
         .attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
+    // Marquer comme chargé
+    setIsLoaded(true);
+    console.log('Psychocatcher D3 setup completed');
+
     // Nettoyage
     return () => {
       simulation.stop();
@@ -372,8 +385,17 @@ export default function Psychocatcher({ width = 800, height = 600, className = "
           )}
         </div>
         
-        <div className="relative bg-slate-900/30 rounded-lg overflow-hidden">
-          <svg ref={svgRef} className="w-full" style={{ height: `${height}px` }} />
+        <div className="relative bg-slate-900/30 rounded-lg overflow-hidden border-2 border-dashed border-blue-500/30">
+          {!isLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-blue-400">Chargement du réseau...</div>
+            </div>
+          )}
+          <svg 
+            ref={svgRef} 
+            className="w-full border border-red-500/50" 
+            style={{ height: `${height}px`, minHeight: '400px' }} 
+          />
         </div>
 
         {/* Légende des communautés */}
