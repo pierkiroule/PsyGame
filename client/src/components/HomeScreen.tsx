@@ -34,8 +34,8 @@ export const HomeScreen = () => {
       <div className="max-w-4xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-12">
-          <div className="mx-auto mb-6 flex items-center justify-center">
-            <PsychographeLogo size="lg" animate={true} />
+          <div className="mx-auto mb-8 flex items-center justify-center">
+            <PsychographeLogo size="xl" animate={true} />
           </div>
           
           <div className="space-y-4">

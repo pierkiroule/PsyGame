@@ -4,8 +4,7 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Link, useLocation } from 'wouter';
-import { User, LogOut } from 'lucide-react';
-import { PsychographeLogo } from './ui/psychographe-logo';
+import { User, LogOut, Brain } from 'lucide-react';
 
 export const Header = () => {
   const { currentScreen } = useSession();
@@ -65,7 +64,15 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-3">
-            <PsychographeLogo size="sm" animate={true} />
+            <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-lg flex items-center justify-center">
+              <Brain className="text-slate-200 w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
+                Psychographe
+              </h1>
+              <p className="text-xs text-slate-500 hidden sm:block">Écho-créatif</p>
+            </div>
           </div>
           
           <div className="flex items-center space-x-4">
