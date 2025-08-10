@@ -4,17 +4,40 @@ import { PlayerInput } from '../types/session';
 
 export const GameScreen = () => {
   const { sessionConfig, updatePlayerInputs, generateResults, getPlayerCount } = useSession();
-  const [inputs, setInputs] = useState<PlayerInput[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-
-  useEffect(() => {
+  
+  // Initialiser les inputs directement avec le bon nombre
+  const [inputs, setInputs] = useState<PlayerInput[]>(() => {
     const playerCount = getPlayerCount();
-    const initialInputs: PlayerInput[] = Array.from({ length: playerCount }, () => ({
+    return Array.from({ length: playerCount }, () => ({
       name: '',
       contribution: '',
       keywords: '',
     }));
-    setInputs(initialInputs);
+  });
+
+  useEffect(() => {
+    const playerCount = getPlayerCount();
+    
+    // Préserver les données existantes si possible
+    setInputs(currentInputs => {
+      if (currentInputs.length === playerCount) {
+        return currentInputs; // Pas de changement nécessaire
+      }
+      
+      // Ajuster le nombre d'inputs
+      if (currentInputs.length < playerCount) {
+        // Ajouter des inputs vides
+        const newInputs = [...currentInputs];
+        for (let i = currentInputs.length; i < playerCount; i++) {
+          newInputs.push({ name: '', contribution: '', keywords: '' });
+        }
+        return newInputs;
+      } else {
+        // Réduire le nombre d'inputs
+        return currentInputs.slice(0, playerCount);
+      }
+    });
   }, [sessionConfig.format, getPlayerCount]);
 
   const updateInput = (index: number, field: keyof PlayerInput, value: string) => {
