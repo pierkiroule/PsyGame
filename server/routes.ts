@@ -34,10 +34,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }));
 
-  // Middleware d'authentification
+  // Middleware d'authentification désactivé pour le développement
   const requireAuth = (req: any, res: any, next: any) => {
+    // Simuler un utilisateur connecté pour le développement
     if (!req.session.userId) {
-      return res.status(401).json({ error: 'Authentification requise' });
+      req.session.userId = 'dev-user-1';
+      req.session.username = 'Alex Martin';
     }
     next();
   };
@@ -113,19 +115,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  app.get("/api/auth/me", requireAuth, async (req: any, res) => {
-    try {
-      const user = await storage.getUserById(req.session.userId);
-      if (!user) {
-        return res.status(404).json({ error: 'Utilisateur non trouvé' });
-      }
-
-      const { password, ...userWithoutPassword } = user;
-      res.json({ user: userWithoutPassword });
-    } catch (error) {
-      console.error('Erreur lors de la récupération du profil:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
+  app.get("/api/auth/me", (req: any, res) => {
+    // Retourner un utilisateur simulé pour le développement
+    const mockUser = {
+      id: 'dev-user-1',
+      username: 'Alex Martin',
+      email: 'alex@example.com',
+      level: 8,
+      reputation: 142,
+      badges: ['creative-genius', 'word-weaver', 'community-star'],
+      createdAt: new Date('2024-01-15'),
+      psychographiesCount: 23,
+      votesReceived: 456
+    };
+    
+    req.session.userId = mockUser.id;
+    req.session.username = mockUser.username;
+    
+    res.json({ user: mockUser });
   });
 
   // Routes de profil utilisateur

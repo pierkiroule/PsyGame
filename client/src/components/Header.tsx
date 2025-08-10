@@ -99,7 +99,7 @@ export const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 p-2 hover:bg-slate-800/50">
                   <Avatar className="w-8 h-8">
-                    <AvatarImage src={userProfile.avatar} />
+                    <AvatarImage src={userProfile.avatar || undefined} />
                     <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white text-sm">
                       {userProfile.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
