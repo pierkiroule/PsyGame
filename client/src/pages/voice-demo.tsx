@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import VoiceInput from '@/components/ui/voice-input';
+import VoiceInputSimple from '@/components/ui/voice-input-simple';
 import { Sparkles, BookOpen, Heart, Lightbulb } from 'lucide-react';
 
 export default function VoiceDemo() {
@@ -131,7 +131,7 @@ export default function VoiceDemo() {
                 Réponse vocale (ou écrite)
               </Label>
               
-              <VoiceInput
+              <VoiceInputSimple
                 value={responses[currentQuestion.id as keyof typeof responses]}
                 onChange={(value) => handleResponseChange(currentQuestion.id, value)}
                 placeholder={currentQuestion.placeholder}

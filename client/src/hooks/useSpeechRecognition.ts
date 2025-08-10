@@ -51,6 +51,7 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
   const [interimTranscript, setInterimTranscript] = useState('');
   const [isSupported, setIsSupported] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isStarting, setIsStarting] = useState(false);
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
@@ -95,21 +96,30 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
         const errorMessage = getErrorMessage(event.error);
         console.warn('Speech recognition error:', event.error, errorMessage);
         
+        setIsListening(false);
+        setIsStarting(false);
+        
         // Ne pas traiter l'erreur "aborted" comme une vraie erreur si elle est intentionnelle
         if (event.error !== 'aborted') {
           setError(errorMessage);
           onError?.(errorMessage);
+        } else {
+          // Pour les erreurs "aborted", on réinitialise l'erreur après un délai
+          setTimeout(() => {
+            setError(null);
+          }, 1000);
         }
-        setIsListening(false);
       });
 
       recognition.addEventListener('start', () => {
         setIsListening(true);
+        setIsStarting(false);
         setError(null);
       });
 
       recognition.addEventListener('end', () => {
         setIsListening(false);
+        setIsStarting(false);
       });
     }
 
@@ -142,20 +152,31 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
   };
 
   const startListening = () => {
-    if (recognitionRef.current && !isListening) {
+    if (recognitionRef.current && !isListening && !isStarting) {
+      setIsStarting(true);
+      
       // Reset des transcriptions précédentes seulement si pas d'erreur d'interruption
       if (!error?.includes('interrompue')) {
         setTranscript('');
         setInterimTranscript('');
       }
       setError(null);
-      try {
-        recognitionRef.current.start();
-      } catch (err) {
-        const errorMsg = 'Impossible de démarrer la reconnaissance vocale';
-        setError(errorMsg);
-        onError?.(errorMsg);
-      }
+      
+      // Délai pour éviter les redémarrages trop rapides
+      setTimeout(() => {
+        try {
+          if (recognitionRef.current && !isListening) {
+            recognitionRef.current.start();
+          } else {
+            setIsStarting(false);
+          }
+        } catch (err) {
+          const errorMsg = 'Impossible de démarrer la reconnaissance vocale';
+          setError(errorMsg);
+          onError?.(errorMsg);
+          setIsStarting(false);
+        }
+      }, 100);
     }
   };
 
@@ -174,9 +195,12 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
       try {
         recognitionRef.current.abort();
         setIsListening(false);
+        setIsStarting(false);
         setError(null);
       } catch (err) {
         console.warn('Error aborting speech recognition:', err);
+        setIsListening(false);
+        setIsStarting(false);
       }
     }
   };
@@ -191,7 +215,7 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
     transcript,
     interimTranscript,
     finalTranscript: transcript,
-    isListening,
+    isListening: isListening || isStarting,
     isSupported,
     error,
     startListening,

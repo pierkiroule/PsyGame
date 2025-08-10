@@ -160,8 +160,9 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => {
+                  // Ne pas redémarrer automatiquement, laisser l'utilisateur le faire manuellement
                   resetTranscript();
-                  startListening();
+                  setTimeout(() => startListening(), 200);
                 }}
                 className="text-red-300 hover:text-red-200 hover:bg-red-900/30"
               >
