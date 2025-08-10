@@ -93,8 +93,13 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
 
       recognition.addEventListener('error', (event: SpeechRecognitionError) => {
         const errorMessage = getErrorMessage(event.error);
-        setError(errorMessage);
-        onError?.(errorMessage);
+        console.warn('Speech recognition error:', event.error, errorMessage);
+        
+        // Ne pas traiter l'erreur "aborted" comme une vraie erreur si elle est intentionnelle
+        if (event.error !== 'aborted') {
+          setError(errorMessage);
+          onError?.(errorMessage);
+        }
         setIsListening(false);
       });
 
@@ -129,6 +134,8 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
         return 'Langue non supportée par votre navigateur.';
       case 'service-not-allowed':
         return 'Service de reconnaissance vocale non autorisé.';
+      case 'aborted':
+        return 'Reconnaissance vocale interrompue. Cliquez à nouveau sur "Parler".';
       default:
         return `Erreur de reconnaissance vocale: ${error}`;
     }
@@ -136,21 +143,41 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
 
   const startListening = () => {
     if (recognitionRef.current && !isListening) {
-      setTranscript('');
-      setInterimTranscript('');
+      // Reset des transcriptions précédentes seulement si pas d'erreur d'interruption
+      if (!error?.includes('interrompue')) {
+        setTranscript('');
+        setInterimTranscript('');
+      }
       setError(null);
       try {
         recognitionRef.current.start();
       } catch (err) {
-        setError('Impossible de démarrer la reconnaissance vocale');
-        onError?.('Impossible de démarrer la reconnaissance vocale');
+        const errorMsg = 'Impossible de démarrer la reconnaissance vocale';
+        setError(errorMsg);
+        onError?.(errorMsg);
       }
     }
   };
 
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (err) {
+        console.warn('Error stopping speech recognition:', err);
+      }
+    }
+  };
+
+  const abortListening = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+        setIsListening(false);
+        setError(null);
+      } catch (err) {
+        console.warn('Error aborting speech recognition:', err);
+      }
     }
   };
 
@@ -169,6 +196,7 @@ export const useSpeechRecognition = (options: UseSpeechRecognitionOptions = {}) 
     error,
     startListening,
     stopListening,
+    abortListening,
     resetTranscript
   };
 };

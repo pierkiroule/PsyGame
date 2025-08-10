@@ -32,6 +32,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     error,
     startListening,
     stopListening,
+    abortListening,
     resetTranscript
   } = useSpeechRecognition({
     continuous: true,
@@ -68,6 +69,12 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
   const handleClearTranscript = () => {
     resetTranscript();
     setShowTranscript(false);
+  };
+
+  const handleForceStop = () => {
+    if (isListening) {
+      abortListening?.();
+    }
   };
 
   if (!isSupported) {
@@ -125,13 +132,43 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
             Effacer
           </Button>
         )}
+
+        {isListening && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={handleForceStop}
+            className="text-orange-400 hover:text-orange-200"
+          >
+            Forcer l'arrêt
+          </Button>
+        )}
       </div>
 
       {/* Affichage des erreurs */}
       {error && (
         <div className="text-red-400 text-sm bg-red-950/20 border border-red-800/30 rounded-lg p-3">
-          <div className="font-medium mb-1">Erreur de reconnaissance vocale</div>
-          <div className="text-xs">{error}</div>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium mb-1">Erreur de reconnaissance vocale</div>
+              <div className="text-xs">{error}</div>
+            </div>
+            {error.includes('interrompue') && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  resetTranscript();
+                  startListening();
+                }}
+                className="text-red-300 hover:text-red-200 hover:bg-red-900/30"
+              >
+                Réessayer
+              </Button>
+            )}
+          </div>
         </div>
       )}
 
