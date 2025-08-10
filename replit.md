@@ -22,7 +22,7 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Component Structure**: Modular component architecture with reusable UI components in the `components/ui` directory and screen-specific components for each application state.
 
-**Gamification System**: Système simplifié de badges en 4 degrés poétiques (Éveil, Éclosion, Épanouissement, Rayonnement) avec progression naturelle et messages d'encouragement poétiques. Design minimaliste avec icônes emoji et couleurs cohérentes pour une approche plus accessible et inspirante.
+**Gamification System**: Système ultra-simplifié de badges en 3 niveaux directs et sympas : "Psychographe en herbe" (🌱), "Psychographe de ouf !" (🎨), "Psychographe de génie" (🌟). Approche accessible et motivante avec langage familier et progression claire basée sur les points d'activité.
 
 **Forum Communautaire**: Psychothèque publique transformée en forum avec système de Top 5 hebdomadaire, vote communautaire, commentaires, et système de tri avancé. Inclut galerie des meilleures créations et encouragement à la participation.
 

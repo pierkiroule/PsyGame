@@ -27,9 +27,9 @@ export default function MinimalProfile() {
   };
 
   const recentBadges = [
-    { name: 'Artisan du Verbe', level: 3, color: 'text-purple-500', icon: '✨', description: 'Épanouissement' },
-    { name: 'Explorateur d\'Âmes', level: 2, color: 'text-blue-400', icon: '🔍', description: 'Éclosion' },
-    { name: 'Première Étincelle', level: 1, color: 'text-emerald-300', icon: '🌱', description: 'Éveil' }
+    { name: 'Virtuose de l\'Âme', level: 3, color: 'text-purple-600', icon: '🌟', description: 'Psychographe de génie' },
+    { name: 'Créateur Inspiré', level: 2, color: 'text-blue-500', icon: '🎨', description: 'Psychographe de ouf !' },
+    { name: 'Première Psychographie', level: 1, color: 'text-emerald-400', icon: '🌱', description: 'Psychographe en herbe' }
   ];
 
   const progressPercent = Math.round((userStats.experience / userStats.nextLevelExp) * 100);
@@ -177,12 +177,11 @@ export default function MinimalProfile() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {[
-                  { name: 'Éveil', level: 1, progress: 100, color: 'text-emerald-300', icon: '🌱' },
-                  { name: 'Éclosion', level: 2, progress: 85, color: 'text-blue-400', icon: '🔍' },
-                  { name: 'Épanouissement', level: 3, progress: 60, color: 'text-purple-500', icon: '✨' },
-                  { name: 'Rayonnement', level: 4, progress: 25, color: 'text-amber-400', icon: '🌟' }
+                  { name: 'Psychographe en herbe', level: 1, progress: 100, color: 'text-emerald-400', icon: '🌱' },
+                  { name: 'Psychographe de ouf !', level: 2, progress: 75, color: 'text-blue-500', icon: '🎨' },
+                  { name: 'Psychographe de génie', level: 3, progress: 40, color: 'text-purple-600', icon: '🌟' }
                 ].map(stage => (
                   <div key={stage.name} className="p-4 bg-slate-900/30 rounded-lg">
                     <h3 className={`font-semibold mb-3 ${stage.color} flex items-center gap-2`}>

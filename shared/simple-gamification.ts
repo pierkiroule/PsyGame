@@ -4,7 +4,7 @@ export interface Badge {
   id: string;
   name: string;
   description: string;
-  level: 1 | 2 | 3 | 4;
+  level: 1 | 2 | 3;
   icon: string;
   color: string;
   requirements: {
@@ -14,91 +14,70 @@ export interface Badge {
 }
 
 export const BADGE_LEVELS = {
-  1: { name: 'Éveil', color: 'text-emerald-300', description: 'Premiers pas créatifs' },
-  2: { name: 'Éclosion', color: 'text-blue-400', description: 'Exploration approfondie' },
-  3: { name: 'Épanouissement', color: 'text-purple-500', description: 'Maîtrise créative' },
-  4: { name: 'Rayonnement', color: 'text-amber-400', description: 'Inspiration partagée' }
+  1: { name: 'Psychographe en herbe', color: 'text-emerald-400', description: 'Premiers pas créatifs' },
+  2: { name: 'Psychographe de ouf !', color: 'text-blue-500', description: 'Créativité débridée' },
+  3: { name: 'Psychographe de génie', color: 'text-purple-600', description: 'Maîtrise exceptionnelle' }
 } as const;
 
 export const BADGES: Badge[] = [
-  // Niveau 1 - Éveil
+  // Niveau 1 - Psychographe en herbe
   {
-    id: 'eveil-creativite',
-    name: 'Première Étincelle',
-    description: 'Votre créativité s\'éveille doucement',
+    id: 'herbe-debut',
+    name: 'Première Psychographie',
+    description: 'Vous venez de créer votre première psychographie !',
     level: 1,
     icon: '🌱',
-    color: 'text-emerald-300',
-    requirements: { points: 50 }
+    color: 'text-emerald-400',
+    requirements: { points: 25 }
   },
   {
-    id: 'eveil-partage',
-    name: 'Murmure Timide',
-    description: 'Vous osez partager vos premières créations',
+    id: 'herbe-exploration',
+    name: 'Explorateur Curieux',
+    description: 'Vous découvrez les mystères de la psychographie',
     level: 1,
-    icon: '🤗',
-    color: 'text-emerald-300',
-    requirements: { points: 25, condition: 'first_share' }
+    icon: '🔍',
+    color: 'text-emerald-400',
+    requirements: { points: 75 }
   },
 
-  // Niveau 2 - Éclosion
+  // Niveau 2 - Psychographe de ouf !
   {
-    id: 'eclosion-exploration',
-    name: 'Explorateur d\'Âmes',
-    description: 'Vous sondez les profondeurs de l\'imaginaire',
+    id: 'ouf-creativite',
+    name: 'Créateur Inspiré',
+    description: 'Vos psychographies touchent en plein cœur !',
     level: 2,
-    icon: '🔍',
-    color: 'text-blue-400',
+    icon: '🎨',
+    color: 'text-blue-500',
     requirements: { points: 200 }
   },
   {
-    id: 'eclosion-communaute',
-    name: 'Tisseuse de Liens',
-    description: 'Vos mots créent des connexions authentiques',
+    id: 'ouf-communaute',
+    name: 'Âme de la Communauté',
+    description: 'Vous enrichissez la psychothèque avec brio',
     level: 2,
-    icon: '🤝',
-    color: 'text-blue-400',
-    requirements: { points: 150, condition: 'community_engagement' }
+    icon: '💝',
+    color: 'text-blue-500',
+    requirements: { points: 300 }
   },
 
-  // Niveau 3 - Épanouissement
+  // Niveau 3 - Psychographe de génie
   {
-    id: 'epanouissement-maitrise',
-    name: 'Artisan du Verbe',
-    description: 'Votre style unique s\'affirme avec élégance',
+    id: 'genie-maitrise',
+    name: 'Virtuose de l\'Âme',
+    description: 'Vous révélez l\'invisible avec un talent rare',
     level: 3,
-    icon: '✨',
-    color: 'text-purple-500',
-    requirements: { points: 500 }
-  },
-  {
-    id: 'epanouissement-inspiration',
-    name: 'Source d\'Inspiration',
-    description: 'Vos créations touchent et inspirent les autres',
-    level: 3,
-    icon: '💫',
-    color: 'text-purple-500',
-    requirements: { points: 400, condition: 'high_engagement' }
-  },
-
-  // Niveau 4 - Rayonnement
-  {
-    id: 'rayonnement-maitrise',
-    name: 'Virtuose de l\'Invisible',
-    description: 'Vous révélez l\'ineffable avec grâce',
-    level: 4,
     icon: '🌟',
-    color: 'text-amber-400',
-    requirements: { points: 1000 }
+    color: 'text-purple-600',
+    requirements: { points: 600 }
   },
   {
-    id: 'rayonnement-guide',
-    name: 'Guide Lumineux',
-    description: 'Votre présence illumine la communauté',
-    level: 4,
-    icon: '🕯️',
-    color: 'text-amber-400',
-    requirements: { points: 800, condition: 'mentor_role' }
+    id: 'genie-legende',
+    name: 'Légende Vivante',
+    description: 'Votre génie inspire toute la communauté',
+    level: 3,
+    icon: '👑',
+    color: 'text-purple-600',
+    requirements: { points: 1000 }
   }
 ];
 
