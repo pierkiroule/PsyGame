@@ -74,8 +74,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   const generateResults = () => {
     // Simulate AI content generation
     const mockContent = generateMockContent(sessionConfig, playerInputs);
-    const mockScores = sessionConfig.scoreEnabled ? generateMockScores() : null;
-    const mockBadges = sessionConfig.scoreEnabled ? generateMockBadges(sessionConfig) : [];
+    const mockScores = sessionConfig.scoreEnabled ? generateMockScores(playerInputs) : null;
+    const mockBadges = sessionConfig.scoreEnabled ? generateMockBadges(sessionConfig, playerInputs) : [];
 
     setGeneratedContent(mockContent);
     setScores(mockScores);
@@ -114,84 +114,197 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Mock content generation functions
+// Simulation avancée de génération de contenu IA
 const generateMockContent = (config: SessionConfig, inputs: PlayerInput[]): GeneratedContent => {
-  const allKeywords = inputs.map(input => input.keywords).join(', ');
-  const allContributions = inputs.map(input => input.contribution).join(' ');
+  const allKeywords = inputs.map(input => input.keywords).filter(k => k.trim().length > 0).join(', ');
+  const allContributions = inputs.map(input => input.contribution).filter(c => c.trim().length > 0);
+  const playerNames = inputs.map(input => input.name).filter(n => n.trim().length > 0);
+
+  // Analyse des émotions et thèmes dans les contributions
+  const emotionKeywords = ['joie', 'tristesse', 'peur', 'colère', 'espoir', 'amour', 'paix', 'liberté', 'rêve'];
+  const natureKeywords = ['océan', 'montagne', 'forêt', 'ciel', 'étoile', 'lune', 'soleil', 'vent', 'rivière'];
+  const conceptKeywords = ['temps', 'voyage', 'mémoire', 'futur', 'passé', 'âme', 'esprit', 'coeur'];
+
+  const hasEmotion = emotionKeywords.some(word => allKeywords.toLowerCase().includes(word));
+  const hasNature = natureKeywords.some(word => allKeywords.toLowerCase().includes(word));
+  const hasConcept = conceptKeywords.some(word => allKeywords.toLowerCase().includes(word));
 
   let baseText = '';
   let guide = [];
+  let imagePrompt = '';
 
+  // Génération de contenu adaptatif basé sur le style et les inputs
   switch (config.style) {
     case 'libre':
-      baseText = `"Dans l'océan des rêves où la liberté danse,
-      Les âmes se cherchent en silence,
-      Portées par des vents d'espérance,
-      Vers des horizons de renaissance."
+      if (hasNature && hasEmotion) {
+        baseText = `"Sous le voile étoilé de l'infini cosmos,
+        ${allKeywords.split(',')[0] || 'L\'âme'} danse avec les vents du possible,
+        Chaque souffle porte l'essence de ${allKeywords.split(',')[1] || 'la liberté'},
+        Vers des rivages encore inexplorés de l'être."
+        
+        Cette psychographie révèle une harmonie profonde entre votre monde intérieur et les forces naturelles. 
+        Les contributions partagées témoignent d'une sensibilité particulière aux cycles et aux transformations. 
+        ${playerNames.length > 0 ? `L'énergie créative de ${playerNames.join(', ')} résonne avec une authenticité remarquable.` : ''}`;
+      } else if (hasConcept) {
+        baseText = `"Dans le labyrinthe du temps qui se plie et se déplie,
+        La conscience ${allKeywords.split(',')[0] || 'éveillée'} trace sa voie lumineuse,
+        Chaque pensée devient graine d'éternité,
+        Cultivant l'art de l'être authentique."
+        
+        Votre psychographie dévoile une relation complexe avec les dimensions temporelles et spirituelles. 
+        Les mots choisis révèlent une quête de sens qui transcende l'ordinaire.`;
+      } else {
+        baseText = `"Au carrefour des possibles infinis,
+        L'imagination ${allKeywords.split(',')[0] || 'libre'} prend son envol,
+        Tissant des ponts entre rêve et réalité,
+        Dans la symphonie silencieuse de l'âme."
+        
+        Cette psychographie exprime une liberté créative en pleine expansion. 
+        Vos contributions révèlent un esprit ouvert aux métamorphoses intérieures.`;
+      }
       
-      Cette psychographie révèle une quête profonde de liberté intérieure, 
-      où les rêves deviennent des phares guidant vers l'authenticité.`;
       guide = [
-        'Invitez chaque participant à partager ce que cette psychographie évoque pour eux personnellement.',
-        'Explorez ensemble les symboles et métaphores dans vos vies respectives.',
-        'Discutez des actions concrètes pour cultiver plus de créativité au quotidien.'
+        `Explorez comment les éléments "${allKeywords}" résonnent avec votre expérience personnelle.`,
+        'Partagez les moments où vous ressentez cette liberté créative dans votre quotidien.',
+        'Identifiez ensemble des pratiques pour cultiver cette ouverture authentique.'
       ];
+      
+      imagePrompt = `${allKeywords}, flowing abstract art, cosmic freedom, ethereal light, creative expression`;
       break;
+
     case 'inspirant':
-      baseText = `"L'inspiration naît de la confluence des âmes créatives,
-      Chaque pensée devient une note dans la symphonie collective,
-      Transformant l'ordinaire en extraordinaire,
-      Par la magie de l'expression authentique."
+      const citationType = config.citationType || 'poétique';
+      if (citationType === 'philosophique') {
+        baseText = `"La sagesse naît du dialogue entre ${allKeywords.split(',')[0] || 'l\'âme'} et l'universel,
+        Chaque interrogation devient source de lumière,
+        Transformant l'incertitude en ${allKeywords.split(',')[1] || 'clarté'},
+        Par l'alchimie de la contemplation active."
+        
+        Votre psychographie révèle une démarche philosophique profonde. Les contributions partagées 
+        témoignent d'une recherche de sens qui unit questionnement et intuition.`;
+      } else if (citationType === 'therapeutique') {
+        baseText = `"Dans le jardin secret de la guérison,
+        ${allKeywords.split(',')[0] || 'La bienveillance'} devient source de régénération,
+        Chaque blessure transformée en ${allKeywords.split(',')[1] || 'sagesse'},
+        Par la magie de l'acceptation aimante."
+        
+        Cette psychographie met en lumière votre capacité naturelle de transformation et de résilience. 
+        Les mots choisis révèlent un processus de guérison créative en cours.`;
+      } else {
+        baseText = `"L'inspiration surgit de la rencontre mystérieuse,
+        Entre ${allKeywords.split(',')[0] || 'l\'imaginaire'} et la vérité du coeur,
+        Chaque création devient offrande à ${allKeywords.split(',')[1] || 'la beauté'},
+        Dans la danse éternelle de l'art vivant."
+        
+        Votre psychographie révèle une connexion privilégiée avec les sources créatives. 
+        L'inspiration ${citationType} guide naturellement votre expression.`;
+      }
       
-      Votre psychographie révèle une capacité remarquable à transformer 
-      l'inspiration en création tangible.`;
       guide = [
-        'Partagez les sources d\'inspiration qui vous motivent le plus.',
-        'Explorez comment l\'inspiration collective amplifie la créativité individuelle.',
-        'Identifiez des moyens concrets d\'intégrer plus d\'inspiration dans votre quotidien.'
+        `Partagez comment l'inspiration ${citationType} influence votre créativité quotidienne.`,
+        'Explorez ensemble les moments de révélation créative dans vos expériences.',
+        'Créez un rituel collectif pour cultiver cette forme d\'inspiration.'
       ];
+      
+      imagePrompt = `${allKeywords}, ${citationType} inspiration, luminous creativity, spiritual art, wisdom imagery`;
       break;
+
     case 'defi':
-      baseText = `"Face au défi, l'esprit créatif s'épanouit,
-      Chaque contrainte devient un tremplin vers l'innovation,
-      L'adversité révèle des ressources insoupçonnées,
-      Forgeant la résilience dans le feu de l'imagination."
+      const constraint = config.constraint || 'créative';
+      baseText = `"Face à la contrainte "${constraint}",
+      L'esprit ${allKeywords.split(',')[0] || 'créatif'} se révèle innovateur,
+      Transformant limitation en ${allKeywords.split(',')[1] || 'liberté'},
+      Par l'audace de l'imagination sans limites."
       
-      Cette psychographie met en lumière votre capacité à transformer 
-      les défis en opportunités créatives.`;
+      Cette psychographie illustre votre capacité remarquable à métamorphoser les défis en opportunités. 
+      La contrainte imposée a révélé des facettes inattendues de votre expression créative. 
+      ${allContributions.length > 1 ? 'La synergie collective a amplifié cette transformation.' : 'Votre approche individuelle témoigne d\'une résilience créative exceptionnelle.'}`;
+      
       guide = [
-        'Réfléchissez ensemble sur les défis qui ont stimulé votre créativité.',
-        'Explorez comment les contraintes peuvent libérer l\'innovation.',
-        'Définissez des stratégies pour aborder les futurs défis créatifs.'
+        `Analysez comment la contrainte "${constraint}" a influencé votre processus créatif.`,
+        'Identifiez les stratégies qui vous ont permis de dépasser les limitations imposées.',
+        'Développez ensemble des techniques pour transformer les futurs défis en catalyseurs créatifs.'
       ];
+      
+      imagePrompt = `${allKeywords}, creative challenge, innovation breakthrough, constraint transformation, dynamic art`;
       break;
   }
 
   return {
     text: baseText,
     guide,
-    imagePrompt: `${allKeywords} creative abstract art`
+    imagePrompt
   };
 };
 
-const generateMockScores = (): Scores => {
+const generateMockScores = (inputs: PlayerInput[]): Scores => {
+  // Calcul de scores basé sur la richesse des contributions
+  const totalContributions = inputs.filter(input => input.contribution.trim().length > 0).length;
+  const totalKeywords = inputs.reduce((acc, input) => acc + input.keywords.split(',').filter(k => k.trim().length > 0).length, 0);
+  const avgContributionLength = inputs.reduce((acc, input) => acc + input.contribution.length, 0) / Math.max(inputs.length, 1);
+  
+  // Score créatif basé sur la variété et l'originalité
+  let creativeBase = 70;
+  if (totalKeywords > 10) creativeBase += 15;
+  else if (totalKeywords > 5) creativeBase += 10;
+  
+  if (avgContributionLength > 100) creativeBase += 10;
+  else if (avgContributionLength > 50) creativeBase += 5;
+  
+  // Score poétique basé sur l'expressivité
+  let poeticBase = 75;
+  const poeticWords = ['beauté', 'lumière', 'rêve', 'âme', 'coeur', 'étoile', 'danse', 'harmonie', 'mystère'];
+  const allText = inputs.map(i => i.contribution + ' ' + i.keywords).join(' ').toLowerCase();
+  const poeticWordCount = poeticWords.filter(word => allText.includes(word)).length;
+  
+  if (poeticWordCount > 3) poeticBase += 15;
+  else if (poeticWordCount > 1) poeticBase += 10;
+  
   return {
-    creative: Math.floor(Math.random() * 20) + 80, // 80-100
-    poetic: Math.floor(Math.random() * 20) + 80, // 80-100
+    creative: Math.min(100, creativeBase + Math.floor(Math.random() * 10)),
+    poetic: Math.min(100, poeticBase + Math.floor(Math.random() * 10))
   };
 };
 
-const generateMockBadges = (config: SessionConfig): Badge[] => {
-  const allBadges = [
-    { name: 'Visionnaire', icon: 'star', color: 'yellow' },
-    { name: 'Poète', icon: 'feather', color: 'purple' },
-    { name: 'Innovateur', icon: 'lightbulb', color: 'blue' },
-    { name: 'Maître des Océans', icon: 'water', color: 'blue' },
-    { name: 'Explorateur', icon: 'compass', color: 'green' },
-    { name: 'Créateur', icon: 'palette', color: 'orange' },
+const generateMockBadges = (config: SessionConfig, inputs: PlayerInput[]): Badge[] => {
+  const allText = inputs.map(i => i.contribution + ' ' + i.keywords).join(' ').toLowerCase();
+  
+  const badges = [
+    { name: 'Visionnaire', icon: 'star', color: 'yellow', triggers: ['futur', 'vision', 'rêve', 'imagination'] },
+    { name: 'Poète', icon: 'feather', color: 'purple', triggers: ['beauté', 'vers', 'rime', 'métaphore'] },
+    { name: 'Innovateur', icon: 'lightbulb', color: 'blue', triggers: ['innovation', 'créatif', 'nouveau', 'invention'] },
+    { name: 'Maître des Océans', icon: 'water', color: 'blue', triggers: ['océan', 'mer', 'vague', 'profondeur'] },
+    { name: 'Explorateur', icon: 'compass', color: 'green', triggers: ['voyage', 'découverte', 'aventure', 'explorer'] },
+    { name: 'Créateur', icon: 'palette', color: 'orange', triggers: ['art', 'création', 'couleur', 'forme'] },
+    { name: 'Sage', icon: 'book', color: 'emerald', triggers: ['sagesse', 'connaissance', 'philosophie', 'réflexion'] },
+    { name: 'Rêveur', icon: 'cloud', color: 'indigo', triggers: ['rêve', 'songe', 'imaginaire', 'fantaisie'] },
+    { name: 'Alchimiste', icon: 'flask', color: 'purple', triggers: ['transformation', 'magie', 'alchimie', 'mutation'] },
+    { name: 'Gardien de Lumière', icon: 'sun', color: 'yellow', triggers: ['lumière', 'clarté', 'illumination', 'révélation'] }
   ];
-
-  // Return 2-4 random badges based on style and format
-  const badgeCount = config.format === 'solo' ? 2 : config.format === 'equipe' ? 4 : 3;
-  return allBadges.slice(0, badgeCount);
+  
+  // Sélection des badges basée sur les mots-clés détectés
+  const earnedBadges = badges.filter(badge => 
+    badge.triggers.some(trigger => allText.includes(trigger))
+  );
+  
+  // Badges bonus selon la configuration
+  if (config.style === 'defi') {
+    earnedBadges.push({ name: 'Conquérant', icon: 'trophy', color: 'gold', triggers: [] });
+  }
+  if (config.format === 'equipe') {
+    earnedBadges.push({ name: 'Esprit d\'Équipe', icon: 'users', color: 'green', triggers: [] });
+  }
+  if (config.scoreEnabled) {
+    earnedBadges.push({ name: 'Perfectionniste', icon: 'target', color: 'red', triggers: [] });
+  }
+  
+  // Retourner 2-5 badges uniques
+  const uniqueBadges = earnedBadges.filter((badge, index, self) => 
+    index === self.findIndex(b => b.name === badge.name)
+  );
+  
+  const badgeCount = Math.min(5, Math.max(2, uniqueBadges.length));
+  return uniqueBadges.slice(0, badgeCount);
 };
+
+
