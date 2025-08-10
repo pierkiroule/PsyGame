@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import "./index.css";
 
 import NotFound from "./pages/not-found";
@@ -16,6 +16,7 @@ import { HomeScreen } from './components/HomeScreen';
 import { NewSessionScreen } from './components/NewSessionScreen';
 import { GameScreen } from './components/GameScreen';
 import { ResultsScreen } from './components/ResultsScreen';
+import { PageTransition } from './components/PageTransition';
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -40,20 +41,16 @@ const AuthenticatedApp = () => {
   };
 
   return (
-    <div className="min-h-full">
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
-        <Header />
-        <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          {renderCurrentScreen()}
-        </main>
-      </div>
-    </div>
+    <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {renderCurrentScreen()}
+    </main>
   );
 };
 
-// Component principal avec routing
+// Component principal avec routing et transitions
 const AppContent = () => {
   const { user, isLoading } = useAuth();
+  const [location] = useLocation();
 
   if (isLoading) {
     return (
@@ -67,26 +64,31 @@ const AppContent = () => {
   }
 
   return (
-    <Switch>
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/profile">
-        {user ? <ProfilePage /> : <LoginPage />}
-      </Route>
-      <Route path="/psychotheque">
-        {user ? <Psychotheque /> : <LoginPage />}
-      </Route>
-      <Route path="/">
-        {user ? (
-          <SessionProvider>
-            <AuthenticatedApp />
-          </SessionProvider>
-        ) : (
-          <Home />
-        )}
-      </Route>
-      <Route component={NotFound} />
-    </Switch>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
+      <Header />
+      <PageTransition trigger={location}>
+        <Switch>
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/profile">
+            <ProfilePage />
+          </Route>
+          <Route path="/psychotheque">
+            <Psychotheque />
+          </Route>
+          <Route path="/">
+            {user ? (
+              <SessionProvider>
+                <AuthenticatedApp />
+              </SessionProvider>
+            ) : (
+              <Home />
+            )}
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </PageTransition>
+    </div>
   );
 };
 

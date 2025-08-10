@@ -43,7 +43,7 @@ export const Header = () => {
           </div>
 
           {/* Navigation centrale */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="flex items-center space-x-1">
             {navigation.map(({ href, label, icon: Icon, description }) => (
               <Link key={href} href={href}>
                 <div className="group relative">

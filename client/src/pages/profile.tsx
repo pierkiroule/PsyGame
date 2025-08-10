@@ -76,8 +76,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950">
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         
         {/* En-tête de profil */}
         <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
@@ -523,6 +522,5 @@ export default function Profile() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
   );
 }

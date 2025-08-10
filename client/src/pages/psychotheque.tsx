@@ -103,8 +103,7 @@ export default function Psychotheque() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950">
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
         
         {/* En-tête */}
         <div className="text-center mb-8">
@@ -415,7 +414,6 @@ export default function Psychotheque() {
             </div>
           </CardContent>
         </Card>
-      </div>
     </div>
   );
 }
