@@ -23,6 +23,8 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Gamification System**: Comprehensive badge and reward system with 6 creative dimensions (technique, poetique, psychologique, narratif, communautaire, suggestion) across 3 progressive levels. Features animated SVG badges, community voting, and AI-powered evaluation.
 
+**Forum Communautaire**: Psychothèque publique transformée en forum avec système de Top 5 hebdomadaire, vote communautaire, commentaires, et système de tri avancé. Inclut galerie des meilleures créations et encouragement à la participation.
+
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.
 
@@ -33,7 +35,7 @@ The backend uses **Express.js** with TypeScript in ESM format. Currently minimal
 ### Data Storage Solutions
 **Database Configuration**: Configured for PostgreSQL using **Drizzle ORM** with migration support. Currently includes a basic users table schema as a foundation.
 
-**Session Data**: Temporarily stored in React Context during user sessions. The application is designed to be stateless between sessions for the prototype phase.
+**Session Data**: Improved session persistence with 30-day expiration and rolling renewal to avoid frequent reconnections. User sessions maintained through express-session with secure cookie configuration.
 
 ### Styling and Design System
 **Design System**: Uses shadcn/ui with a custom theme configuration featuring neutral base colors and CSS custom properties for consistent theming. The design emphasizes gradients and modern spacing for a creative, engaging interface.

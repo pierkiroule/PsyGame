@@ -21,15 +21,16 @@ declare module 'express-session' {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Configuration de la session
+  // Configuration de la session avec persistance
   app.use(session({
     secret: process.env.SESSION_SECRET || 'psychographe-secret-key-dev',
     resave: false,
     saveUninitialized: false,
+    rolling: true, // Renouvelle la session à chaque requête
     cookie: {
       secure: false, // En production, mettre à true avec HTTPS
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 jours
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 jours
     }
   }));
 
