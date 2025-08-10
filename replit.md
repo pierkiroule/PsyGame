@@ -52,7 +52,15 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Navigation Avancée**: Menu principal redesigné avec logo à effet d'onde résonante, navigation contextuelle, profil utilisateur intégré, notifications et menu mobile responsive. Le logo présente des ondes naissant organiquement du "o" de Psychographe avec animations fluides et effet d'écho lumineux. Inclut tooltips informatifs et états visuels pour une expérience utilisateur optimale.
 
-**Voice-to-Text Integration**: Système complet de reconnaissance vocale utilisant l'API Web Speech Recognition native pour la capture spontanée d'idées créatives. Interface fluide combinant saisie vocale et textuelle avec transcription temps réel, gestion d'erreurs et compatibilité navigateur. Page de démonstration interactive guidant l'utilisateur dans le processus créatif par étapes avec retour visuel immédiat.
+**Voice-to-Text Integration**: Système complet de reconnaissance vocale utilisant l'API Web Speech Recognition native pour la capture spontanée d'idées créatives. Interface fluide combinant saisie vocale et textuelle avec transcription temps réel, gestion d'erreurs et compatibilité navigateur.
+
+**Game Modes System**: Système de modes de jeu finalisé avec 5 expériences distinctes :
+- Sprint Créatif (3min) : création instinctive et rapide pour débutants
+- Exploration Profonde (7 jours) : voyage introspectif avancé avec questions évolutives  
+- Mode Synesthésie (15min) : mélange sensoriel créatif niveau intermédiaire
+- Constellation Collective (10min) : création collaborative interconnectée
+- Flux Vocal (5min) : expression entièrement vocale pour débutants
+Chaque mode inclut consignes synthétiques, exemples pertinents, scoring coopératif simplifié
 
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.

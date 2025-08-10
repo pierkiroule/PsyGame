@@ -1,61 +1,51 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import VoiceInputSimple from '@/components/ui/voice-input-simple';
-import { Sparkles, BookOpen, Heart, Lightbulb } from 'lucide-react';
+import { GameModeSelector } from '@/components/GameModeSelector';
+import { gameModes, GameMode } from '@/data/gameModes';
+import { getQuestionsForMode, baseQuestions } from '@/data/questions';
+import { Sparkles, BookOpen, Heart, Lightbulb, ArrowLeft } from 'lucide-react';
 
 export default function VoiceDemo() {
-  const [responses, setResponses] = useState({
-    emotion: '',
-    memory: '',
-    dream: '',
-    word: ''
-  });
-
+  const [gamePhase, setGamePhase] = useState<'selection' | 'playing' | 'results'>('selection');
+  const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [responses, setResponses] = useState<{[key: string]: string}>({});
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
-  const questions = [
-    {
-      id: 'emotion',
-      icon: Heart,
-      title: 'Émotion spontanée',
-      question: 'Décrivez une émotion que vous ressentez maintenant, sans réfléchir...',
-      placeholder: 'Parlez librement de ce que vous ressentez...'
-    },
-    {
-      id: 'memory',
-      icon: BookOpen,
-      title: 'Souvenir vivace',
-      question: 'Racontez un souvenir qui vous vient à l\'esprit...',
-      placeholder: 'Laissez venir un souvenir et décrivez-le...'
-    },
-    {
-      id: 'dream',
-      icon: Sparkles,
-      title: 'Vision créative',
-      question: 'Si vous pouviez créer quelque chose de magique, que serait-ce ?',
-      placeholder: 'Imaginez sans limites et exprimez votre vision...'
-    },
-    {
-      id: 'word',
-      icon: Lightbulb,
-      title: 'Mot-clé final',
-      question: 'Un mot qui résume votre état d\'esprit créatif actuel ?',
-      placeholder: 'Dites simplement le premier mot qui vous vient...'
-    }
-  ];
+  const questions = selectedMode ? getQuestionsForMode(selectedMode.id) : baseQuestions;
+
+  const questionIcons = [Heart, BookOpen, Sparkles, Lightbulb];
 
   const currentQuestion = questions[currentStep];
-  const IconComponent = currentQuestion.icon;
+  const IconComponent = questionIcons[currentStep] || Heart;
 
-  const handleResponseChange = (field: string, value: string) => {
+  const handleSelectMode = (mode: GameMode) => {
+    setSelectedMode(mode);
+  };
+
+  const handleStartGame = () => {
+    if (selectedMode) {
+      setGamePhase('playing');
+      setStartTime(new Date());
+      setCurrentStep(0);
+      setResponses({});
+    }
+  };
+
+  const handleBackToSelection = () => {
+    setGamePhase('selection');
+    setSelectedMode(null);
+  };
+
+  const handleResponseChange = (questionId: string, value: string) => {
     setResponses(prev => ({
       ...prev,
-      [field]: value
+      [questionId]: value
     }));
   };
 
@@ -72,25 +62,130 @@ export default function VoiceDemo() {
   };
 
   const generatePsychographie = () => {
-    // Simulation de génération basée sur les réponses vocales
-    alert('🎨 Psychographie générée ! (Fonctionnalité à implémenter)');
+    setGamePhase('results');
   };
 
-  const isCurrentStepComplete = responses[currentQuestion.id as keyof typeof responses].length > 10;
-  const allComplete = Object.values(responses).every(response => response.length > 5);
+  const isCurrentStepComplete = responses[currentQuestion.id]?.length > 10;
+  const allComplete = questions.every(q => responses[q.id]?.length > 5);
+
+  if (gamePhase === 'selection') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/20 p-4">
+        <div className="container mx-auto max-w-6xl">
+          <GameModeSelector
+            selectedMode={selectedMode?.id || null}
+            onSelectMode={handleSelectMode}
+            onStartGame={handleStartGame}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (gamePhase === 'results') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/20 p-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="text-4xl">🎨</span>
+              <h1 className="text-3xl font-bold text-white">
+                Psychographie Créée !
+              </h1>
+            </div>
+            <p className="text-slate-300 text-lg">
+              Votre création unique est prête à être partagée avec la communauté
+            </p>
+          </div>
+
+          {/* Résumé de la création */}
+          <Card className="mb-8 border-slate-700/50 bg-slate-950/60 backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="text-white text-xl flex items-center gap-2">
+                <span className="text-2xl">{selectedMode?.icon}</span>
+                Mode : {selectedMode?.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {questions.map((q, index) => {
+                const response = responses[q.id];
+                const IconComp = questionIcons[index] || Heart;
+                
+                return response ? (
+                  <div key={q.id} className="border-l-4 border-blue-500/50 pl-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <IconComp className="w-4 h-4 text-blue-400" />
+                      <span className="text-slate-300 font-medium">Question {index + 1}</span>
+                    </div>
+                    <p className="text-slate-200 leading-relaxed">{response}</p>
+                  </div>
+                ) : null;
+              })}
+            </CardContent>
+          </Card>
+
+          {/* Actions */}
+          <div className="text-center space-y-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                onClick={() => setGamePhase('selection')}
+                variant="outline"
+                className="border-slate-600 text-slate-300 hover:bg-slate-800"
+              >
+                Créer une nouvelle psychographie
+              </Button>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => {
+                  // Simulation du partage
+                  alert('Psychographie partagée avec la communauté ! (+10 points d\'activité)');
+                }}
+              >
+                Partager avec la communauté
+              </Button>
+            </div>
+            
+            <p className="text-slate-400 text-sm">
+              Partagez votre création pour contribuer au mouvement créatif coopératif
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/20 p-4">
       <div className="container mx-auto max-w-4xl">
         
         {/* En-tête */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Création Vocale Psychographe
-          </h1>
-          <p className="text-slate-300">
-            Exprimez-vous librement avec votre voix pour créer une psychographie unique
-          </p>
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackToSelection}
+              className="text-slate-400 hover:text-white"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Changer de mode
+            </Button>
+          </div>
+
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="text-4xl">{selectedMode?.icon}</span>
+              <h1 className="text-3xl font-bold text-white">
+                {selectedMode?.title}
+              </h1>
+            </div>
+            <p className="text-slate-300 text-lg mb-2">
+              {selectedMode?.subtitle}
+            </p>
+            <Badge variant="outline" className="text-slate-300">
+              {selectedMode?.difficulty} • {selectedMode?.duration} • Coopératif
+            </Badge>
+          </div>
         </div>
 
         {/* Progression */}
@@ -117,10 +212,10 @@ export default function VoiceDemo() {
               <div className="p-2 bg-blue-600/20 rounded-lg">
                 <IconComponent className="w-6 h-6 text-blue-400" />
               </div>
-              {currentQuestion.title}
+              Question {currentStep + 1}
             </CardTitle>
             <p className="text-slate-200 text-lg leading-relaxed">
-              {currentQuestion.question}
+              {currentQuestion.text}
             </p>
           </CardHeader>
           
@@ -132,14 +227,14 @@ export default function VoiceDemo() {
               </Label>
               
               <VoiceInputSimple
-                value={responses[currentQuestion.id as keyof typeof responses]}
+                value={responses[currentQuestion.id] || ''}
                 onChange={(value) => handleResponseChange(currentQuestion.id, value)}
                 placeholder={currentQuestion.placeholder}
                 className="mb-4"
               />
               
               <Textarea
-                value={responses[currentQuestion.id as keyof typeof responses]}
+                value={responses[currentQuestion.id] || ''}
                 onChange={(e) => handleResponseChange(currentQuestion.id, e.target.value)}
                 placeholder="...ou tapez votre réponse ici"
                 className="bg-slate-900/50 border-slate-600 text-white placeholder-slate-400 min-h-[120px]"
@@ -197,8 +292,8 @@ export default function VoiceDemo() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {questions.map((q, index) => {
-                  const response = responses[q.id as keyof typeof responses];
-                  const IconComp = q.icon;
+                  const response = responses[q.id];
+                  const IconComp = questionIcons[index] || Heart;
                   
                   return (
                     <div 
@@ -206,14 +301,14 @@ export default function VoiceDemo() {
                       className={`p-3 rounded-lg border transition-all ${
                         index === currentStep 
                           ? 'bg-blue-950/30 border-blue-500/50' 
-                          : response.length > 0
+                          : response && response.length > 0
                             ? 'bg-slate-800/30 border-slate-600/50'
                             : 'bg-slate-900/20 border-slate-700/30'
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <IconComp className="w-4 h-4 text-blue-400" />
-                        <span className="text-slate-300 text-sm font-medium">{q.title}</span>
+                        <span className="text-slate-300 text-sm font-medium">Question {index + 1}</span>
                       </div>
                       
                       {response ? (
