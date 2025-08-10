@@ -36,9 +36,83 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           </radialGradient>
         </defs>
         
-        {/* Ondes horizontales naissant du O (position 45) */}
+        {/* Cercles concentriques d'écho du O (position centrale 64, 40) */}
+        <circle
+          cx="64"
+          cy="40"
+          r="8"
+          fill="none"
+          stroke="url(#oEcho)"
+          strokeWidth="1.2"
+          className="opacity-80"
+        >
+          <animate
+            attributeName="r"
+            values="8; 20; 8"
+            dur="3s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.8; 0.1; 0.8"
+            dur="3s"
+            repeatCount="indefinite"
+          />
+        </circle>
+        
+        <circle
+          cx="64"
+          cy="40"
+          r="12"
+          fill="none"
+          stroke="url(#oEcho)"
+          strokeWidth="0.8"
+          className="opacity-60"
+        >
+          <animate
+            attributeName="r"
+            values="12; 28; 12"
+            dur="4s"
+            begin="0.8s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.6; 0.05; 0.6"
+            dur="4s"
+            begin="0.8s"
+            repeatCount="indefinite"
+          />
+        </circle>
+        
+        <circle
+          cx="64"
+          cy="40"
+          r="16"
+          fill="none"
+          stroke="url(#oEcho)"
+          strokeWidth="0.5"
+          className="opacity-40"
+        >
+          <animate
+            attributeName="r"
+            values="16; 40; 16"
+            dur="5s"
+            begin="1.6s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.4; 0.02; 0.4"
+            dur="5s"
+            begin="1.6s"
+            repeatCount="indefinite"
+          />
+        </circle>
+        
+        {/* Ondes horizontales naissant du O centré (position 64) */}
         <path
-          d="M 15 40 Q 25 25, 35 40 T 55 40 T 75 40 T 95 40 T 115 40"
+          d="M 20 40 Q 30 25, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
           stroke="url(#echoWave)"
           strokeWidth="3"
           fill="none"
@@ -47,7 +121,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           <animateTransform
             attributeName="transform"
             type="translate"
-            values="30,0; 10,0; 30,0"
+            values="44,0; 24,0; 44,0"
             dur="4s"
             repeatCount="indefinite"
           />
@@ -61,7 +135,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         
         {/* Écho 1 - légèrement décalé */}
         <path
-          d="M 15 40 Q 25 20, 35 40 T 55 40 T 75 40 T 95 40 T 115 40"
+          d="M 20 40 Q 30 20, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
           stroke="url(#echoWave)"
           strokeWidth="2"
           fill="none"
@@ -70,7 +144,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           <animateTransform
             attributeName="transform"
             type="translate"
-            values="30,0; 10,0; 30,0"
+            values="44,0; 24,0; 44,0"
             dur="4s"
             begin="0.6s"
             repeatCount="indefinite"
@@ -79,7 +153,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         
         {/* Écho 2 - plus subtil */}
         <path
-          d="M 15 40 Q 25 30, 35 40 T 55 40 T 75 40 T 95 40 T 115 40"
+          d="M 20 40 Q 30 30, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
           stroke="url(#echoWave)"
           strokeWidth="1.5"
           fill="none"
@@ -88,7 +162,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           <animateTransform
             attributeName="transform"
             type="translate"
-            values="30,0; 10,0; 30,0"
+            values="44,0; 24,0; 44,0"
             dur="4s"
             begin="1.2s"
             repeatCount="indefinite"
@@ -97,7 +171,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         
         {/* Contre-onde vers le bas */}
         <path
-          d="M 15 40 Q 25 55, 35 40 T 55 40 T 75 40 T 95 40 T 115 40"
+          d="M 20 40 Q 30 55, 40 40 T 60 40 T 80 40 T 100 40 T 120 40"
           stroke="url(#echoWave)"
           strokeWidth="1"
           fill="none"
@@ -106,89 +180,15 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           <animateTransform
             attributeName="transform"
             type="translate"
-            values="30,0; 10,0; 30,0"
+            values="44,0; 24,0; 44,0"
             dur="4s"
             begin="1.8s"
             repeatCount="indefinite"
           />
         </path>
-        
-        {/* Cercles concentriques d'écho du O (position 45, 40) */}
-        <circle
-          cx="45"
-          cy="40"
-          r="6"
-          fill="none"
-          stroke="url(#oEcho)"
-          strokeWidth="0.8"
-          className="opacity-70"
-        >
-          <animate
-            attributeName="r"
-            values="6; 18; 6"
-            dur="3s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="opacity"
-            values="0.7; 0.1; 0.7"
-            dur="3s"
-            repeatCount="indefinite"
-          />
-        </circle>
-        
-        <circle
-          cx="45"
-          cy="40"
-          r="10"
-          fill="none"
-          stroke="url(#oEcho)"
-          strokeWidth="0.5"
-          className="opacity-50"
-        >
-          <animate
-            attributeName="r"
-            values="10; 25; 10"
-            dur="4s"
-            begin="0.8s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="opacity"
-            values="0.5; 0.05; 0.5"
-            dur="4s"
-            begin="0.8s"
-            repeatCount="indefinite"
-          />
-        </circle>
-        
-        <circle
-          cx="45"
-          cy="40"
-          r="14"
-          fill="none"
-          stroke="url(#oEcho)"
-          strokeWidth="0.3"
-          className="opacity-30"
-        >
-          <animate
-            attributeName="r"
-            values="14; 35; 14"
-            dur="5s"
-            begin="1.6s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="opacity"
-            values="0.3; 0.02; 0.3"
-            dur="5s"
-            begin="1.6s"
-            repeatCount="indefinite"
-          />
-        </circle>
       </svg>
       
-      {/* Texte "Psychographe" superposé sur l'onde */}
+      {/* Texte "PSYCHOGRAPHE" centré sur l'onde avec le O au centre exact */}
       <div 
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
         style={{ 
@@ -199,68 +199,76 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         }}
       >
         <span 
-          className="text-slate-100 font-bold tracking-wide leading-none"
+          className="text-slate-100 font-bold tracking-[0.08em] leading-none select-none"
           style={{ 
             fontSize: textSize,
             position: 'relative',
-            left: '-10px' // Décaler légèrement pour centrer le "o" sur l'onde
+            letterSpacing: '0.08em',
+            textAlign: 'center'
           }}
         >
-          <span>Psych</span>
-          <span 
-            className="relative inline-block mx-1"
-            style={{
-              position: 'relative',
-              left: '2px' // Ajustement fin pour que le "o" soit exactement sur l'onde
-            }}
-          >
-            {/* Le O source de toutes les ondes - positionné exactement sur l'onde */}
+          <span className="relative">
+            <span>PSYCH</span>
+            {/* Le O source de toutes les ondes - positionné exactement au centre de l'onde */}
             <span 
-              className="text-emerald-400 font-black relative z-30" 
-              style={{ 
-                fontSize: oSize,
-                textShadow: '0 0 8px rgba(52, 211, 153, 0.8), 0 0 16px rgba(52, 211, 153, 0.4), 0 0 24px rgba(52, 211, 153, 0.2)'
+              className="relative inline-block"
+              style={{
+                position: 'relative',
+                margin: '0 0.02em'
               }}
             >
-              o
+              <span 
+                className="text-emerald-400 font-black relative z-30" 
+                style={{ 
+                  fontSize: oSize,
+                  textShadow: '0 0 12px rgba(52, 211, 153, 0.9), 0 0 24px rgba(52, 211, 153, 0.5), 0 0 36px rgba(52, 211, 153, 0.2)',
+                  display: 'inline-block',
+                  transform: 'translateY(-1px)' // Micro-ajustement vertical
+                }}
+              >
+                O
+              </span>
+              
+              {/* Écho lumineux du O qui pulse */}
+              <span 
+                className="absolute inset-0 text-emerald-300 font-black z-20" 
+                style={{ 
+                  fontSize: oSize,
+                  animation: 'pulse 2.5s ease-in-out infinite',
+                  transform: 'translateY(-1px)'
+                }}
+              >
+                O
+              </span>
+              
+              {/* Halo d'expansion du O */}
+              <span 
+                className="absolute inset-0 text-emerald-200 font-black z-10" 
+                style={{ 
+                  fontSize: oSize * 1.15,
+                  animation: 'expandO 3.5s ease-out infinite',
+                  transformOrigin: 'center',
+                  transform: 'translateY(-1px)'
+                }}
+              >
+                O
+              </span>
+              
+              {/* Écho lointain */}
+              <span 
+                className="absolute inset-0 text-emerald-100 font-black z-0" 
+                style={{ 
+                  fontSize: oSize * 1.3,
+                  animation: 'fadeEcho 4.5s ease-out infinite',
+                  transformOrigin: 'center',
+                  transform: 'translateY(-1px)'
+                }}
+              >
+                O
+              </span>
             </span>
-            
-            {/* Écho lumineux du O qui pulse */}
-            <span 
-              className="absolute inset-0 text-emerald-300 font-black z-20" 
-              style={{ 
-                fontSize: oSize,
-                animation: 'pulse 2s ease-in-out infinite'
-              }}
-            >
-              o
-            </span>
-            
-            {/* Halo d'expansion du O */}
-            <span 
-              className="absolute inset-0 text-emerald-200 font-black z-10" 
-              style={{ 
-                fontSize: oSize * 1.2,
-                animation: 'expandO 3s ease-out infinite',
-                transformOrigin: 'center'
-              }}
-            >
-              o
-            </span>
-            
-            {/* Écho lointain */}
-            <span 
-              className="absolute inset-0 text-emerald-100 font-black z-0" 
-              style={{ 
-                fontSize: oSize * 1.4,
-                animation: 'fadeEcho 4s ease-out infinite',
-                transformOrigin: 'center'
-              }}
-            >
-              o
-            </span>
+            <span>GRAPHE</span>
           </span>
-          <span>graphe</span>
         </span>
       </div>
       
