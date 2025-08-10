@@ -6,6 +6,14 @@ Psychographe est une application React interactive qui sert d'outil créatif et 
 
 L'application guide les utilisateurs à travers un processus créatif structuré mais simplifié : exploration guidée, contributions créatives, et réception de contenu artistique généré avec notation optionnelle et badges. L'interface privilégie la simplicité, la fluidité et l'accessibilité avec des explications claires et un onboarding intégré. L'accent est mis sur l'expérience utilisateur minimaliste mais pertinente.
 
+## Recent Changes
+
+**2025-01-10**: Fixed critical syntax errors in Logo component that were preventing application startup
+- Removed duplicate SVG and JSX code in client/src/components/Logo.tsx
+- Fixed React component structure and export statements
+- Application now starts successfully without LSP errors
+- All core components are functioning properly
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
