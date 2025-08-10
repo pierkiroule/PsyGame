@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link, useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
+import { PsychographeLogo } from '../components/ui/psychographe-logo';
 
 export default function RegisterPage() {
   const [, setLocation] = useLocation();
@@ -65,10 +66,10 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Psychographe
-          </h1>
+        <div className="text-center space-y-4">
+          <div className="flex justify-center">
+            <PsychographeLogo size="md" animate={true} />
+          </div>
           <p className="text-slate-400">
             Rejoignez l'aventure écho-créative
           </p>

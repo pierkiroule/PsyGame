@@ -159,27 +159,26 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
             x="100"
             y="50"
             textAnchor="middle"
+            dominantBaseline="middle"
             className="fill-current"
             style={{
               fontFamily: 'system-ui, -apple-system, sans-serif',
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: '600',
-              letterSpacing: '0.1em'
+              letterSpacing: '0.08em'
             }}
           >
-            <tspan fill="url(#textGradient)">PSYCH</tspan>
-            <tspan fill="#94a3b8" fontSize="18">
+            <tspan fill="url(#textGradient)" x="100" textAnchor="middle">PSYCH</tspan><tspan fill="#94a3b8" fontSize="16">
               {animate ? (
                 <animate
                   attributeName="font-size"
-                  values="18;20;18"
+                  values="16;18;16"
                   dur="2s"
                   repeatCount="indefinite"
                 />
               ) : null}
               O
-            </tspan>
-            <tspan fill="url(#textGradient)">GRAPHE</tspan>
+            </tspan><tspan fill="url(#textGradient)">GRAPHE</tspan>
           </text>
 
           {/* Sous-titre éco-créatif */}
@@ -187,12 +186,13 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
             x="100"
             y="170"
             textAnchor="middle"
+            dominantBaseline="middle"
             fill="#64748b"
             style={{
               fontFamily: 'system-ui, -apple-system, sans-serif',
-              fontSize: '10px',
+              fontSize: '9px',
               fontWeight: '400',
-              letterSpacing: '0.05em'
+              letterSpacing: '0.1em'
             }}
           >
             écho-créatif
