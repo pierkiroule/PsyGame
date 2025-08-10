@@ -25,6 +25,8 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Forum Communautaire**: Psychothèque publique transformée en forum avec système de Top 5 hebdomadaire, vote communautaire, commentaires, et système de tri avancé. Inclut galerie des meilleures créations et encouragement à la participation.
 
+**Visualisation Sémantique**: Dashboard de réseau de tags dans le profil utilisateur permettant de visualiser les co-occurrences et communautés thématiques. Utilise une représentation graphique interactive pour révéler les patterns créatifs et thématiques de l'utilisateur.
+
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.
 

@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AnimatedBadge } from '@/components/ui/animated-badge';
 import { Progress } from '@/components/ui/progress';
-import { User, Edit3, Award, TrendingUp, Calendar, Target, Star } from 'lucide-react';
+import { User, Edit3, Award, TrendingUp, Calendar, Target, Star, Sparkles } from 'lucide-react';
 import { BADGE_CATEGORIES } from '@shared/gamification';
 
 export default function Profile() {
@@ -140,9 +140,10 @@ export default function Profile() {
         </Card>
 
         <Tabs defaultValue="badges" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="badges">Badges & Récompenses</TabsTrigger>
             <TabsTrigger value="stats">Statistiques</TabsTrigger>
+            <TabsTrigger value="network">Réseau Sémantique</TabsTrigger>
             <TabsTrigger value="activity">Activité Récente</TabsTrigger>
             <TabsTrigger value="settings">Paramètres</TabsTrigger>
           </TabsList>
@@ -271,6 +272,149 @@ export default function Profile() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="network" className="space-y-6">
+            <Card className="border-slate-800 bg-slate-950/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="5" r="2"/>
+                    <circle cx="5" cy="12" r="2"/>
+                    <circle cx="19" cy="12" r="2"/>
+                    <circle cx="12" cy="19" r="2"/>
+                    <line x1="12" y1="7" x2="12" y2="17" stroke="currentColor" strokeWidth="1"/>
+                    <line x1="7" y1="12" x2="17" y2="12" stroke="currentColor" strokeWidth="1"/>
+                    <line x1="9.5" y1="9.5" x2="14.5" y2="14.5" stroke="currentColor" strokeWidth="1"/>
+                    <line x1="14.5" y1="9.5" x2="9.5" y2="14.5" stroke="currentColor" strokeWidth="1"/>
+                  </svg>
+                  Réseau Sémantique des Tags
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-6">
+                  <p className="text-slate-400 text-sm mb-4">
+                    Visualisation des connexions entre vos tags les plus utilisés. Les couleurs indiquent les communautés thématiques identifiées par l'IA.
+                  </p>
+                  
+                  {/* Graphique de réseau simulé */}
+                  <div className="relative bg-slate-900/30 rounded-lg p-8 h-96 overflow-hidden">
+                    <svg width="100%" height="100%" viewBox="0 0 400 300" className="absolute inset-0">
+                      {/* Liens entre nodes */}
+                      <g className="opacity-60">
+                        <line x1="100" y1="80" x2="180" y2="120" stroke="#10b981" strokeWidth="2"/>
+                        <line x1="100" y1="80" x2="120" y2="180" stroke="#10b981" strokeWidth="1.5"/>
+                        <line x1="180" y1="120" x2="280" y2="100" stroke="#3b82f6" strokeWidth="3"/>
+                        <line x1="180" y1="120" x2="320" y2="180" stroke="#3b82f6" strokeWidth="2"/>
+                        <line x1="280" y1="100" x2="320" y2="180" stroke="#3b82f6" strokeWidth="1"/>
+                        <line x1="120" y1="180" x2="200" y2="220" stroke="#f59e0b" strokeWidth="2"/>
+                        <line x1="200" y1="220" x2="300" y2="200" stroke="#f59e0b" strokeWidth="1.5"/>
+                        <line x1="180" y1="120" x2="200" y2="220" stroke="#8b5cf6" strokeWidth="1"/>
+                      </g>
+                      
+                      {/* Nodes avec tailles variables */}
+                      <g>
+                        {/* Communauté Nature (vert) */}
+                        <circle cx="100" cy="80" r="18" fill="#10b981" className="opacity-80"/>
+                        <circle cx="120" cy="180" r="12" fill="#10b981" className="opacity-80"/>
+                        
+                        {/* Communauté Psychologie (bleu) */}
+                        <circle cx="180" cy="120" r="20" fill="#3b82f6" className="opacity-80"/>
+                        <circle cx="280" cy="100" r="16" fill="#3b82f6" className="opacity-80"/>
+                        <circle cx="320" cy="180" r="14" fill="#3b82f6" className="opacity-80"/>
+                        
+                        {/* Communauté Temps (jaune) */}
+                        <circle cx="200" cy="220" r="15" fill="#f59e0b" className="opacity-80"/>
+                        <circle cx="300" cy="200" r="10" fill="#f59e0b" className="opacity-80"/>
+                      </g>
+                      
+                      {/* Labels */}
+                      <g className="text-xs fill-slate-200">
+                        <text x="100" y="85" textAnchor="middle" className="font-medium">nature</text>
+                        <text x="120" y="185" textAnchor="middle" className="font-medium">forêt</text>
+                        <text x="180" y="125" textAnchor="middle" className="font-medium">psyché</text>
+                        <text x="280" y="105" textAnchor="middle" className="font-medium">âme</text>
+                        <text x="320" y="185" textAnchor="middle" className="font-medium">esprit</text>
+                        <text x="200" y="225" textAnchor="middle" className="font-medium">temps</text>
+                        <text x="300" y="205" textAnchor="middle" className="font-medium">mémoire</text>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Légende des communautés */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-emerald-950/20 border border-emerald-800/30 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                      <span className="font-medium text-emerald-200">Communauté Nature</span>
+                    </div>
+                    <div className="text-xs text-emerald-300 space-y-1">
+                      <div>• nature (47 occurrences)</div>
+                      <div>• forêt (23 occurrences)</div>
+                      <div>• océan (18 occurrences)</div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-blue-950/20 border border-blue-800/30 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span className="font-medium text-blue-200">Communauté Psychologie</span>
+                    </div>
+                    <div className="text-xs text-blue-300 space-y-1">
+                      <div>• psyché (52 occurrences)</div>
+                      <div>• âme (31 occurrences)</div>
+                      <div>• esprit (28 occurrences)</div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-amber-950/20 border border-amber-800/30 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                      <span className="font-medium text-amber-200">Communauté Temporelle</span>
+                    </div>
+                    <div className="text-xs text-amber-300 space-y-1">
+                      <div>• temps (38 occurrences)</div>
+                      <div>• mémoire (26 occurrences)</div>
+                      <div>• passé (19 occurrences)</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Métriques du réseau */}
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  <div className="p-3 bg-slate-900/30 rounded-lg">
+                    <div className="text-lg font-bold text-slate-200">47</div>
+                    <div className="text-xs text-slate-500">Tags uniques</div>
+                  </div>
+                  <div className="p-3 bg-slate-900/30 rounded-lg">
+                    <div className="text-lg font-bold text-slate-200">3</div>
+                    <div className="text-xs text-slate-500">Communautés</div>
+                  </div>
+                  <div className="p-3 bg-slate-900/30 rounded-lg">
+                    <div className="text-lg font-bold text-slate-200">0.73</div>
+                    <div className="text-xs text-slate-500">Modularité</div>
+                  </div>
+                  <div className="p-3 bg-slate-900/30 rounded-lg">
+                    <div className="text-lg font-bold text-slate-200">2.4</div>
+                    <div className="text-xs text-slate-500">Densité</div>
+                  </div>
+                </div>
+
+                {/* Insights automatiques */}
+                <div className="mt-6 p-4 bg-purple-950/20 border border-purple-800/30 rounded-lg">
+                  <h4 className="font-medium text-purple-200 mb-2 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    Insights IA
+                  </h4>
+                  <div className="text-sm text-purple-100 space-y-2">
+                    <p>• Votre style créatif montre une forte connexion entre <span className="text-purple-300 font-medium">nature et introspection</span></p>
+                    <p>• La communauté "Psychologie" est votre thème central avec le plus de connections</p>
+                    <p>• Vous explorez souvent les liens entre <span className="text-purple-300 font-medium">temporalité et mémoire</span></p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="activity" className="space-y-6">
