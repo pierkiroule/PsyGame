@@ -37,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/20 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
           <div className="flex justify-center">
@@ -48,10 +48,10 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-slate-200">Connexion</CardTitle>
-            <CardDescription className="text-slate-400">
+        <Card className="border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-2xl">
+          <CardHeader className="space-y-3 pb-8">
+            <CardTitle className="text-white text-2xl font-bold">Connexion</CardTitle>
+            <CardDescription className="text-slate-200 text-base">
               Connectez-vous pour accéder à vos sessions créatives
             </CardDescription>
           </CardHeader>

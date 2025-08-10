@@ -25,39 +25,39 @@ export const Header = () => {
   };
 
   return (
-    <header className="border-b border-slate-800/50 bg-slate-950/95 backdrop-blur-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="border-b border-slate-700/50 bg-slate-950/95 backdrop-blur-xl sticky top-0 z-50">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-18">
           
           {/* Logo et titre */}
           <div className="flex items-center gap-4">
             <Link href="/">
-              <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-                <LogoCompact size={40} />
+              <div className="flex items-center gap-4 hover:opacity-90 transition-all duration-300 cursor-pointer group">
+                <LogoCompact size={44} />
                 <div className="hidden sm:block">
-                  <h1 className="text-xl font-bold text-slate-100">Psychographe</h1>
-                  <p className="text-xs text-slate-400 -mt-1">Créativité & Introspection</p>
+                  <h1 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">Psychographe</h1>
+                  <p className="text-xs text-slate-300 -mt-1 font-medium">Créativité & Introspection</p>
                 </div>
               </div>
             </Link>
           </div>
 
           {/* Navigation centrale */}
-          <nav className="flex items-center space-x-1">
+          <nav className="flex items-center space-x-2">
             {navigation.map(({ href, label, icon: Icon, description }) => (
               <Link key={href} href={href}>
                 <div className="group relative">
                   <Button
                     variant={location === href ? "default" : "ghost"}
                     size="sm"
-                    className={`flex items-center gap-2 transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-2 transition-all duration-300 rounded-xl ${
                       location === href 
-                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg" 
-                        : "hover:bg-slate-800/50 hover:text-blue-400"
+                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg scale-105" 
+                        : "hover:bg-slate-800/50 hover:text-blue-400 hover:scale-105"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
-                    <span className="hidden lg:inline">{label}</span>
+                    <span className="hidden lg:inline font-medium">{label}</span>
                   </Button>
                   
                   {/* Tooltip au survol */}

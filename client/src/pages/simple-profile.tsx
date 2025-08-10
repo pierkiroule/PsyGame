@@ -58,10 +58,10 @@ export default function SimpleProfile() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto px-6 py-12 max-w-7xl">
       
       {/* Section 1: Informations Personnelles */}
-      <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+      <Card className="mb-10 border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -96,7 +96,7 @@ export default function SimpleProfile() {
       </Card>
 
       {/* Section 2: Badges + Psychocatcher + Statistiques */}
-      <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+      <Card className="mb-10 border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white text-xl font-bold">
             <Trophy className="w-6 h-6 text-yellow-400" />
@@ -119,7 +119,7 @@ export default function SimpleProfile() {
       </Card>
 
       {/* Psychocatcher Network */}
-      <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+      <Card className="mb-10 border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white text-xl font-bold">
             <Network className="w-6 h-6 text-blue-400" />
@@ -140,7 +140,7 @@ export default function SimpleProfile() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Tags Fréquents */}
-        <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+        <Card className="border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white text-lg font-bold">
               <TrendingUp className="w-5 h-5 text-green-400" />
@@ -168,7 +168,7 @@ export default function SimpleProfile() {
         </Card>
 
         {/* Clusters Denses et Centraux */}
-        <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+        <Card className="border-slate-700/50 bg-slate-950/60 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white text-lg font-bold">
               <Activity className="w-5 h-5 text-purple-400" />
@@ -210,7 +210,7 @@ export default function SimpleProfile() {
       </div>
 
       {/* Note explicative */}
-      <Card className="mt-6 border-slate-800 bg-slate-950/30 backdrop-blur-sm">
+      <Card className="mt-8 border-slate-700/30 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <p className="text-slate-300 text-sm text-center">
             <Star className="w-4 h-4 inline mr-1" />
