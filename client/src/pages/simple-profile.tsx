@@ -69,8 +69,8 @@ export default function SimpleProfile() {
                 {userData.username.split(' ').map(n => n[0]).join('')}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">{userData.username}</h1>
-                <p className="text-slate-300 text-sm">Niveau {userData.level} • {userData.sessionsCompleted} sessions</p>
+                <h1 className="text-2xl font-bold text-white drop-shadow-sm">{userData.username}</h1>
+                <p className="text-slate-200 text-sm font-medium">Niveau {userData.level} • {userData.sessionsCompleted} sessions</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -98,8 +98,8 @@ export default function SimpleProfile() {
       {/* Section 2: Badges + Psychocatcher + Statistiques */}
       <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-6 h-6 text-yellow-500" />
+          <CardTitle className="flex items-center gap-2 text-white text-xl font-bold">
+            <Trophy className="w-6 h-6 text-yellow-400" />
             Badges & Récompenses
           </CardTitle>
         </CardHeader>
@@ -121,11 +121,11 @@ export default function SimpleProfile() {
       {/* Psychocatcher Network */}
       <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Network className="w-6 h-6 text-blue-500" />
+          <CardTitle className="flex items-center gap-2 text-white text-xl font-bold">
+            <Network className="w-6 h-6 text-blue-400" />
             Psychocatcher des Résonances
           </CardTitle>
-          <p className="text-slate-300 text-sm">
+          <p className="text-slate-200 text-sm font-medium">
             Réseau de vos associations créatives selon la méthode d'analyse des co-occurrences de Jean-Pierre Courtial
           </p>
         </CardHeader>
@@ -142,8 +142,8 @@ export default function SimpleProfile() {
         {/* Tags Fréquents */}
         <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-500" />
+            <CardTitle className="flex items-center gap-2 text-white text-lg font-bold">
+              <TrendingUp className="w-5 h-5 text-green-400" />
               Tags les Plus Fréquents
             </CardTitle>
           </CardHeader>
@@ -170,8 +170,8 @@ export default function SimpleProfile() {
         {/* Clusters Denses et Centraux */}
         <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-purple-500" />
+            <CardTitle className="flex items-center gap-2 text-white text-lg font-bold">
+              <Activity className="w-5 h-5 text-purple-400" />
               Communautés Thématiques
             </CardTitle>
           </CardHeader>
