@@ -188,18 +188,33 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         </circle>
       </svg>
       
-      {/* Texte "Psychographe" parfaitement superposé */}
+      {/* Texte "Psychographe" superposé sur l'onde */}
       <div 
-        className="absolute inset-0 flex items-center justify-start pointer-events-none z-20"
-        style={{ paddingLeft: '8px' }}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+        style={{ 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)',
+          width: '100%'
+        }}
       >
         <span 
           className="text-slate-100 font-bold tracking-wide leading-none"
-          style={{ fontSize: textSize }}
+          style={{ 
+            fontSize: textSize,
+            position: 'relative',
+            left: '-10px' // Décaler légèrement pour centrer le "o" sur l'onde
+          }}
         >
           <span>Psych</span>
-          <span className="relative inline-block mx-1">
-            {/* Le O source de toutes les ondes */}
+          <span 
+            className="relative inline-block mx-1"
+            style={{
+              position: 'relative',
+              left: '2px' // Ajustement fin pour que le "o" soit exactement sur l'onde
+            }}
+          >
+            {/* Le O source de toutes les ondes - positionné exactement sur l'onde */}
             <span 
               className="text-emerald-400 font-black relative z-30" 
               style={{ 
