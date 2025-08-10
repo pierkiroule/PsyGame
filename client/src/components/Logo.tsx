@@ -70,10 +70,10 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
         </path>
         <path d={`M 20 ${waveCenterY} Q 30 20, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
               stroke="url(#echoWave)" strokeWidth="2" fill="none" className="opacity-60">
-          <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="0.6s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="8s" begin="0.6s" repeatCount="indefinite" />
         </path>
         <path d={`M 20 ${waveCenterY} Q 30 30, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
-              stroke="url(#echoWave)" strokeWidth="1.5" fill="none" className="opacity-40">
+              stroke="url(#echoWave)" strokeWidth="0.5" fill="none" className="opacity-40">
           <animateTransform attributeName="transform" type="translate" values="44,0; 24,0; 44,0" dur="4s" begin="1.2s" repeatCount="indefinite" />
         </path>
         <path d={`M 20 ${waveCenterY} Q 30 55, 40 ${waveCenterY} T 60 ${waveCenterY} T 80 ${waveCenterY} T 100 ${waveCenterY} T 120 ${waveCenterY}`}
@@ -229,7 +229,7 @@ export const LogoCompact: React.FC<LogoProps> = ({ size = 32, className = "" }) 
             attributeName="transform"
             type="translate"
             values="10,0; 2,0; 10,0"
-            dur="3s"
+            dur="6s"
             repeatCount="indefinite"
           />
         </path>

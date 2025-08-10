@@ -97,36 +97,36 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
             <>
               {/* Première onde circulaire */}
               <circle cx="64" cy="40" r="5" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2.5">
-                <animate attributeName="r" values="5; 35; 5" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.95; 0.3; 0.95" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="2.5; 0.8; 2.5" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="r" values="5; 35; 5" dur="6s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.95; 0.3; 0.95" dur="6s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="2.5; 0.8; 2.5" dur="6s" repeatCount="indefinite" />
               </circle>
               
               {/* Deuxième onde circulaire */}
               <circle cx="64" cy="40" r="8" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2">
-                <animate attributeName="r" values="8; 40; 8" dur="4s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.85; 0.2; 0.85" dur="4s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="2; 0.6; 2" dur="4s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="r" values="8; 40; 8" dur="7s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.85; 0.2; 0.85" dur="7s" begin="1.5s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="2; 0.6; 2" dur="7s" begin="1.5s" repeatCount="indefinite" />
               </circle>
               
               {/* Troisième onde circulaire */}
               <circle cx="64" cy="40" r="12" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.8">
-                <animate attributeName="r" values="12; 45; 12" dur="5s" begin="1.6s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.75; 0.15; 0.75" dur="5s" begin="1.6s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="1.8; 0.4; 1.8" dur="5s" begin="1.6s" repeatCount="indefinite" />
+                <animate attributeName="r" values="12; 45; 12" dur="8s" begin="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.75; 0.15; 0.75" dur="8s" begin="3s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.8; 0.4; 1.8" dur="8s" begin="3s" repeatCount="indefinite" />
               </circle>
               
               {/* Quatrième onde circulaire */}
               <circle cx="64" cy="40" r="15" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.5">
-                <animate attributeName="r" values="15; 50; 15" dur="6s" begin="2.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.65; 0.1; 0.65" dur="6s" begin="2.4s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="1.5; 0.3; 1.5" dur="6s" begin="2.4s" repeatCount="indefinite" />
+                <animate attributeName="r" values="15; 50; 15" dur="9s" begin="4.5s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.65; 0.1; 0.65" dur="9s" begin="4.5s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.5; 0.3; 1.5" dur="9s" begin="4.5s" repeatCount="indefinite" />
               </circle>
               
               {/* Cercle central pulsant */}
               <circle cx="64" cy="40" r="3" fill={`url(#oEcho-${size})`}>
-                <animate attributeName="r" values="3; 6; 3" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.9; 0.5; 0.9" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="r" values="3; 6; 3" dur="4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.9; 0.5; 0.9" dur="4s" repeatCount="indefinite" />
               </circle>
             </>
           )}
