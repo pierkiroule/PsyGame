@@ -191,25 +191,7 @@ export const NewSessionScreen = () => {
         )}
 
         {/* Score Toggle */}
-        <Card className="border-slate-800 bg-gradient-to-r from-slate-950/50 to-slate-900/50 backdrop-blur-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
-                  <Badge variant="secondary" className="bg-slate-800 text-slate-300">
-                    Optionnel
-                  </Badge>
-                  Score Créatif
-                </h3>
-                <p className="text-slate-400">Évaluer la créativité et attribuer des badges écho-responsables</p>
-              </div>
-              <Switch
-                checked={localConfig.scoreEnabled}
-                onCheckedChange={handleScoreToggle}
-              />
-            </div>
-          </CardContent>
-        </Card>
+
 
         {/* Submit Button */}
         <div className="text-center pt-6">

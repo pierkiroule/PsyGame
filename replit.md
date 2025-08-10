@@ -8,6 +8,13 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
+**2025-01-10**: Complete Scoring System Removal and Cooperative Focus
+- **Scoring Logic Eliminated**: All scoring, points, badges, and competitive elements completely removed from application
+- **Cooperative Experience**: Focus shifted to pure collaborative creativity without metrics or competition
+- **Game Modes Finalized**: 5 distinct cooperative modes with synthetic instructions and relevant examples
+- **Community Sharing**: Simplified sharing system focused on inspiration and mutual support
+- **UI Cleanup**: Removed all scoring displays, progress bars, and gamification elements from interface
+
 **2025-01-10**: Voice-to-Text Integration and UI/UX Enhancement
 - **Voice-to-Text System**: Complete integration of Web Speech Recognition API for native device voice input
 - VoiceInput component with real-time transcription, language detection (French), and seamless text/voice combination
@@ -44,7 +51,7 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Component Structure**: Modular component architecture with reusable UI components in the `components/ui` directory and screen-specific components for each application state.
 
-**Gamification System**: Système ultra-simplifié de badges en 3 niveaux directs et sympas : "Psychographe en herbe" (🌱), "Psychographe de ouf !" (🎨), "Psychographe de génie" (🌟). Approche accessible et motivante avec langage familier et progression claire basée sur les points d'activité.
+**Community System**: Système communautaire basé sur le partage et l'inspiration mutuelle. Badges de reconnaissance simples : "Psychographe en herbe" (🌱), "Psychographe de ouf !" (🎨), "Psychographe de génie" (🌟). Approche accessible et motivante avec langage familier et progression naturelle basée sur la participation active.
 
 **Forum Communautaire**: Psychothèque publique transformée en forum avec système de Top 5 hebdomadaire, vote communautaire, commentaires, et système de tri avancé. Inclut galerie des meilleures créations et encouragement à la participation.
 
@@ -60,7 +67,7 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 - Mode Synesthésie (15min) : mélange sensoriel créatif niveau intermédiaire
 - Constellation Collective (10min) : création collaborative interconnectée
 - Flux Vocal (5min) : expression entièrement vocale pour débutants
-Chaque mode inclut consignes synthétiques, exemples pertinents, scoring coopératif simplifié
+Chaque mode inclut consignes synthétiques, exemples pertinents, expérience coopérative sans scoring
 
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.

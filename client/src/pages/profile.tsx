@@ -25,17 +25,10 @@ export default function Profile() {
 
   // Données de progression simulées
   const userStats = {
-    level: 8,
-    experience: 2450,
-    nextLevelExp: 3000,
-    reputation: 142,
     sessionsCompleted: 24,
     publicCreations: 12,
-    communityVotes: 89,
+    communityInteractions: 89,
     badges: [
-      { category: 'technique', level: 2 },
-      { category: 'poetique', level: 3 },
-      { category: 'psychologique', level: 1 },
       { category: 'narratif', level: 2 },
       { category: 'communautaire', level: 1 },
     ]
@@ -141,54 +134,13 @@ export default function Profile() {
         </Card>
 
         <Tabs defaultValue="network" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="network">Psychocatcher</TabsTrigger>
-            <TabsTrigger value="badges">Badges</TabsTrigger>
             <TabsTrigger value="stats">Statistiques</TabsTrigger>
             <TabsTrigger value="activity">Activité</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="badges" className="space-y-6">
-            <Card className="border-slate-800 bg-slate-950/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="w-5 h-5 text-yellow-400" />
-                  Collection de Badges
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {Object.entries(BADGE_CATEGORIES).map(([categoryKey, category]) => {
-                    const userBadge = userStats.badges.find(b => b.category === categoryKey);
-                    const currentLevel = userBadge?.level || 0;
-                    const nextLevel = Math.min(currentLevel + 1, 3);
-                    
-                    return (
-                      <div key={categoryKey} className="space-y-4">
-                        <div className="text-center">
-                          <h3 className="font-semibold text-slate-200 mb-1">{category.name}</h3>
-                          <p className="text-xs text-slate-400 mb-3">{category.description}</p>
-                        </div>
-                        
-                        {/* Badge actuel */}
-                        {currentLevel > 0 && (
-                          <div className="text-center">
-                            <AnimatedBadge 
-                              badge={getBadgeForCategory(categoryKey, currentLevel)!}
-                              size="md"
-                            />
-                          </div>
-                        )}
-                        
-                        {/* Progression vers le prochain niveau */}
-                        {nextLevel <= 3 && (
-                          <div className="border-t border-slate-800 pt-4">
-                            <div className="text-center mb-2">
-                              <div className="text-xs text-slate-500 mb-1">Prochain niveau</div>
-                              <div className="text-sm font-medium text-slate-300">
-                                {category.levels[nextLevel - 1].title}
-                              </div>
-                            </div>
+
                             
                             {/* Requirements */}
                             <div className="space-y-1">
@@ -215,36 +167,24 @@ export default function Profile() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-green-400" />
-                    Performance Créative
+                    Activité Créative
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-4 bg-slate-900/50 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-400">4.2</div>
-                      <div className="text-sm text-slate-400">Score moyen</div>
+                      <div className="text-2xl font-bold text-blue-400">{userStats.sessionsCompleted}</div>
+                      <div className="text-sm text-slate-400">Sessions complétées</div>
                     </div>
                     <div className="text-center p-4 bg-slate-900/50 rounded-lg">
-                      <div className="text-2xl font-bold text-purple-400">89%</div>
-                      <div className="text-sm text-slate-400">Appréciation</div>
+                      <div className="text-2xl font-bold text-purple-400">{userStats.publicCreations}</div>
+                      <div className="text-sm text-slate-400">Créations partagées</div>
                     </div>
                   </div>
                   
-                  <div className="space-y-3">
-                    {[
-                      { name: 'Créativité', score: 4.5, color: 'emerald' },
-                      { name: 'Poétique', score: 4.8, color: 'purple' },
-                      { name: 'Technique', score: 3.9, color: 'blue' },
-                      { name: 'Originalité', score: 4.2, color: 'orange' },
-                    ].map(metric => (
-                      <div key={metric.name} className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-300">{metric.name}</span>
-                          <span className="text-slate-400">{metric.score}/5</span>
-                        </div>
-                        <Progress value={metric.score * 20} className="h-2" />
-                      </div>
-                    ))}
+                  <div className="text-center p-4 bg-slate-900/50 rounded-lg">
+                    <div className="text-2xl font-bold text-emerald-400">{userStats.communityInteractions}</div>
+                    <div className="text-sm text-slate-400">Interactions communautaires</div>
                   </div>
                 </CardContent>
               </Card>
@@ -253,22 +193,24 @@ export default function Profile() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Target className="w-5 h-5 text-yellow-400" />
-                    Objectifs en Cours
+                    Prochaines Explorations
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {[
-                    { goal: 'Obtenir le badge "Maître de la Psychographie"', progress: 65 },
-                    { goal: 'Atteindre le niveau 10', progress: 82 },
-                    { goal: 'Publier 15 créations', progress: 80 },
-                    { goal: 'Recevoir 100 votes communautaires', progress: 89 },
-                  ].map((objective, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="text-sm text-slate-300">{objective.goal}</div>
-                      <Progress value={objective.progress} className="h-2" />
-                      <div className="text-xs text-slate-500 text-right">{objective.progress}%</div>
-                    </div>
-                  ))}
+                  <div className="text-slate-300 text-sm leading-relaxed space-y-3">
+                    <p>
+                      <strong className="text-blue-400">Mode Exploration Profonde</strong><br />
+                      Tentez le voyage introspectif de 7 jours pour une psychographie enrichie
+                    </p>
+                    <p>
+                      <strong className="text-purple-400">Mode Synesthésie</strong><br />
+                      Explorez les connexions sensorielles dans vos créations
+                    </p>
+                    <p>
+                      <strong className="text-emerald-400">Constellation Collective</strong><br />
+                      Participez à une création communautaire connectée
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -296,12 +238,7 @@ export default function Profile() {
                         <div className="text-sm text-slate-400 mt-1">
                           {new Date(activity.date).toLocaleDateString('fr-FR')}
                         </div>
-                        {activity.score && (
-                          <div className="flex items-center gap-1 mt-2">
-                            <Star className="w-4 h-4 text-yellow-400" />
-                            <span className="text-sm text-yellow-400">{activity.score}/5</span>
-                          </div>
-                        )}
+
                       </div>
                     </div>
                   ))}

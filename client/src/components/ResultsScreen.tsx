@@ -120,58 +120,7 @@ BADGES: ${badges.map(b => b.name).join(', ')}` : ''}
       </div>
 
       {/* Scores Section (if enabled) */}
-      {sessionConfig.scoreEnabled && scores && (
-        <div className="bg-gradient-to-r from-accent/10 to-orange-100 rounded-2xl p-8">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Évaluation Créative</h3>
-            <p className="text-gray-600">Analyse de votre processus créatif</p>
-          </div>
 
-          {/* Score Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-accent mb-2">{scores.creative}</div>
-              <h4 className="font-semibold text-gray-900 mb-2">Score Créatif</h4>
-              <p className="text-gray-600 text-sm">Originalité et imagination</p>
-              <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-                <div 
-                  className="bg-accent h-2 rounded-full transition-all duration-1000" 
-                  style={{ width: `${scores.creative}%` }}
-                ></div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">{scores.poetic}</div>
-              <h4 className="font-semibold text-gray-900 mb-2">Score Poétique</h4>
-              <p className="text-gray-600 text-sm">Beauté et expressivité</p>
-              <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-                <div 
-                  className="bg-secondary h-2 rounded-full transition-all duration-1000" 
-                  style={{ width: `${scores.poetic}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Badges */}
-          {badges.length > 0 && (
-            <div className="text-center">
-              <h4 className="font-semibold text-gray-900 mb-4">Badges Obtenus</h4>
-              <div className="flex flex-wrap justify-center gap-3">
-                {badges.map((badge, index) => (
-                  <span 
-                    key={index}
-                    className={`bg-${badge.color}-100 text-${badge.color}-800 px-3 py-1 rounded-full text-sm font-medium`}
-                  >
-                    <i className={`fas fa-${badge.icon} mr-1`}></i> 
-                    {badge.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Action Buttons */}
       <div className="text-center space-y-4">

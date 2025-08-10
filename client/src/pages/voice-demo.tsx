@@ -138,7 +138,7 @@ export default function VoiceDemo() {
                 className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={() => {
                   // Simulation du partage
-                  alert('Psychographie partagée avec la communauté ! (+10 points d\'activité)');
+                  alert('Psychographie partagée avec la communauté !');
                 }}
               >
                 Partager avec la communauté

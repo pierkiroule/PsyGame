@@ -142,12 +142,12 @@ export const GameModeSelector: React.FC<GameModeSelectorProps> = ({
               et inspirent d'autres participants.
             </p>
             <p>
-              <strong>Système de scoring simplifié</strong> - gagnez des points d'activité en participant, 
-              commentant et votant pour les créations des autres.
+              <strong>Expérience partagée</strong> - participez, commentez et découvrez les créations des autres
+              pour nourrir votre propre inspiration créative.
             </p>
             <p>
-              <strong>Progression partagée</strong> - plus la communauté est active, 
-              plus chacun débloquer de nouvelles possibilités créatives.
+              <strong>Évolution communautaire</strong> - plus la communauté est active, 
+              plus chacun bénéficie de nouvelles possibilités créatives.
             </p>
           </div>
         </CardContent>

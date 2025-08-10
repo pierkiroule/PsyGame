@@ -22,10 +22,7 @@ export interface GeneratedContent {
   imagePrompt: string;
 }
 
-export interface Scores {
-  creative: number;
-  poetic: number;
-}
+// Scores interface removed - no scoring system
 
 export interface Badge {
   name: string;
