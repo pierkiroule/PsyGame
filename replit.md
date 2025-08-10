@@ -27,6 +27,8 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Visualisation Sémantique**: Dashboard de réseau de tags dans le profil utilisateur permettant de visualiser les co-occurrences et communautés thématiques. Utilise une représentation graphique interactive pour révéler les patterns créatifs et thématiques de l'utilisateur.
 
+**Navigation Avancée**: Menu principal redesigné avec logo, navigation contextuelle, profil utilisateur intégré, notifications et menu mobile responsive. Inclut tooltips informatifs et états visuels pour une expérience utilisateur optimale.
+
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.
 
