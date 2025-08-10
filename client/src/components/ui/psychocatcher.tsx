@@ -389,8 +389,8 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
     <Card className={`border-slate-800 bg-slate-950/50 ${className}`}>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-blue-400" />
+          <CardTitle className="flex items-center gap-2 text-orange-400">
+            <Sparkles className="w-5 h-5 text-orange-400" />
             Psychocatcher des Résonances
           </CardTitle>
           <div className="flex items-center gap-2">
