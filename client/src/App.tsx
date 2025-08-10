@@ -6,6 +6,7 @@ import NotFound from "./pages/not-found";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import MinimalProfile from "./pages/minimal-profile";
+import Profile from "./pages/profile";
 import MinimalPsychotheque from "./pages/minimal-psychotheque";
 import MinimalHome from "./pages/minimal-home";
 import { SessionProvider, useSession } from './contexts/SessionContext';
@@ -71,7 +72,7 @@ const AppContent = () => {
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
           <Route path="/profile">
-            <MinimalProfile />
+            <Profile />
           </Route>
           <Route path="/psychotheque">
             <MinimalPsychotheque />
