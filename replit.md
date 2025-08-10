@@ -8,13 +8,14 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
-**2025-01-10**: Updated logo components with perfect wave-centered text alignment
-- Completely rebuilt both Logo and PsychographeLogo components with proper text superposition
-- Wave animations now originate precisely from the center of letter "O" 
-- Text "PSYCHOGRAPHE" is vertically centered and superimposed over wave effects
-- Implemented consistent emerald green color scheme across both authenticated and unauthenticated logos
-- Enhanced "O" letter with multiple animation layers (glow, pulse, expand) for resonance effect
-- Used CSS flexbox for reliable cross-browser alignment instead of complex ResizeObserver system
+**2025-01-10**: Created new animated SVG logo based on user's design specifications
+- Rebuilt PsychographeLogo as pure SVG with concentric animated circles
+- Text "PSYCHOGRAPH" arranged in arc around outer circle with smooth rotation animation
+- Three-layer circle design: outer (light gray), middle (blue), inner (purple) with pulsing effects
+- Added decorative animated points and subtle wave ripples for visual interest
+- Included "A.I.magination" subtitle with fade animation
+- Implemented professional color scheme with gradients and glow effects
+- All animations coordinated for smooth, sophisticated visual experience
 
 ## User Preferences
 

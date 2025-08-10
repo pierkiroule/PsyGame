@@ -13,277 +13,270 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
 }) => {
   const sizeMap = {
     sm: 'w-16 h-16',
-    md: 'w-24 h-24', 
+    md: 'w-24 h-24',
     lg: 'w-32 h-32',
     xl: 'w-64 h-64'
   };
 
-  // Wave center coordinates in the 200x200 viewBox - aligned with O letter center
-  const waveCenterX = 100;
-  const waveCenterY = 100;
-  
   return (
-    <div className={`${sizeMap[size]} ${className}`}>
+    <div className={`relative ${sizeMap[size]} ${className}`}>
       <svg
-        viewBox="0 0 200 200"
+        viewBox="0 0 400 400"
         className="w-full h-full"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Définition des gradients adaptés au thème sombre */}
         <defs>
-          <linearGradient id="echoWave" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
-            <stop offset="30%" stopColor="#10b981" stopOpacity="0.7" />
-            <stop offset="70%" stopColor="#059669" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.1" />
-          </linearGradient>
-          <radialGradient id="oEcho" cx="50%" cy="50%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#10b981" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.05" />
+          {/* Gradients pour les cercles */}
+          <radialGradient id="outerCircle" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#cbd5e1" stopOpacity="0.3" />
           </radialGradient>
+          
+          <radialGradient id="middleCircle" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#a5b4fc" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#818cf8" stopOpacity="0.4" />
+          </radialGradient>
+          
+          <radialGradient id="innerCircle" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8" />
+          </radialGradient>
+
+          {/* Gradient pour le texte */}
+          <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#1e40af" />
+            <stop offset="50%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#1e40af" />
+          </linearGradient>
+
+          {/* Filtre pour effet de lueur */}
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge> 
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
 
-        {/* Cercles d'onde de résonance centrés sur le point d'onde */}
-        {animate && (
-          <>
-            <circle
-              cx={waveCenterX}
-              cy={waveCenterY}
-              r="12"
-              fill="none"
-              stroke="url(#oEcho)"
-              strokeWidth="1.8"
-              strokeOpacity="0.8"
-            >
+        {/* Cercle extérieur */}
+        <circle
+          cx="200"
+          cy="200"
+          r="180"
+          fill="url(#outerCircle)"
+          stroke="#e2e8f0"
+          strokeWidth="1"
+          strokeOpacity="0.3"
+        >
+          {animate && (
+            <>
               <animate
                 attributeName="r"
-                values="12;30;12"
-                dur="3s"
+                values="180;185;180"
+                dur="4s"
                 repeatCount="indefinite"
-                begin="0s"
               />
               <animate
                 attributeName="stroke-opacity"
-                values="0.8;0.1;0.8"
+                values="0.3;0.6;0.3"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+            </>
+          )}
+        </circle>
+
+        {/* Cercle moyen */}
+        <circle
+          cx="200"
+          cy="200"
+          r="140"
+          fill="url(#middleCircle)"
+          stroke="#a5b4fc"
+          strokeWidth="1.5"
+          strokeOpacity="0.4"
+        >
+          {animate && (
+            <>
+              <animate
+                attributeName="r"
+                values="140;145;140"
                 dur="3s"
                 repeatCount="indefinite"
-                begin="0s"
+              />
+              <animate
+                attributeName="stroke-opacity"
+                values="0.4;0.7;0.4"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </>
+          )}
+        </circle>
+
+        {/* Cercle intérieur */}
+        <circle
+          cx="200"
+          cy="200"
+          r="100"
+          fill="url(#innerCircle)"
+          stroke="#8b5cf6"
+          strokeWidth="2"
+          strokeOpacity="0.6"
+        >
+          {animate && (
+            <>
+              <animate
+                attributeName="r"
+                values="100;105;100"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="stroke-opacity"
+                values="0.6;0.9;0.6"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </>
+          )}
+        </circle>
+
+        {/* Points décoratifs */}
+        <circle cx="235" cy="140" r="3" fill="#3b82f6">
+          {animate && (
+            <animate
+              attributeName="r"
+              values="3;5;3"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          )}
+        </circle>
+        <circle cx="250" cy="150" r="2" fill="#60a5fa">
+          {animate && (
+            <animate
+              attributeName="r"
+              values="2;4;2"
+              dur="2.5s"
+              begin="0.5s"
+              repeatCount="indefinite"
+            />
+          )}
+        </circle>
+
+        {/* Texte PSYCHOGRAPH en arc de cercle */}
+        <g>
+          <path
+            id="textCircle"
+            d="M 200,50 A 150,150 0 1,1 199,50"
+            fill="none"
+            stroke="none"
+          />
+          
+          <text className="text-lg font-bold" filter="url(#glow)">
+            <textPath
+              href="#textCircle"
+              startOffset="0%"
+              textAnchor="start"
+              style={{
+                fontSize: '28px',
+                fontWeight: '700',
+                letterSpacing: '3px',
+                fill: 'url(#textGradient)'
+              }}
+            >
+              PSYCHOGRAPH
+              {animate && (
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  values="0 200 200;360 200 200"
+                  dur="20s"
+                  repeatCount="indefinite"
+                />
+              )}
+            </textPath>
+          </text>
+        </g>
+
+        {/* Sous-titre A.I.magination */}
+        <text
+          x="200"
+          y="320"
+          textAnchor="middle"
+          style={{
+            fontSize: '16px',
+            fontWeight: '500',
+            letterSpacing: '2px',
+            fill: '#64748b'
+          }}
+        >
+          A.I.magination
+          {animate && (
+            <animate
+              attributeName="opacity"
+              values="0.6;1;0.6"
+              dur="3s"
+              repeatCount="indefinite"
+            />
+          )}
+        </text>
+
+        {/* Ondulations subtiles */}
+        {animate && (
+          <>
+            <circle
+              cx="200"
+              cy="200"
+              r="120"
+              fill="none"
+              stroke="#a78bfa"
+              strokeWidth="0.5"
+              strokeOpacity="0.3"
+            >
+              <animate
+                attributeName="r"
+                values="120;130;120"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="stroke-opacity"
+                values="0.3;0.1;0.3"
+                dur="3s"
+                repeatCount="indefinite"
               />
             </circle>
             
             <circle
-              cx={waveCenterX}
-              cy={waveCenterY}
-              r="18"
+              cx="200"
+              cy="200"
+              r="160"
               fill="none"
-              stroke="url(#oEcho)"
-              strokeWidth="1.2"
-              strokeOpacity="0.6"
+              stroke="#a5b4fc"
+              strokeWidth="0.5"
+              strokeOpacity="0.2"
             >
               <animate
                 attributeName="r"
-                values="18;42;18"
+                values="160;170;160"
                 dur="4s"
+                begin="1s"
                 repeatCount="indefinite"
-                begin="0.8s"
               />
               <animate
                 attributeName="stroke-opacity"
-                values="0.6;0.05;0.6"
+                values="0.2;0.05;0.2"
                 dur="4s"
+                begin="1s"
                 repeatCount="indefinite"
-                begin="0.8s"
               />
             </circle>
-
-            <circle
-              cx={waveCenterX}
-              cy={waveCenterY}
-              r="24"
-              fill="none"
-              stroke="url(#oEcho)"
-              strokeWidth="0.8"
-              strokeOpacity="0.4"
-            >
-              <animate
-                attributeName="r"
-                values="24;60;24"
-                dur="5s"
-                repeatCount="indefinite"
-                begin="1.6s"
-              />
-              <animate
-                attributeName="stroke-opacity"
-                values="0.4;0.02;0.4"
-                dur="5s"
-                repeatCount="indefinite"
-                begin="1.6s"
-              />
-            </circle>
-          </>
-        )}
-
-        {/* Ondes horizontales partant du centre */}
-        {animate && (
-          <>
-            <path
-              d={`M 30 ${waveCenterY} Q 50 80, 70 ${waveCenterY} T 130 ${waveCenterY} T 170 ${waveCenterY}`}
-              stroke="url(#echoWave)"
-              strokeWidth="2"
-              fill="none"
-              opacity="0.9"
-            >
-              <animateTransform
-                attributeName="transform"
-                type="translate"
-                values="70,0; 30,0; 70,0"
-                dur="4s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                values="0.4;1;0.4"
-                dur="3s"
-                repeatCount="indefinite"
-              />
-            </path>
-            <path
-              d={`M 30 ${waveCenterY} Q 50 120, 70 ${waveCenterY} T 130 ${waveCenterY} T 170 ${waveCenterY}`}
-              stroke="url(#echoWave)"
-              strokeWidth="1.5"
-              fill="none"
-              opacity="0.6"
-            >
-              <animateTransform
-                attributeName="transform"
-                type="translate"
-                values="70,0; 30,0; 70,0"
-                dur="4s"
-                begin="0.6s"
-                repeatCount="indefinite"
-              />
-            </path>
           </>
         )}
       </svg>
-
-      {/* Texte PSYCHOGRAPHE superposé et centré */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        <div className="relative flex items-center">
-          {/* PSYCH */}
-          <span
-            className="text-slate-100 font-bold select-none"
-            style={{ 
-              fontSize: '14px', 
-              letterSpacing: "0.08em",
-              lineHeight: 1,
-            }}
-          >
-            PSYCH
-          </span>
-
-          {/* O - Positionné précisément au centre de l'onde */}
-          <span 
-            className="relative inline-flex items-center justify-center"
-            style={{
-              width: '18px',
-              height: '18px',
-              margin: "0 0.5px",
-              position: 'relative',
-            }}
-          >
-            {/* O principal avec effet lumineux */}
-            <span
-              className="text-emerald-400 font-black absolute inset-0 flex items-center justify-center z-30"
-              style={{
-                fontSize: '16px',
-                textShadow: "0 0 8px rgba(52, 211, 153, 0.9), 0 0 16px rgba(52, 211, 153, 0.5)",
-                lineHeight: 1,
-              }}
-            >
-              O
-            </span>
-
-            {/* Échos du O */}
-            {animate && (
-              <>
-                <span
-                  className="text-emerald-300 font-black absolute inset-0 flex items-center justify-center z-20"
-                  style={{ 
-                    fontSize: '16px',
-                    lineHeight: 1,
-                    animation: "pulse 2.5s ease-in-out infinite",
-                  }}
-                >
-                  O
-                </span>
-                <span
-                  className="text-emerald-200 font-black absolute inset-0 flex items-center justify-center z-10"
-                  style={{ 
-                    fontSize: '18px',
-                    lineHeight: 1,
-                    animation: "expandO 3.5s ease-out infinite",
-                    transformOrigin: "center",
-                  }}
-                >
-                  O
-                </span>
-              </>
-            )}
-          </span>
-
-          {/* GRAPHE */}
-          <span
-            className="text-slate-100 font-bold select-none"
-            style={{ 
-              fontSize: '14px', 
-              letterSpacing: "0.08em",
-              lineHeight: 1,
-            }}
-          >
-            GRAPHE
-          </span>
-        </div>
-      </div>
-
-      {/* Sous-titre éco-créatif */}
-      <div 
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 pointer-events-none"
-      >
-        <span
-          className="text-slate-500 select-none"
-          style={{
-            fontSize: '9px',
-            fontWeight: '400',
-            letterSpacing: '0.1em'
-          }}
-        >
-          écho-créatif
-        </span>
-      </div>
-
-      {/* Styles d'animation */}
-      <style>{`
-        @keyframes expandO {
-          0% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(1.1); opacity: 0.1; }
-          100% { transform: scale(1.3); opacity: 0; }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 0.1; }
-        }
-      `}</style>
     </div>
   );
 };
