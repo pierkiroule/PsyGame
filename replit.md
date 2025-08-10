@@ -21,6 +21,8 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Component Structure**: Modular component architecture with reusable UI components in the `components/ui` directory and screen-specific components for each application state.
 
+**Gamification System**: Comprehensive badge and reward system with 6 creative dimensions (technique, poetique, psychologique, narratif, communautaire, suggestion) across 3 progressive levels. Features animated SVG badges, community voting, and AI-powered evaluation.
+
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.
 

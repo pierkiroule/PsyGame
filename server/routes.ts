@@ -6,7 +6,7 @@ import { storage } from "./storage";
 import { 
   registerUserSchema, 
   loginUserSchema, 
-  updateProfileSchema,
+  updateUserProfileSchema,
   createSessionSchema,
   createContributionSchema,
   createResultSchema

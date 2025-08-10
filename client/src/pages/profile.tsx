@@ -1,421 +1,376 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { useLocation } from 'wouter';
-import { Loader2, User, BarChart3, Settings, LogOut } from 'lucide-react';
-import type { GameSession } from '@shared/schema';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AnimatedBadge } from '@/components/ui/animated-badge';
+import { Progress } from '@/components/ui/progress';
+import { User, Edit3, Award, TrendingUp, Calendar, Target, Star } from 'lucide-react';
+import { BADGE_CATEGORIES } from '@shared/gamification';
 
-interface UserStats {
-  totalSessions: number;
-  completedSessions: number;
-  favoriteFormat: string | null;
-  favoriteStyle: string | null;
-  averageCreativeScore: number | null;
-  averagePoetricScore: number | null;
-}
-
-export default function ProfilePage() {
-  const [, setLocation] = useLocation();
-  const { user, logout, updateProfile, error, clearError, isLoading } = useAuth();
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [stats, setStats] = useState<UserStats | null>(null);
-  const [sessions, setSessions] = useState<GameSession[]>([]);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    bio: '',
-    favoriteStyle: '',
-    favoriteFormat: '',
+export default function Profile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    firstName: 'Alex',
+    lastName: 'Martin',
+    bio: 'Explorateur de l\'imaginaire et passionné de psychographie créative.',
+    favoriteStyle: 'inspirant',
+    favoriteFormat: 'solo'
   });
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        bio: user.bio || '',
-        favoriteStyle: user.favoriteStyle || '',
-        favoriteFormat: user.favoriteFormat || '',
-      });
-      fetchStats();
-      fetchSessions();
-    }
-  }, [user]);
-
-  const fetchStats = async () => {
-    try {
-      const response = await fetch('/api/profile/stats', {
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setStats(data);
-      }
-    } catch (err) {
-      console.error('Erreur lors de la récupération des statistiques:', err);
-    }
+  // Données de progression simulées
+  const userStats = {
+    level: 8,
+    experience: 2450,
+    nextLevelExp: 3000,
+    reputation: 142,
+    sessionsCompleted: 24,
+    publicCreations: 12,
+    communityVotes: 89,
+    badges: [
+      { category: 'technique', level: 2 },
+      { category: 'poetique', level: 3 },
+      { category: 'psychologique', level: 1 },
+      { category: 'narratif', level: 2 },
+      { category: 'communautaire', level: 1 },
+    ]
   };
 
-  const fetchSessions = async () => {
-    try {
-      const response = await fetch('/api/sessions', {
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setSessions(data.sessions);
-      }
-    } catch (err) {
-      console.error('Erreur lors de la récupération des sessions:', err);
+  const recentActivity = [
+    { type: 'session', title: 'Psychographie: "Les murmures du temps"', date: '2025-01-09', score: 4.2 },
+    { type: 'badge', title: 'Badge obtenu: Virtuose de la Poésie', date: '2025-01-08' },
+    { type: 'vote', title: 'Vote reçu sur "Métamorphose urbaine"', date: '2025-01-07', score: 5 },
+    { type: 'comment', title: 'Commentaire sur "Échos d\'enfance"', date: '2025-01-06' },
+  ];
+
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'session': return '📝';
+      case 'badge': return '🏆';
+      case 'vote': return '⭐';
+      case 'comment': return '💬';
+      default: return '📅';
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    clearError();
-    setIsUpdating(true);
+  const getBadgeForCategory = (category: string, level: number) => {
+    const badgeCategory = BADGE_CATEGORIES[category];
+    if (!badgeCategory) return null;
+    
+    const badgeLevel = badgeCategory.levels.find(l => l.level === level);
+    if (!badgeLevel) return null;
 
-    try {
-      await updateProfile(formData);
-    } catch (err) {
-      // L'erreur est déjà gérée par le context
-    } finally {
-      setIsUpdating(false);
-    }
+    return {
+      id: `${category}-${level}`,
+      name: badgeLevel.title,
+      description: badgeLevel.description,
+      category: category,
+      level: level,
+      svgIcon: badgeLevel.icon,
+      criteria: badgeLevel.requirements,
+      createdAt: new Date()
+    };
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSelectChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      setLocation('/login');
-    } catch (err) {
-      // L'erreur est déjà gérée
-    }
-  };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
-              Mon Profil
-            </h1>
-            <p className="text-slate-400">
-              Gérez votre compte et consultez vos statistiques créatives
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button 
-              onClick={() => setLocation('/')}
-              variant="outline"
-              className="border-slate-700 text-slate-300 hover:bg-slate-800"
-            >
-              Retour à l'accueil
-            </Button>
-            <Button 
-              onClick={handleLogout}
-              variant="outline"
-              className="border-red-800 text-red-400 hover:bg-red-950/50"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Déconnexion
-            </Button>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950">
+      <div className="container mx-auto px-4 py-8">
+        
+        {/* En-tête de profil */}
+        <Card className="mb-8 border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <CardContent className="p-8">
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                {profileData.firstName[0]}{profileData.lastName[0]}
+              </div>
+              
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <h1 className="text-3xl font-bold text-slate-100">
+                    {profileData.firstName} {profileData.lastName}
+                  </h1>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                <p className="text-slate-400 mb-4">{profileData.bio}</p>
+                
+                {/* Statistiques */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-emerald-400">Niv. {userStats.level}</div>
+                    <div className="text-xs text-slate-500">Niveau</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-400">{userStats.reputation}</div>
+                    <div className="text-xs text-slate-500">Réputation</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-400">{userStats.sessionsCompleted}</div>
+                    <div className="text-xs text-slate-500">Sessions</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-400">{userStats.badges.length}</div>
+                    <div className="text-xs text-slate-500">Badges</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-slate-800/50">
-            <TabsTrigger value="profile" className="text-slate-300 data-[state=active]:bg-slate-700">
-              <User className="w-4 h-4 mr-2" />
-              Profil
-            </TabsTrigger>
-            <TabsTrigger value="stats" className="text-slate-300 data-[state=active]:bg-slate-700">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Statistiques
-            </TabsTrigger>
-            <TabsTrigger value="sessions" className="text-slate-300 data-[state=active]:bg-slate-700">
-              <Settings className="w-4 h-4 mr-2" />
-              Historique
-            </TabsTrigger>
+            {/* Barre de progression */}
+            <div className="mt-6">
+              <div className="flex justify-between text-sm text-slate-400 mb-2">
+                <span>Progression vers le niveau {userStats.level + 1}</span>
+                <span>{userStats.experience} / {userStats.nextLevelExp} XP</span>
+              </div>
+              <Progress 
+                value={(userStats.experience / userStats.nextLevelExp) * 100} 
+                className="h-2 bg-slate-800"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Tabs defaultValue="badges" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="badges">Badges & Récompenses</TabsTrigger>
+            <TabsTrigger value="stats">Statistiques</TabsTrigger>
+            <TabsTrigger value="activity">Activité Récente</TabsTrigger>
+            <TabsTrigger value="settings">Paramètres</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile">
-            <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <TabsContent value="badges" className="space-y-6">
+            <Card className="border-slate-800 bg-slate-950/50">
               <CardHeader>
-                <CardTitle className="text-slate-200">Informations personnelles</CardTitle>
-                <CardDescription className="text-slate-400">
-                  Modifiez vos informations personnelles et préférences créatives
-                </CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-yellow-400" />
+                  Collection de Badges
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {error && (
-                  <Alert variant="destructive" className="bg-red-950/50 border-red-900 text-red-200">
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-slate-300">
-                        Prénom
-                      </Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        className="bg-slate-900/50 border-slate-700 text-slate-200"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-slate-300">
-                        Nom
-                      </Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        className="bg-slate-900/50 border-slate-700 text-slate-200"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="bio" className="text-slate-300">
-                      Biographie créative
-                    </Label>
-                    <Textarea
-                      id="bio"
-                      name="bio"
-                      value={formData.bio}
-                      onChange={handleChange}
-                      placeholder="Décrivez votre approche créative..."
-                      className="bg-slate-900/50 border-slate-700 text-slate-200 placeholder:text-slate-500 min-h-[100px]"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-slate-300">
-                        Style préféré
-                      </Label>
-                      <Select value={formData.favoriteStyle} onValueChange={(value) => handleSelectChange('favoriteStyle', value)}>
-                        <SelectTrigger className="bg-slate-900/50 border-slate-700 text-slate-200">
-                          <SelectValue placeholder="Choisir un style" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-slate-900 border-slate-700">
-                          <SelectItem value="">Aucune préférence</SelectItem>
-                          <SelectItem value="libre">Libre</SelectItem>
-                          <SelectItem value="inspirant">Inspirant</SelectItem>
-                          <SelectItem value="defi">Défi</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-slate-300">
-                        Format préféré
-                      </Label>
-                      <Select value={formData.favoriteFormat} onValueChange={(value) => handleSelectChange('favoriteFormat', value)}>
-                        <SelectTrigger className="bg-slate-900/50 border-slate-700 text-slate-200">
-                          <SelectValue placeholder="Choisir un format" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-slate-900 border-slate-700">
-                          <SelectItem value="">Aucune préférence</SelectItem>
-                          <SelectItem value="solo">Solo</SelectItem>
-                          <SelectItem value="duo">Duo</SelectItem>
-                          <SelectItem value="famille">Famille</SelectItem>
-                          <SelectItem value="equipe">Équipe</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500"
-                    disabled={isUpdating}
-                  >
-                    {isUpdating ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Mise à jour...
-                      </>
-                    ) : (
-                      'Mettre à jour le profil'
-                    )}
-                  </Button>
-                </form>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Object.entries(BADGE_CATEGORIES).map(([categoryKey, category]) => {
+                    const userBadge = userStats.badges.find(b => b.category === categoryKey);
+                    const currentLevel = userBadge?.level || 0;
+                    const nextLevel = Math.min(currentLevel + 1, 3);
+                    
+                    return (
+                      <div key={categoryKey} className="space-y-4">
+                        <div className="text-center">
+                          <h3 className="font-semibold text-slate-200 mb-1">{category.name}</h3>
+                          <p className="text-xs text-slate-400 mb-3">{category.description}</p>
+                        </div>
+                        
+                        {/* Badge actuel */}
+                        {currentLevel > 0 && (
+                          <div className="text-center">
+                            <AnimatedBadge 
+                              badge={getBadgeForCategory(categoryKey, currentLevel)!}
+                              size="md"
+                            />
+                          </div>
+                        )}
+                        
+                        {/* Progression vers le prochain niveau */}
+                        {nextLevel <= 3 && (
+                          <div className="border-t border-slate-800 pt-4">
+                            <div className="text-center mb-2">
+                              <div className="text-xs text-slate-500 mb-1">Prochain niveau</div>
+                              <div className="text-sm font-medium text-slate-300">
+                                {category.levels[nextLevel - 1].title}
+                              </div>
+                            </div>
+                            
+                            {/* Requirements */}
+                            <div className="space-y-1">
+                              {Object.entries(category.levels[nextLevel - 1].requirements).map(([req, value]) => (
+                                <div key={req} className="flex justify-between text-xs">
+                                  <span className="text-slate-400">{req}</span>
+                                  <span className="text-slate-300">{String(value)}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="stats">
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <TabsContent value="stats" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-slate-800 bg-slate-950/50">
                 <CardHeader>
-                  <CardTitle className="text-slate-200">Activité créative</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-400" />
+                    Performance Créative
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {stats ? (
-                    <>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Sessions totales</span>
-                        <span className="text-slate-200 font-semibold">{stats.totalSessions}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Sessions complétées</span>
-                        <span className="text-slate-200 font-semibold">{stats.completedSessions}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Taux de completion</span>
-                        <span className="text-slate-200 font-semibold">
-                          {stats.totalSessions > 0 ? Math.round((stats.completedSessions / stats.totalSessions) * 100) : 0}%
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-4 bg-slate-900/50 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-400">4.2</div>
+                      <div className="text-sm text-slate-400">Score moyen</div>
                     </div>
-                  )}
+                    <div className="text-center p-4 bg-slate-900/50 rounded-lg">
+                      <div className="text-2xl font-bold text-purple-400">89%</div>
+                      <div className="text-sm text-slate-400">Appréciation</div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {[
+                      { name: 'Créativité', score: 4.5, color: 'emerald' },
+                      { name: 'Poétique', score: 4.8, color: 'purple' },
+                      { name: 'Technique', score: 3.9, color: 'blue' },
+                      { name: 'Originalité', score: 4.2, color: 'orange' },
+                    ].map(metric => (
+                      <div key={metric.name} className="space-y-1">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-300">{metric.name}</span>
+                          <span className="text-slate-400">{metric.score}/5</span>
+                        </div>
+                        <Progress value={metric.score * 20} className="h-2" />
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+              <Card className="border-slate-800 bg-slate-950/50">
                 <CardHeader>
-                  <CardTitle className="text-slate-200">Préférences détectées</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-5 h-5 text-yellow-400" />
+                    Objectifs en Cours
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {stats ? (
-                    <>
-                      <div className="space-y-2">
-                        <span className="text-slate-400 text-sm">Format favori</span>
-                        {stats.favoriteFormat ? (
-                          <Badge variant="secondary" className="bg-slate-800 text-slate-200">
-                            {stats.favoriteFormat}
-                          </Badge>
-                        ) : (
-                          <span className="text-slate-500 text-sm">Non déterminé</span>
-                        )}
-                      </div>
-                      <div className="space-y-2">
-                        <span className="text-slate-400 text-sm">Style favori</span>
-                        {stats.favoriteStyle ? (
-                          <Badge variant="secondary" className="bg-slate-800 text-slate-200">
-                            {stats.favoriteStyle}
-                          </Badge>
-                        ) : (
-                          <span className="text-slate-500 text-sm">Non déterminé</span>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+                  {[
+                    { goal: 'Obtenir le badge "Maître de la Psychographie"', progress: 65 },
+                    { goal: 'Atteindre le niveau 10', progress: 82 },
+                    { goal: 'Publier 15 créations', progress: 80 },
+                    { goal: 'Recevoir 100 votes communautaires', progress: 89 },
+                  ].map((objective, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="text-sm text-slate-300">{objective.goal}</div>
+                      <Progress value={objective.progress} className="h-2" />
+                      <div className="text-xs text-slate-500 text-right">{objective.progress}%</div>
                     </div>
-                  )}
+                  ))}
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="sessions">
-            <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+          <TabsContent value="activity" className="space-y-6">
+            <Card className="border-slate-800 bg-slate-950/50">
               <CardHeader>
-                <CardTitle className="text-slate-200">Historique des sessions</CardTitle>
-                <CardDescription className="text-slate-400">
-                  Vos dernières sessions créatives
-                </CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-blue-400" />
+                  Activité Récente
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                {sessions.length > 0 ? (
-                  <div className="space-y-4">
-                    {sessions.map(session => (
-                      <div key={session.id} className="border border-slate-800 rounded-lg p-4 bg-slate-900/30">
-                        <div className="flex justify-between items-start">
-                          <div className="space-y-2">
-                            <div className="flex gap-2">
-                              <Badge variant="outline" className="border-slate-600 text-slate-300">
-                                {session.format}
-                              </Badge>
-                              <Badge variant="outline" className="border-slate-600 text-slate-300">
-                                {session.style}
-                              </Badge>
-                              {session.scoreEnabled && (
-                                <Badge className="bg-blue-900/50 text-blue-300 border-blue-800">
-                                  Score activé
-                                </Badge>
-                              )}
-                            </div>
-                            <p className="text-slate-400 text-sm">
-                              {session.playerCount} joueur{session.playerCount > 1 ? 's' : ''}
-                            </p>
-                            <p className="text-slate-500 text-xs">
-                              {new Date(session.createdAt).toLocaleDateString('fr-FR', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </p>
-                          </div>
-                          <Badge 
-                            variant={session.isCompleted ? "default" : "secondary"}
-                            className={session.isCompleted 
-                              ? "bg-green-900/50 text-green-300 border-green-800" 
-                              : "bg-slate-800 text-slate-400"
-                            }
-                          >
-                            {session.isCompleted ? 'Terminée' : 'En cours'}
-                          </Badge>
+                <div className="space-y-4">
+                  {recentActivity.map((activity, index) => (
+                    <div key={index} className="flex items-start gap-4 p-4 bg-slate-900/30 rounded-lg">
+                      <div className="text-2xl">{getActivityIcon(activity.type)}</div>
+                      <div className="flex-1">
+                        <div className="font-medium text-slate-200">{activity.title}</div>
+                        <div className="text-sm text-slate-400 mt-1">
+                          {new Date(activity.date).toLocaleDateString('fr-FR')}
                         </div>
+                        {activity.score && (
+                          <div className="flex items-center gap-1 mt-2">
+                            <Star className="w-4 h-4 text-yellow-400" />
+                            <span className="text-sm text-yellow-400">{activity.score}/5</span>
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <Card className="border-slate-800 bg-slate-950/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5 text-slate-400" />
+                  Informations de Profil
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {isEditing ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-slate-300 mb-2 block">Prénom</label>
+                        <Input 
+                          value={profileData.firstName}
+                          onChange={(e) => setProfileData(prev => ({...prev, firstName: e.target.value}))}
+                          className="bg-slate-900/50 border-slate-700"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-slate-300 mb-2 block">Nom</label>
+                        <Input 
+                          value={profileData.lastName}
+                          onChange={(e) => setProfileData(prev => ({...prev, lastName: e.target.value}))}
+                          className="bg-slate-900/50 border-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-slate-300 mb-2 block">Bio</label>
+                      <Textarea 
+                        value={profileData.bio}
+                        onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                        className="bg-slate-900/50 border-slate-700"
+                        rows={3}
+                      />
+                    </div>
+                    <div className="flex gap-3">
+                      <Button onClick={() => setIsEditing(false)}>
+                        Sauvegarder
+                      </Button>
+                      <Button variant="outline" onClick={() => setIsEditing(false)}>
+                        Annuler
+                      </Button>
+                    </div>
+                  </>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-slate-400">Aucune session pour le moment</p>
-                    <Button 
-                      onClick={() => setLocation('/')} 
-                      className="mt-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500"
-                    >
-                      Créer ma première session
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-slate-500">Prénom</label>
+                        <div className="text-slate-200">{profileData.firstName}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-slate-500">Nom</label>
+                        <div className="text-slate-200">{profileData.lastName}</div>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-slate-500">Bio</label>
+                      <div className="text-slate-200">{profileData.bio}</div>
+                    </div>
+                    <Button variant="outline" onClick={() => setIsEditing(true)}>
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      Modifier le profil
                     </Button>
                   </div>
                 )}

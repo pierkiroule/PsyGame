@@ -6,6 +6,7 @@ import NotFound from "./pages/not-found";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import ProfilePage from "./pages/profile";
+import Psychotheque from "./pages/psychotheque";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -70,6 +71,9 @@ const AppContent = () => {
       <Route path="/register" component={RegisterPage} />
       <Route path="/profile">
         {user ? <ProfilePage /> : <LoginPage />}
+      </Route>
+      <Route path="/psychotheque">
+        {user ? <Psychotheque /> : <LoginPage />}
       </Route>
       <Route path="/">
         {user ? (
