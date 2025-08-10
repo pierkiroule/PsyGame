@@ -9,6 +9,7 @@ import MinimalProfile from "./pages/minimal-profile";
 import SimpleProfile from "./pages/simple-profile";
 import MinimalPsychotheque from "./pages/minimal-psychotheque";
 import MinimalHome from "./pages/minimal-home";
+import VoiceDemo from "./pages/voice-demo";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -77,6 +78,7 @@ const AppContent = () => {
           <Route path="/psychotheque">
             <MinimalPsychotheque />
           </Route>
+          <Route path="/voice-demo" component={VoiceDemo} />
           <Route path="/">
             {user ? (
               <SessionProvider>

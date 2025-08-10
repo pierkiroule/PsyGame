@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from "wouter";
 import { Button } from "./ui/button";
 import { LogoCompact } from "./Logo";
-import { Home, Library, User, Pen } from "lucide-react";
+import { Home, Library, User, Pen, Mic } from "lucide-react";
 
 export const MinimalHeader = () => {
   const [location] = useLocation();
@@ -11,6 +11,7 @@ export const MinimalHeader = () => {
     { href: "/", icon: Home, label: "Accueil", id: "nav-home" },
     { href: "/psychotheque", icon: Library, label: "Découvrir", id: "nav-discover" },
     { href: "/profile", icon: User, label: "Profil", id: "nav-profile" },
+    { href: "/voice-demo", icon: Mic, label: "Vocal", id: "nav-voice" },
   ];
 
   return (

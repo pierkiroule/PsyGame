@@ -15,6 +15,7 @@ export const Header = () => {
     { href: "/", label: "Accueil", icon: Home, description: "Créer une psychographie" },
     { href: "/psychotheque", label: "Psychothèque", icon: Library, description: "Explorer la communauté" },
     { href: "/profile", label: "Profil", icon: User, description: "Badges et statistiques" },
+    { href: "/voice-demo", label: "Vocal", icon: Pen, description: "Création vocale" },
   ];
 
   const userProfile = {
