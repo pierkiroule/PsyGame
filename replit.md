@@ -2,13 +2,14 @@
 
 ## Overview
 
-Psychographe is an interactive React application that serves as a creative and projective tool. The application generates unique "psychographies" (creative outputs consisting of poetic text, images, and animation guides) based on user inputs and selected game configurations. This is a prototype designed to test user flows and interface designs across 24 different combinations (4 formats × 3 styles × score on/off) with simulated AI results.
+Psychographe est une application React interactive qui sert d'outil créatif et projectif minimaliste. L'application génère des "psychographies" uniques (créations poétiques et introspectives) basées sur les contributions des utilisateurs et des configurations de jeu sélectionnées. 
 
-The application guides users through a structured creative process: selecting game format and style, inputting creative contributions, and receiving generated artistic content with optional scoring and badges. All AI generation is currently simulated on the frontend for prototyping purposes.
+L'application guide les utilisateurs à travers un processus créatif structuré mais simplifié : exploration guidée, contributions créatives, et réception de contenu artistique généré avec notation optionnelle et badges. L'interface privilégie la simplicité, la fluidité et l'accessibilité avec des explications claires et un onboarding intégré. L'accent est mis sur l'expérience utilisateur minimaliste mais pertinente.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+UI/UX preferences: Minimaliste mais pertinente, jolie et très fluide, facile à prendre en main avec des explications claires.
 
 ## System Architecture
 

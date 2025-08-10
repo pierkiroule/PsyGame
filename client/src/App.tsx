@@ -5,13 +5,13 @@ import "./index.css";
 import NotFound from "./pages/not-found";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import ProfilePage from "./pages/profile";
-import Psychotheque from "./pages/psychotheque";
-import Home from "./pages/home";
+import MinimalProfile from "./pages/minimal-profile";
+import MinimalPsychotheque from "./pages/minimal-psychotheque";
+import MinimalHome from "./pages/minimal-home";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
-import { Header } from './components/Header';
+import { MinimalHeader } from './components/MinimalHeader';
 import { HomeScreen } from './components/HomeScreen';
 import { NewSessionScreen } from './components/NewSessionScreen';
 import { GameScreen } from './components/GameScreen';
@@ -65,16 +65,16 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
-      <Header />
+      <MinimalHeader />
       <PageTransition trigger={location}>
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
           <Route path="/profile">
-            <ProfilePage />
+            <MinimalProfile />
           </Route>
           <Route path="/psychotheque">
-            <Psychotheque />
+            <MinimalPsychotheque />
           </Route>
           <Route path="/">
             {user ? (
@@ -82,7 +82,7 @@ const AppContent = () => {
                 <AuthenticatedApp />
               </SessionProvider>
             ) : (
-              <Home />
+              <MinimalHome />
             )}
           </Route>
           <Route component={NotFound} />
