@@ -252,16 +252,29 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
       .style("opacity", 0.9)
       .style("filter", "drop-shadow(2px 2px 4px rgba(0,0,0,0.3))");
 
+    // Fond pour les labels (améliore la lisibilité)
+    const labelBackgrounds = nodeGroups.append("rect")
+      .attr("width", d => d.name.length * Math.max(8, Math.min(12, d.size * 0.6)))
+      .attr("height", d => Math.max(12, Math.min(16, d.size * 0.8)))
+      .attr("x", d => -(d.name.length * Math.max(8, Math.min(12, d.size * 0.6))) / 2)
+      .attr("y", d => -(Math.max(12, Math.min(16, d.size * 0.8))) / 2)
+      .attr("rx", 4)
+      .attr("ry", 4)
+      .attr("fill", "rgba(15, 23, 42, 0.85)")
+      .attr("stroke", "rgba(148, 163, 184, 0.3)")
+      .attr("stroke-width", 1)
+      .style("pointer-events", "none");
+
     // Labels des nœuds
     const labels = nodeGroups.append("text")
       .text(d => d.name)
       .attr("font-size", d => Math.max(10, Math.min(14, d.size * 0.7)))
       .attr("font-weight", "bold")
-      .attr("fill", "#f8fafc")
+      .attr("fill", "#ffffff")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .style("pointer-events", "none")
-      .style("text-shadow", "2px 2px 4px rgba(0,0,0,0.9)")
+      .style("text-shadow", "0 0 8px rgba(0,0,0,1), 2px 2px 4px rgba(0,0,0,0.9)")
       .style("user-select", "none");
 
     // Interactions
@@ -299,7 +312,19 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
         circles
           .transition().duration(200)
           .attr("r", d => d.size)
-          .style("opacity", 0.8);
+          .style("opacity", 0.9);
+
+        // Reset le fond des labels
+        labelBackgrounds
+          .transition().duration(200)
+          .attr("fill", "rgba(15, 23, 42, 0.85)")
+          .attr("stroke", "rgba(148, 163, 184, 0.3)");
+
+        // Reset les labels
+        labels
+          .transition().duration(200)
+          .attr("font-size", d => Math.max(10, Math.min(14, d.size * 0.7)))
+          .style("fill", "#ffffff");
 
         link
           .transition().duration(200)
