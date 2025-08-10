@@ -3,8 +3,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Brain, Users, Sparkles, Trophy, Play, User, BarChart3 } from 'lucide-react';
+import { Users, Sparkles, Trophy, Play, User, BarChart3 } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { PsychographeLogo } from './ui/psychographe-logo';
 
 export const HomeScreen = () => {
   const { navigateToScreen } = useSession();
@@ -33,8 +34,8 @@ export const HomeScreen = () => {
       <div className="max-w-4xl mx-auto">
         {/* Welcome Section */}
         <div className="mb-12">
-          <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl mx-auto mb-6 flex items-center justify-center ring-4 ring-slate-700/30">
-            <Brain className="text-slate-200 w-10 h-10" />
+          <div className="mx-auto mb-6 flex items-center justify-center">
+            <PsychographeLogo size="lg" animate={true} />
           </div>
           
           <div className="space-y-4">
@@ -97,7 +98,7 @@ export const HomeScreen = () => {
         </div>
 
         {/* Quick Stats */}
-        {user?.totalSessions > 0 && (
+        {user && user.totalSessions && user.totalSessions > 0 && (
           <Card className="border-slate-800 bg-slate-950/30 backdrop-blur-sm mb-8">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">

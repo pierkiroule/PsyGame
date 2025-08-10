@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link, useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
+import { PsychographeLogo } from '../components/ui/psychographe-logo';
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
