@@ -36,15 +36,15 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
       >
         <defs>
           <linearGradient id="echoWave" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
-            <stop offset="30%" stopColor="#10b981" stopOpacity="0.7" />
-            <stop offset="70%" stopColor="#059669" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.1" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9" />
+            <stop offset="30%" stopColor="#2563eb" stopOpacity="0.7" />
+            <stop offset="70%" stopColor="#1d4ed8" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#1e40af" stopOpacity="0.1" />
           </linearGradient>
           <radialGradient id="oEcho" cx="50%" cy="50%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#10b981" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.05" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+            <stop offset="50%" stopColor="#2563eb" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.05" />
           </radialGradient>
         </defs>
 
@@ -120,10 +120,10 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
           >
             {/* O principal avec effet lumineux */}
             <span
-              className="text-emerald-400 font-black absolute inset-0 flex items-center justify-center z-30"
+              className="text-blue-400 font-black absolute inset-0 flex items-center justify-center z-30"
               style={{
                 fontSize: oSize,
-                textShadow: "0 0 12px rgba(52, 211, 153, 0.9), 0 0 24px rgba(52, 211, 153, 0.5), 0 0 36px rgba(52, 211, 153, 0.2)",
+                textShadow: "0 0 12px rgba(59, 130, 246, 0.9), 0 0 24px rgba(59, 130, 246, 0.5), 0 0 36px rgba(59, 130, 246, 0.2)",
                 lineHeight: 1,
               }}
             >
@@ -132,7 +132,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
 
             {/* Échos du O */}
             <span
-              className="text-emerald-300 font-black absolute inset-0 flex items-center justify-center z-20"
+              className="text-blue-300 font-black absolute inset-0 flex items-center justify-center z-20"
               style={{ 
                 fontSize: oSize,
                 lineHeight: 1,
@@ -142,7 +142,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
               O
             </span>
             <span
-              className="text-emerald-200 font-black absolute inset-0 flex items-center justify-center z-10"
+              className="text-blue-200 font-black absolute inset-0 flex items-center justify-center z-10"
               style={{ 
                 fontSize: oSize * 1.15,
                 lineHeight: 1,
@@ -153,7 +153,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 80, className = "" }) => {
               O
             </span>
             <span
-              className="text-emerald-100 font-black absolute inset-0 flex items-center justify-center z-0"
+              className="text-blue-100 font-black absolute inset-0 flex items-center justify-center z-0"
               style={{ 
                 fontSize: oSize * 1.3,
                 lineHeight: 1,
@@ -212,8 +212,8 @@ export const LogoCompact: React.FC<LogoProps> = ({ size = 32, className = "" }) 
       >
         <defs>
           <linearGradient id="compactWave" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#1e40af" stopOpacity="0.2" />
           </linearGradient>
         </defs>
         
@@ -258,7 +258,7 @@ export const LogoCompact: React.FC<LogoProps> = ({ size = 32, className = "" }) 
           cy="16"
           r="4"
           fill="none"
-          stroke="#34d399"
+          stroke="#3b82f6"
           strokeWidth="0.5"
           className="opacity-60"
         >
@@ -283,10 +283,10 @@ export const LogoCompact: React.FC<LogoProps> = ({ size = 32, className = "" }) 
         style={{ paddingLeft: '2px' }}
       >
         <span 
-          className="text-emerald-400 font-black"
+          className="text-blue-400 font-black"
           style={{ 
             fontSize: size * 0.5,
-            textShadow: '0 0 4px rgba(52, 211, 153, 0.6)'
+            textShadow: '0 0 4px rgba(59, 130, 246, 0.6)'
           }}
         >
           P

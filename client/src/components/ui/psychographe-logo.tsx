@@ -12,10 +12,10 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
   animate = true 
 }) => {
   const sizeMap = {
-    sm: 'w-16 h-16',
-    md: 'w-24 h-24',
-    lg: 'w-32 h-32',
-    xl: 'w-64 h-64'
+    sm: 'w-20 h-20',
+    md: 'w-32 h-32',
+    lg: 'w-48 h-48',
+    xl: 'w-80 h-80'
   };
 
   // Calculer la taille basée sur le size
@@ -80,15 +80,15 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
         >
           <defs>
             <linearGradient id={`echoWave-${size}`} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
-              <stop offset="30%" stopColor="#10b981" stopOpacity="0.7" />
-              <stop offset="70%" stopColor="#059669" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#047857" stopOpacity="0.1" />
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9" />
+              <stop offset="30%" stopColor="#2563eb" stopOpacity="0.7" />
+              <stop offset="70%" stopColor="#1d4ed8" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#1e40af" stopOpacity="0.1" />
             </linearGradient>
             <radialGradient id={`oEcho-${size}`} cx="50%" cy="50%">
-              <stop offset="0%" stopColor="#34d399" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="#10b981" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#047857" stopOpacity="0.05" />
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#2563eb" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.2" />
             </radialGradient>
           </defs>
 
@@ -96,37 +96,37 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
           {animate && (
             <>
               {/* Première onde circulaire */}
-              <circle cx="64" cy="40" r="5" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2" className="opacity-90">
+              <circle cx="64" cy="40" r="5" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2.5">
                 <animate attributeName="r" values="5; 35; 5" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.9; 0.1; 0.9" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="2; 0.5; 2" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.95; 0.3; 0.95" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="2.5; 0.8; 2.5" dur="3s" repeatCount="indefinite" />
               </circle>
               
               {/* Deuxième onde circulaire */}
-              <circle cx="64" cy="40" r="8" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.5" className="opacity-70">
+              <circle cx="64" cy="40" r="8" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="2">
                 <animate attributeName="r" values="8; 40; 8" dur="4s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.7; 0.05; 0.7" dur="4s" begin="0.8s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="1.5; 0.3; 1.5" dur="4s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.85; 0.2; 0.85" dur="4s" begin="0.8s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="2; 0.6; 2" dur="4s" begin="0.8s" repeatCount="indefinite" />
               </circle>
               
               {/* Troisième onde circulaire */}
-              <circle cx="64" cy="40" r="12" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.2" className="opacity-50">
+              <circle cx="64" cy="40" r="12" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.8">
                 <animate attributeName="r" values="12; 45; 12" dur="5s" begin="1.6s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.5; 0.02; 0.5" dur="5s" begin="1.6s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="1.2; 0.2; 1.2" dur="5s" begin="1.6s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.75; 0.15; 0.75" dur="5s" begin="1.6s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.8; 0.4; 1.8" dur="5s" begin="1.6s" repeatCount="indefinite" />
               </circle>
               
               {/* Quatrième onde circulaire */}
-              <circle cx="64" cy="40" r="15" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="0.8" className="opacity-30">
+              <circle cx="64" cy="40" r="15" fill="none" stroke={`url(#oEcho-${size})`} strokeWidth="1.5">
                 <animate attributeName="r" values="15; 50; 15" dur="6s" begin="2.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.3; 0.01; 0.3" dur="6s" begin="2.4s" repeatCount="indefinite" />
-                <animate attributeName="stroke-width" values="0.8; 0.1; 0.8" dur="6s" begin="2.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.65; 0.1; 0.65" dur="6s" begin="2.4s" repeatCount="indefinite" />
+                <animate attributeName="stroke-width" values="1.5; 0.3; 1.5" dur="6s" begin="2.4s" repeatCount="indefinite" />
               </circle>
               
               {/* Cercle central pulsant */}
-              <circle cx="64" cy="40" r="3" fill={`url(#oEcho-${size})`} className="opacity-80">
+              <circle cx="64" cy="40" r="3" fill={`url(#oEcho-${size})`}>
                 <animate attributeName="r" values="3; 6; 3" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.8; 0.4; 0.8" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.9; 0.5; 0.9" dur="2s" repeatCount="indefinite" />
               </circle>
             </>
           )}
@@ -155,11 +155,11 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
             >
               {/* O principal */}
               <span
-                className="text-emerald-400 font-black relative z-30 inline-block"
+                className="text-blue-400 font-black relative z-30 inline-block"
                 style={{
                   fontSize: oSize,
                   textShadow:
-                    "0 0 12px rgba(52, 211, 153, 0.9), 0 0 24px rgba(52, 211, 153, 0.5), 0 0 36px rgba(52, 211, 153, 0.2)",
+                    "0 0 12px rgba(59, 130, 246, 0.9), 0 0 24px rgba(59, 130, 246, 0.5), 0 0 36px rgba(59, 130, 246, 0.2)",
                   transform: "translateY(-1px)",
                 }}
               >
@@ -170,19 +170,19 @@ export const PsychographeLogo: React.FC<PsychographeLogoProps> = ({
               {animate && (
                 <>
                   <span
-                    className="absolute inset-0 text-emerald-300 font-black z-20"
+                    className="absolute inset-0 text-blue-300 font-black z-20"
                     style={{ fontSize: oSize, animation: "pulse 2.5s ease-in-out infinite", transform: "translateY(-1px)" }}
                   >
                     O
                   </span>
                   <span
-                    className="absolute inset-0 text-emerald-200 font-black z-10"
+                    className="absolute inset-0 text-blue-200 font-black z-10"
                     style={{ fontSize: oSize * 1.15, animation: "expandO 3.5s ease-out infinite", transformOrigin: "center", transform: "translateY(-1px)" }}
                   >
                     O
                   </span>
                   <span
-                    className="absolute inset-0 text-emerald-100 font-black z-0"
+                    className="absolute inset-0 text-blue-100 font-black z-0"
                     style={{ fontSize: oSize * 1.3, animation: "fadeEcho 4.5s ease-out infinite", transformOrigin: "center", transform: "translateY(-1px)" }}
                   >
                     O
