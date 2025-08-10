@@ -1,0 +1,89 @@
+D’accord, je te refais l’instruction pour Replit avec le contexte et l’objectif, afin qu’il comprenne bien ce qu’il code et pourquoi.
+
+
+---
+
+Instruction à coller dans Replit (Ghostwriter) :
+
+> Je veux créer une maquette interactive en React (Vite) pour une application appelée Psychographe.
+
+Contexte :
+Psychographe est un outil créatif et projectif qui permet de générer, à partir d’idées de joueurs, une "psychographie" composée d’un texte poétique, d’une image et d’un guide d’animation.
+L’animateur choisit un format de jeu (solo, duo, famille, équipe) et un style de partie (libre, inspirant, défi).
+Les joueurs donnent leurs contributions, et l’IA (simulée pour l’instant) produit un résultat final.
+L’option de score peut être activée pour évaluer la créativité (score simulé).
+
+Objectif de cette maquette :
+Tester les écrans, le flux utilisateur et les 24 combinaisons possibles (4 formats × 3 styles × score on/off) sans IA réelle. Les résultats sont simulés côté front.
+
+Écrans à créer :
+
+1. Accueil : présentation courte + bouton "Créer une session".
+
+
+2. Nouvelle session :
+
+Sélection Format : Solo, Duo, Famille (3–5 joueurs), Équipe (6–10 joueurs)
+
+Sélection Style : Libre, Inspirant, Défi
+
+Option Score ON/OFF
+
+Champs supplémentaires :
+
+Inspirant → choix type de citation (Poétique, Philosophique, Humoristique, Métaphorique, Thérapeutique)
+
+Défi → champ texte pour la contrainte
+
+
+
+
+3. Jeu :
+
+Formulaire de saisie pour chaque joueur (nombre selon format choisi)
+
+Bouton "Générer" → produit un texte, un guide, et éventuellement un score créatif + badges (tout simulé).
+
+
+
+4. Résultats :
+
+Affichage texte, guide, image placeholder
+
+Si score activé → afficher Creative Score, Poetic Score, badges
+
+Bouton "Nouvelle session" pour recommencer
+
+
+
+
+Contraintes techniques :
+
+React + Vite
+
+Navigation par état React (pas besoin de React Router)
+
+Contexte global pour stocker la session
+
+Composants séparés : Header, ModeSelector, ScoreToggle, InputsCollector
+
+Aucune connexion API → tout simulé avec des données générées côté front
+
+Code clair, minimal et commenté pour que je puisse le modifier
+
+
+Livrable attendu :
+
+Projet fonctionnel qui permet de jouer en simulant toutes les étapes
+
+Facile à brancher sur une vraie IA plus tard
+
+
+
+
+
+---
+
+Si tu veux, je peux maintenant te faire la check-list de tests pour vérifier que Replit te livre bien la maquette complète et fonctionnelle.
+Tu veux que je te fasse cette check-list ?
+
