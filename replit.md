@@ -8,14 +8,13 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
-**2025-01-10**: Created new animated SVG logo based on user's design specifications
-- Rebuilt PsychographeLogo as pure SVG with concentric animated circles
-- Text "PSYCHOGRAPH" arranged in arc around outer circle with smooth rotation animation
-- Three-layer circle design: outer (light gray), middle (blue), inner (purple) with pulsing effects
-- Added decorative animated points and subtle wave ripples for visual interest
-- Included "A.I.magination" subtitle with fade animation
-- Implemented professional color scheme with gradients and glow effects
-- All animations coordinated for smooth, sophisticated visual experience
+**2025-01-10**: Restored original PSYCHOGRAPHE logo design with precise wave-centered alignment
+- Text "PSYCHOGRAPHE" with ResizeObserver-based alignment system ensuring "O" center matches wave center
+- Wave animations originate from precise coordinates (64,40) in 128×80 viewBox
+- Emerald green color scheme with gradient effects and animated wave patterns
+- Enhanced "O" letter with multiple echo layers (glow, pulse, expand, fade animations)
+- Responsive sizing system adapting to 'sm', 'md', 'lg', 'xl' props
+- Maintained original design aesthetic with precise text superposition over wave effects
 
 ## User Preferences
 
