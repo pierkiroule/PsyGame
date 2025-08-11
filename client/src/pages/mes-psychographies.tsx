@@ -153,7 +153,7 @@ export default function MesPsychographies() {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
-  const [filterTag, setFilterTag] = useState<string>('');
+  const [filterTag, setFilterTag] = useState<string>('all');
 
   const { data: psychographies = [], isLoading } = useQuery<Psychography[]>({
     queryKey: ['/api/psychographies/my'],
@@ -173,7 +173,7 @@ export default function MesPsychographies() {
       const matchesSearch = !searchTerm || 
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.generatedText.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesTag = !filterTag || (p.tags || []).includes(filterTag);
+      const matchesTag = !filterTag || filterTag === 'all' || (p.tags || []).includes(filterTag);
       return matchesSearch && matchesTag;
     })
     .sort((a, b) => {
@@ -241,7 +241,7 @@ export default function MesPsychographies() {
                     <SelectValue placeholder="Filtrer par tag" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tous les tags</SelectItem>
+                    <SelectItem value="all">Tous les tags</SelectItem>
                     {allTags.map(tag => (
                       <SelectItem key={tag} value={tag}>{tag}</SelectItem>
                     ))}
