@@ -3,6 +3,7 @@ import { useSession } from '../contexts/SessionContext';
 import { GameFormat, GameStyle, CitationType } from '../types/session';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
+import { VoiceTextInput } from './ui/voice-text-input';
 import { Badge } from './ui/badge';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
@@ -177,13 +178,14 @@ export const NewSessionScreen = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Label className="text-slate-300">Contrainte créative</Label>
-                <Textarea 
-                  className="bg-slate-900/50 border-slate-700 text-slate-200 placeholder:text-slate-500" 
-                  rows={3}
-                  placeholder="Décrivez la contrainte créative à appliquer..."
+                <VoiceTextInput
+                  label="Contrainte créative"
                   value={localConfig.constraint || ''}
-                  onChange={(e) => handleConstraintChange(e.target.value)}
+                  onChange={handleConstraintChange}
+                  placeholder="Décrivez la contrainte créative... Utilisez le micro pour expliquer votre idée !"
+                  multiline={true}
+                  rows={3}
+                  className="bg-slate-900/50 border-slate-700 text-slate-200 placeholder:text-slate-500"
                 />
               </div>
             </CardContent>

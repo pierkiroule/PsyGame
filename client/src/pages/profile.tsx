@@ -10,6 +10,7 @@ import { AnimatedBadge } from '@/components/ui/animated-badge';
 import { Progress } from '@/components/ui/progress';
 import Psychocatcher from '@/components/ui/psychocatcher';
 import SimplePsychocatcher from '@/components/ui/simple-psychocatcher';
+import { VoiceTextInput } from '@/components/ui/voice-text-input';
 import { User, Edit3, Award, TrendingUp, Calendar, Target, Star, Sparkles } from 'lucide-react';
 import { BADGE_CATEGORIES } from '@shared/gamification';
 
@@ -259,32 +260,30 @@ export default function Profile() {
                 {isEditing ? (
                   <>
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm text-slate-300 mb-2 block">Prénom</label>
-                        <Input 
-                          value={profileData.firstName}
-                          onChange={(e) => setProfileData(prev => ({...prev, firstName: e.target.value}))}
-                          className="bg-slate-900/50 border-slate-700"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm text-slate-300 mb-2 block">Nom</label>
-                        <Input 
-                          value={profileData.lastName}
-                          onChange={(e) => setProfileData(prev => ({...prev, lastName: e.target.value}))}
-                          className="bg-slate-900/50 border-slate-700"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm text-slate-300 mb-2 block">Bio</label>
-                      <Textarea 
-                        value={profileData.bio}
-                        onChange={(e) => setProfileData(prev => ({...prev, bio: e.target.value}))}
+                      <VoiceTextInput
+                        label="Prénom"
+                        value={profileData.firstName}
+                        onChange={(value) => setProfileData(prev => ({...prev, firstName: value}))}
+                        placeholder="Votre prénom..."
                         className="bg-slate-900/50 border-slate-700"
-                        rows={3}
+                      />
+                      <VoiceTextInput
+                        label="Nom"
+                        value={profileData.lastName}
+                        onChange={(value) => setProfileData(prev => ({...prev, lastName: value}))}
+                        placeholder="Votre nom..."
+                        className="bg-slate-900/50 border-slate-700"
                       />
                     </div>
+                    <VoiceTextInput
+                      label="Bio"
+                      value={profileData.bio}
+                      onChange={(value) => setProfileData(prev => ({...prev, bio: value}))}
+                      placeholder="Parlez de vous... Utilisez le micro pour raconter votre histoire !"
+                      multiline={true}
+                      rows={3}
+                      className="bg-slate-900/50 border-slate-700"
+                    />
                     <div className="flex gap-3">
                       <Button onClick={() => setIsEditing(false)}>
                         Sauvegarder

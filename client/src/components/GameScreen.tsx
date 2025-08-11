@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from '../contexts/SessionContext';
 import { PlayerInput } from '../types/session';
+import { VoiceTextInput } from './ui/voice-text-input';
 
 export const GameScreen = () => {
   const { sessionConfig, updatePlayerInputs, generateResults, getPlayerCount } = useSession();
@@ -129,44 +130,32 @@ export const GameScreen = () => {
             </div>
             
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom (optionnel)
-                </label>
-                <input 
-                  type="text" 
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Votre nom..."
-                  value={input.name}
-                  onChange={(e) => updateInput(index, 'name', e.target.value)}
-                />
-              </div>
+              <VoiceTextInput
+                label="Nom (optionnel)"
+                value={input.name}
+                onChange={(value) => updateInput(index, 'name', value)}
+                placeholder="Votre nom..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Votre contribution créative *
-                </label>
-                <textarea 
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  rows={4}
-                  placeholder="Partagez vos idées, émotions, images mentales..."
-                  value={input.contribution}
-                  onChange={(e) => updateInput(index, 'contribution', e.target.value)}
-                />
-              </div>
+              <VoiceTextInput
+                label="Votre contribution créative"
+                value={input.contribution}
+                onChange={(value) => updateInput(index, 'contribution', value)}
+                placeholder="Partagez vos idées, émotions, images mentales... Utilisez le micro pour parler !"
+                multiline={true}
+                rows={4}
+                required={true}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mots-clés (séparés par des virgules)
-                </label>
-                <input 
-                  type="text" 
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="rêve, océan, liberté..."
-                  value={input.keywords}
-                  onChange={(e) => updateInput(index, 'keywords', e.target.value)}
-                />
-              </div>
+              <VoiceTextInput
+                label="Mots-clés (séparés par des virgules)"
+                value={input.keywords}
+                onChange={(value) => updateInput(index, 'keywords', value)}
+                placeholder="rêve, océan, liberté... ou décrivez-les vocalement"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
             </div>
           </div>
         ))}
