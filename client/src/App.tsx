@@ -19,6 +19,7 @@ import { NewSessionScreen } from './components/NewSessionScreen';
 import { GameScreen } from './components/GameScreen';
 import { ResultsScreen } from './components/ResultsScreen';
 import { PageTransition } from './components/PageTransition';
+import { PsychographicStudio } from './components/PsychographicStudio';
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -80,6 +81,13 @@ const AppContent = () => {
           </Route>
           <Route path="/voice-demo" component={VoiceDemo} />
           <Route path="/">
+            {user ? (
+              <PsychographicStudio />
+            ) : (
+              <MinimalHome />
+            )}
+          </Route>
+          <Route path="/legacy">
             {user ? (
               <SessionProvider>
                 <AuthenticatedApp />

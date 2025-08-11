@@ -1,325 +1,209 @@
-import type { Express } from "express";
-import { createServer, type Server } from "http";
 import express from "express";
-import session from "express-session";
-import { storage } from "./storage";
-import { 
-  registerUserSchema, 
-  loginUserSchema, 
-  updateUserProfileSchema,
-  createSessionSchema,
-  createContributionSchema,
-  createResultSchema
-} from "@shared/schema";
 import { z } from "zod";
+import { insertPsychographySchema, psychographyParametersSchema } from "@shared/schema";
+import { storage } from "./storage";
 
-declare module 'express-session' {
-  interface SessionData {
-    userId?: string;
-    username?: string;
+const router = express.Router();
+
+// Generate enriched prompts for psychography creation
+router.post("/api/psychography/generate-prompts", async (req, res) => {
+  try {
+    const { initialText } = req.body;
+    
+    if (!initialText?.trim()) {
+      return res.status(400).json({ error: "Initial text is required" });
+    }
+
+    // Prompt templates for enrichment
+    const promptTemplates = [
+      "Explorez les nuances émotionnelles de votre ressenti",
+      "Transformez vos sensations en métaphores visuelles", 
+      "Révélez les archétypes cachés dans votre expression",
+      "Connectez votre état présent à des souvenirs profonds",
+      "Créez des associations poétiques inattendues",
+      "Explorez les couleurs et textures de votre expérience",
+      "Transformez votre ressenti en paysage intérieur",
+      "Révélez les symboles qui habitent votre état actuel",
+      "Découvrez les métaphores cachées dans vos mots",
+      "Explorez les résonances sensorielles de votre état"
+    ];
+
+    // Shuffle and return 6 random prompts
+    const shuffled = [...promptTemplates].sort(() => Math.random() - 0.5);
+    const enrichedPrompts = shuffled.slice(0, 6);
+
+    res.json({ enrichedPrompts });
+  } catch (error) {
+    console.error("Error generating prompts:", error);
+    res.status(500).json({ error: "Failed to generate prompts" });
   }
-}
+});
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  // Configuration de la session avec persistance
-  app.use(session({
-    secret: process.env.SESSION_SECRET || 'psychographe-secret-key-dev',
-    resave: false,
-    saveUninitialized: false,
-    rolling: true, // Renouvelle la session à chaque requête
-    cookie: {
-      secure: false, // En production, mettre à true avec HTTPS
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 jours
+// Generate psychography content
+router.post("/api/psychography/generate", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
     }
-  }));
 
-  // Middleware d'authentification désactivé pour le développement
-  const requireAuth = (req: any, res: any, next: any) => {
-    // Simuler un utilisateur connecté pour le développement
-    if (!req.session.userId) {
-      req.session.userId = 'dev-user-1';
-      req.session.username = 'Alex Martin';
-    }
-    next();
-  };
+    const {
+      initialText,
+      selectedPrompts,
+      parameters,
+      finalPrompt
+    } = req.body;
 
-  // Routes d'authentification
-  app.post("/api/auth/register", async (req, res) => {
-    try {
-      const validatedData = registerUserSchema.parse(req.body);
-      
-      // Vérifier si l'utilisateur existe déjà
-      const existingUserByUsername = await storage.getUserByUsername(validatedData.username);
-      if (existingUserByUsername) {
-        return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' });
-      }
+    // Validate parameters
+    const validatedParams = psychographyParametersSchema.parse(parameters);
 
-      const existingUserByEmail = await storage.getUserByEmail(validatedData.email);
-      if (existingUserByEmail) {
-        return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' });
-      }
-
-      const user = await storage.createUser(validatedData);
-      
-      // Connecter automatiquement l'utilisateur
-      req.session.userId = user.id;
-      req.session.username = user.username;
-
-      const { password, ...userWithoutPassword } = user;
-      res.status(201).json({ user: userWithoutPassword });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de l\'inscription:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  app.post("/api/auth/login", async (req, res) => {
-    try {
-      const validatedData = loginUserSchema.parse(req.body);
-      
-      const user = await storage.getUserByUsername(validatedData.username);
-      if (!user) {
-        return res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect' });
-      }
-
-      const isValidPassword = await storage.verifyPassword(validatedData.password, user.password);
-      if (!isValidPassword) {
-        return res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect' });
-      }
-
-      req.session.userId = user.id;
-      req.session.username = user.username;
-
-      const { password, ...userWithoutPassword } = user;
-      res.json({ user: userWithoutPassword });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de la connexion:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  app.post("/api/auth/logout", (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Erreur lors de la déconnexion:', err);
-        return res.status(500).json({ error: 'Erreur lors de la déconnexion' });
-      }
-      res.json({ message: 'Déconnexion réussie' });
-    });
-  });
-
-  app.get("/api/auth/me", (req: any, res) => {
-    // Retourner un utilisateur simulé pour le développement
-    const mockUser = {
-      id: 'dev-user-1',
-      username: 'Alex Martin',
-      email: 'alex@example.com',
-      level: 8,
-      reputation: 142,
-      badges: ['creative-genius', 'word-weaver', 'community-star'],
-      createdAt: new Date('2024-01-15'),
-      psychographiesCount: 23,
-      votesReceived: 456
+    // Simulate AI generation (replace with real AI service call)
+    const generatedContent = {
+      title: generateTitle(initialText, validatedParams),
+      text: generateText(initialText, selectedPrompts, validatedParams),
+      guide: generateGuide(initialText, validatedParams),
+      tags: generateTags(initialText, validatedParams),
+      imageUrl: null // Will be generated separately
     };
-    
-    req.session.userId = mockUser.id;
-    req.session.username = mockUser.username;
-    
-    res.json({ user: mockUser });
-  });
 
-  // Routes de profil utilisateur
-  app.put("/api/profile", requireAuth, async (req: any, res) => {
-    try {
-      const validatedData = updateProfileSchema.parse(req.body);
-      
-      const updatedUser = await storage.updateUser(req.session.userId, validatedData);
-      const { password, ...userWithoutPassword } = updatedUser;
-      
-      res.json({ user: userWithoutPassword });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de la mise à jour du profil:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
+    res.json(generatedContent);
+  } catch (error) {
+    console.error("Error generating psychography:", error);
+    res.status(500).json({ error: "Failed to generate psychography" });
+  }
+});
+
+// Save psychography to database
+router.post("/api/psychography", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
     }
-  });
 
-  app.get("/api/profile/stats", requireAuth, async (req: any, res) => {
-    try {
-      const stats = await storage.getUserStats(req.session.userId);
-      res.json(stats);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des statistiques:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
+    const psychographyData = insertPsychographySchema.parse({
+      ...req.body,
+      userId: user.id
+    });
+
+    const psychography = await storage.createPsychography(psychographyData);
+    res.json(psychography);
+  } catch (error) {
+    console.error("Error saving psychography:", error);
+    res.status(500).json({ error: "Failed to save psychography" });
+  }
+});
+
+// Get user's psychographies
+router.get("/api/psychography/my", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
     }
-  });
 
-  // Routes des sessions de jeu
-  app.post("/api/sessions", requireAuth, async (req: any, res) => {
-    try {
-      const validatedData = createSessionSchema.parse(req.body);
-      
-      const session = await storage.createGameSession(req.session.userId, validatedData);
-      res.status(201).json({ session });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de la création de la session:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
+    const includePrivate = req.query.private !== 'false';
+    const psychographies = await storage.getUserPsychographies(user.id, includePrivate);
+    res.json(psychographies);
+  } catch (error) {
+    console.error("Error fetching user psychographies:", error);
+    res.status(500).json({ error: "Failed to fetch psychographies" });
+  }
+});
+
+// Get public psychographies (psychothèque)
+router.get("/api/psychography/public", async (req, res) => {
+  try {
+    const psychographies = await storage.getPublicPsychographies();
+    res.json(psychographies);
+  } catch (error) {
+    console.error("Error fetching public psychographies:", error);
+    res.status(500).json({ error: "Failed to fetch public psychographies" });
+  }
+});
+
+// Update psychography visibility
+router.patch("/api/psychography/:id/visibility", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
     }
-  });
 
-  app.get("/api/sessions", requireAuth, async (req: any, res) => {
-    try {
-      const sessions = await storage.getUserSessions(req.session.userId);
-      res.json({ sessions });
-    } catch (error) {
-      console.error('Erreur lors de la récupération des sessions:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
+    const { id } = req.params;
+    const { isPublic } = req.body;
+
+    await storage.updatePsychographyVisibility(Number(id), user.id, isPublic);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error updating psychography visibility:", error);
+    res.status(500).json({ error: "Failed to update visibility" });
+  }
+});
+
+// Delete psychography
+router.delete("/api/psychography/:id", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
     }
-  });
 
-  app.get("/api/sessions/:id", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
+    const { id } = req.params;
+    await storage.deletePsychography(Number(id), user.id);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting psychography:", error);
+    res.status(500).json({ error: "Failed to delete psychography" });
+  }
+});
 
-      // Vérifier que l'utilisateur est propriétaire de la session
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
+// Helper functions for content generation (replace with actual AI service)
+function generateTitle(initialText: string, parameters: any): string {
+  const titleWords = [
+    "Échos", "Résonances", "Reflets", "Murmures", "Fragments", "Vibrations",
+    "Lumières", "Ombres", "Cristaux", "Ondes", "Miroirs", "Essence"
+  ];
+  
+  const descriptors = [
+    "silencieuses", "profondes", "secrètes", "lumineuses", "intérieures",
+    "sacrées", "cachées", "vibrantes", "éternelles", "mystiques"
+  ];
 
-      res.json({ session });
-    } catch (error) {
-      console.error('Erreur lors de la récupération de la session:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  app.put("/api/sessions/:id/complete", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
-
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
-
-      const { duration } = req.body;
-      const updatedSession = await storage.completeSession(req.params.id, duration);
-      res.json({ session: updatedSession });
-    } catch (error) {
-      console.error('Erreur lors de la finalisation de la session:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  // Routes des contributions
-  app.post("/api/sessions/:id/contributions", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
-
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
-
-      const validatedData = createContributionSchema.parse(req.body);
-      const contribution = await storage.addContribution(req.params.id, validatedData);
-      
-      res.status(201).json({ contribution });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de l\'ajout de la contribution:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  app.get("/api/sessions/:id/contributions", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
-
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
-
-      const contributions = await storage.getSessionContributions(req.params.id);
-      res.json({ contributions });
-    } catch (error) {
-      console.error('Erreur lors de la récupération des contributions:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  // Routes des résultats
-  app.post("/api/sessions/:id/result", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
-
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
-
-      const validatedData = createResultSchema.parse(req.body);
-      const result = await storage.saveSessionResult(req.params.id, validatedData);
-      
-      res.status(201).json({ result });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: 'Données invalides', details: error.errors });
-      }
-      console.error('Erreur lors de la sauvegarde du résultat:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  app.get("/api/sessions/:id/result", requireAuth, async (req: any, res) => {
-    try {
-      const session = await storage.getSessionById(req.params.id);
-      if (!session) {
-        return res.status(404).json({ error: 'Session non trouvée' });
-      }
-
-      if (session.userId !== req.session.userId) {
-        return res.status(403).json({ error: 'Accès refusé' });
-      }
-
-      const result = await storage.getSessionResult(req.params.id);
-      if (!result) {
-        return res.status(404).json({ error: 'Résultat non trouvé' });
-      }
-
-      res.json({ result });
-    } catch (error) {
-      console.error('Erreur lors de la récupération du résultat:', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-  });
-
-  const httpServer = createServer(app);
-  return httpServer;
+  const randomTitle = titleWords[Math.floor(Math.random() * titleWords.length)];
+  const randomDescriptor = descriptors[Math.floor(Math.random() * descriptors.length)];
+  
+  return `${randomTitle} ${randomDescriptor.charAt(0).toUpperCase() + randomDescriptor.slice(1)}`;
 }
+
+function generateText(initialText: string, selectedPrompts: string[], parameters: any): string {
+  // This is a simplified version - replace with actual AI generation
+  return `Dans les replis secrets de votre être, une présence unique se révèle à travers vos mots : "${initialText.substring(0, 50)}..."
+
+Comme une rivière souterraine qui nourrit des jardins invisibles, votre ressenti actuel porte en lui la sagesse des profondeurs. Les métaphores s'entrelacent : vous êtes à la fois la graine qui attend son printemps et la terre qui l'accueille.
+
+Cette tension créatrice, ce dialogue intérieur entre ce qui est et ce qui aspire à naître, dessine les contours d'une transformation en cours. Votre état présent résonne avec l'archétype du contemplateur, celui qui observe les mouvements subtils de l'âme avec la patience du sage et la curiosité de l'enfant.
+
+Les nuances de votre expression révèlent un paysage intérieur riche en couleurs et en textures, où chaque mot devient une porte vers une compréhension plus profonde de votre essence.`;
+}
+
+function generateGuide(initialText: string, parameters: any): string {
+  return `Pour accompagner cette résonance :
+• Prenez un moment de silence pour ressentir cette présence mentionnée
+• Identifiez dans votre quotidien les moments où cette 'rivière souterraine' se manifeste  
+• Explorez quelle transformation pourrait vouloir naître en vous
+• Notez les synchronicités qui pourraient confirmer cette direction
+• Créez un espace quotidien pour dialoguer avec cette partie de vous-même
+• Observez comment ces insights peuvent nourrir votre créativité`;
+}
+
+function generateTags(initialText: string, parameters: any): string[] {
+  const baseTags = ['contemplation', 'transformation', 'intériorité'];
+  const emotionalTags = ['présence', 'profondeur', 'sagesse', 'mystère'];
+  const metaphoricalTags = ['rivière', 'jardin', 'graine', 'lumière'];
+  
+  // Mix tags based on content and parameters
+  return [...baseTags, ...emotionalTags.slice(0, 2), ...metaphoricalTags.slice(0, 1)];
+}
+
+export { router };

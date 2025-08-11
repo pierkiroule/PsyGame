@@ -2,9 +2,11 @@
 
 ## Overview
 
-Psychographe est une application React interactive qui sert d'outil créatif et projectif minimaliste. L'application génère des "psychographies" uniques (créations poétiques et introspectives) basées sur les contributions des utilisateurs et des configurations de jeu sélectionnées. 
+Psychographe est devenu un outil de brainstorming projectif et résonant révolutionnaire. L'application transforme le processus créatif en un studio psychographique fluide où les utilisateurs peuvent enrichir et développer leurs idées initiales à travers un processus d'IA collaborative.
 
-L'application guide les utilisateurs à travers un processus créatif structuré mais simplifié : exploration guidée, contributions créatives, et réception de contenu artistique généré avec notation optionnelle et badges. L'interface privilégie la simplicité, la fluidité et l'accessibilité avec des explications claires et un onboarding intégré. L'accent est mis sur l'expérience utilisateur minimaliste mais pertinente.
+L'approche est entièrement repensée autour de trois étapes fluides sur une seule page : (1) Saisie vocale ou textuelle du texte initial, (2) Enrichissement dans le labo psychographique avec génération de prompts et paramétrage créatif, (3) Génération finale avec contrôle précis des paramètres et sauvegarde dans la psychothèque publique/privée.
+
+L'interface privilégie la fluidité totale avec voice-to-text universel, visualisation en temps réel du prompt enrichi, et contrôle granulaire du processus créatif.
 
 ## Recent Changes
 
