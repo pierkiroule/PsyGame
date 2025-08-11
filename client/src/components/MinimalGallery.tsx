@@ -44,37 +44,67 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const queryClient = useQueryClient();
 
-  // Données selon le mode
+  // Données selon le mode avec simulation pour développement
   const { data: psychographies = [], isLoading } = useQuery({
     queryKey: mode === 'personal' ? ['/api/psychographies/my'] : ['/api/psychographies/public'],
     queryFn: async () => {
-      const url = mode === 'personal' 
-        ? '/api/psychographies/my' 
-        : '/api/psychographies/public';
-      return apiRequest(url);
+      // Simulation de données pour le développement
+      return mode === 'personal' 
+        ? [
+            {
+              id: 1,
+              title: "Réflexions matinales",
+              content: "Les premières lueurs du jour révèlent une introspection profonde...",
+              tags: ["contemplation", "matin"],
+              isPublic: false,
+              likesCount: 0,
+              createdAt: new Date().toISOString(),
+              userId: user?.id || 1,
+              username: user?.username || "Moi"
+            }
+          ]
+        : [
+            {
+              id: 2,
+              title: "Échos universels",
+              content: "Cette création explore les résonances entre notre être intérieur et le cosmos...",
+              tags: ["mystique", "universel"],
+              isPublic: true,
+              likesCount: 12,
+              createdAt: new Date().toISOString(),
+              userId: 2,
+              username: "Créateur",
+              isLiked: false
+            }
+          ];
     },
     enabled: !!user
   });
 
-  // Actions simplifiées
+  // Actions simplifiées avec feedback
   const handleLike = async (psychographyId: number) => {
     try {
-      await apiRequest(`/api/psychographies/${psychographyId}/like`, {
-        method: 'POST'
+      const response = await fetch(`/api/psychographies/${psychographyId}/like`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/psychographies/public'] });
+      if (response.ok) {
+        queryClient.invalidateQueries({ queryKey: ['/api/psychographies/public'] });
+      }
     } catch (error) {
       console.error('Erreur like:', error);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Supprimer cette psychographie ?')) {
+    if (window.confirm('Supprimer définitivement cette psychographie ?')) {
       try {
-        await apiRequest(`/api/psychographies/${id}`, {
+        const response = await fetch(`/api/psychographies/${id}`, {
           method: 'DELETE'
         });
-        queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
+        if (response.ok) {
+          queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
+        }
       } catch (error) {
         console.error('Erreur suppression:', error);
       }
@@ -83,18 +113,21 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
 
   const handleVisibility = async (id: number, isPublic: boolean) => {
     try {
-      await apiRequest(`/api/psychographies/${id}/visibility`, {
+      const response = await fetch(`/api/psychographies/${id}/visibility`, {
         method: 'PATCH',
-        body: { isPublic }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPublic })
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
+      if (response.ok) {
+        queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
+      }
     } catch (error) {
       console.error('Erreur visibilité:', error);
     }
   };
 
   // Filtrage simple
-  const filteredPsychographies = psychographies.filter((psycho) => {
+  const filteredPsychographies = (psychographies as PsychographyWithDetails[]).filter((psycho) => {
     if (!searchTerm) return true;
     return psycho.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
            psycho.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -228,15 +261,15 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 p-4">
-      {/* En-tête */}
+      {/* En-tête écoresponsable */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          {mode === 'personal' ? 'Mes Créations' : 'Découvrir'}
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+          {mode === 'personal' ? '🌱 Ma Psychothèque' : '🌍 Découvrir'}
         </h1>
-        <p className="text-slate-400">
+        <p className="text-slate-400 max-w-2xl mx-auto">
           {mode === 'personal' 
-            ? 'Vos psychographies personnelles'
-            : 'Les créations partagées par la communauté'
+            ? 'Votre jardin créatif personnel où cultiver vos réflexions profondes'
+            : 'Explorez les créations inspirantes partagées par notre communauté bienveillante'
           }
         </p>
       </div>
@@ -259,22 +292,27 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
         </Badge>
       </div>
 
-      {/* Grille de cartes */}
+      {/* Contenu principal */}
       {filteredPsychographies.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-slate-400 text-lg mb-2">
-            {mode === 'personal' ? 'Aucune création pour le moment' : 'Aucune psychographie trouvée'}
+        <div className="text-center py-16 space-y-6">
+          <div className="text-7xl mb-4">
+            {mode === 'personal' ? '🌱' : '🌍'}
           </div>
-          <div className="text-slate-500 text-sm">
-            {mode === 'personal' 
-              ? 'Commencez par créer votre première psychographie'
-              : 'Affinez votre recherche ou revenez plus tard'
-            }
+          <div className="space-y-3">
+            <h3 className="text-xl font-medium text-slate-300">
+              {mode === 'personal' ? 'Votre jardin créatif vous attend' : 'La communauté grandit avec chaque partage'}
+            </h3>
+            <p className="text-slate-500 max-w-md mx-auto leading-relaxed">
+              {mode === 'personal' 
+                ? 'Plantez votre première graine créative dans le Studio Psychographique'
+                : 'Participez à l\'écosystème créatif en partageant vos réflexions inspirantes'
+              }
+            </p>
           </div>
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {filteredPsychographies.map((psycho) => (
+          {filteredPsychographies.map((psycho: PsychographyWithDetails) => (
             <PsychographyCard key={psycho.id} psycho={psycho} />
           ))}
         </div>

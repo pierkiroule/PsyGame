@@ -23,9 +23,9 @@ import { apiRequest } from '@/lib/queryClient';
 import { VoiceTextInput } from '@/components/ui/voice-text-input';
 
 const STYLES = [
-  { id: 'poetique', label: 'Poétique', icon: '🌸' },
-  { id: 'philosophique', label: 'Philosophique', icon: '🤔' },
-  { id: 'mystique', label: 'Mystique', icon: '✨' }
+  { id: 'poetique', label: 'Poétique', icon: '🌱', desc: 'Expression créative et métaphorique' },
+  { id: 'philosophique', label: 'Philosophique', icon: '🔍', desc: 'Réflexion profonde et analytique' },
+  { id: 'mystique', label: 'Mystique', icon: '✨', desc: 'Exploration spirituelle et intuitive' }
 ];
 
 export const MinimalStudio: React.FC = () => {
@@ -103,16 +103,18 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
     mutationFn: async () => {
       if (!user) throw new Error('Utilisateur non connecté');
       
-      return apiRequest('/api/psychographies', {
+      const response = await fetch('/api/psychographies', {
         method: 'POST',
-        body: {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           title: initialText.slice(0, 50) + (initialText.length > 50 ? '...' : ''),
           content: finalContent,
           tags: [selectedStyle, 'studio'],
           isPublic,
           userId: user.id
-        },
+        })
       });
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/psychographies'] });
@@ -166,24 +168,30 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
             <VoiceTextInput
               value={initialText}
               onChange={setInitialText}
-              placeholder="Exprimez librement ce qui vous vient à l'esprit..."
-              className="min-h-24 bg-slate-800 border-slate-600 text-slate-100"
+              placeholder="Partagez ce qui vous habite en ce moment... Vos pensées, émotions ou réflexions"
+              className="min-h-32 bg-slate-800 border-slate-600 text-slate-100 placeholder:text-slate-400"
             />
             
-            {/* Sélection de style simplifiée */}
-            <div className="space-y-2">
-              <Label className="text-slate-300">Style créatif</Label>
-              <div className="flex gap-2">
+            {/* Sélection de style enrichie */}
+            <div className="space-y-3">
+              <Label className="text-slate-300 font-medium">Approche créative</Label>
+              <div className="grid gap-3">
                 {STYLES.map((style) => (
                   <Button
                     key={style.id}
                     variant={selectedStyle === style.id ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedStyle(style.id)}
-                    className="flex items-center gap-2"
+                    className={`p-4 h-auto flex items-center gap-3 text-left ${
+                      selectedStyle === style.id 
+                        ? "bg-blue-600 hover:bg-blue-700 border-blue-500" 
+                        : "border-slate-600 hover:bg-slate-800/50"
+                    }`}
                   >
-                    <span>{style.icon}</span>
-                    <span>{style.label}</span>
+                    <span className="text-lg">{style.icon}</span>
+                    <div className="flex-1">
+                      <div className="font-medium">{style.label}</div>
+                      <div className="text-xs opacity-70 mt-1">{style.desc}</div>
+                    </div>
                   </Button>
                 ))}
               </div>
@@ -199,7 +207,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
               ) : (
                 <ArrowRight className="w-4 h-4 mr-2" />
               )}
-              Enrichir ma pensée
+              🌱 Enrichir ma réflexion
             </Button>
           </CardContent>
         </Card>
@@ -211,7 +219,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
           <CardHeader>
             <CardTitle className="text-slate-100 flex items-center gap-2">
               <Wand2 className="w-5 h-5 text-purple-400" />
-              Choisissez votre direction créative
+              ✨ Affinez votre inspiration
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -260,7 +268,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
           <CardHeader>
             <CardTitle className="text-slate-100 flex items-center gap-2">
               <Save className="w-5 h-5 text-emerald-400" />
-              Votre psychographie
+              🌟 Votre création psychographique
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -285,7 +293,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
               />
               <Label htmlFor="public-switch" className="flex items-center gap-2 text-slate-300">
                 {isPublic ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                {isPublic ? 'Visible par tous' : 'Privé'}
+                {isPublic ? '🌍 Partager avec la communauté' : '🌱 Garder dans mon jardin privé'}
               </Label>
             </div>
 
@@ -308,7 +316,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
                 ) : (
                   <Save className="w-4 h-4 mr-2" />
                 )}
-                Sauvegarder
+                🌱 Cultiver ma création
               </Button>
             </div>
           </CardContent>

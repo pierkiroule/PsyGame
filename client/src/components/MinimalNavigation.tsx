@@ -2,14 +2,14 @@ import React from 'react';
 import { Link, useLocation } from "wouter";
 import { Button } from "./ui/button";
 import { LogoCompact } from "./Logo";
-import { Home, BookOpen, Users, Plus } from "lucide-react";
+import { BookOpen, Users, Plus } from "lucide-react";
 
 export const MinimalNavigation = () => {
   const [location] = useLocation();
 
   const navigation = [
-    { href: "/", icon: Home, label: "Créer", id: "nav-create" },
-    { href: "/mes-creations", icon: BookOpen, label: "Mes Créations", id: "nav-my" },
+    { href: "/", icon: Plus, label: "Studio", id: "nav-create" },
+    { href: "/mes-creations", icon: BookOpen, label: "Ma Psychothèque", id: "nav-my" },
     { href: "/decouvrir", icon: Users, label: "Découvrir", id: "nav-discover" },
   ];
 
