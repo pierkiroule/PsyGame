@@ -18,7 +18,7 @@ import {
 import { clsx } from 'clsx';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/contexts/AuthContext';
-// Types simplifiés pour la version minimaliste
+// Types adaptés aux données de la base
 type Psychography = {
   id: number;
   title: string;
@@ -27,7 +27,9 @@ type Psychography = {
   isPublic: boolean;
   likesCount: number;
   createdAt: string;
-  userId: number;
+  userId: string;
+  initial_text?: string;
+  final_prompt?: string;
 };
 
 type PsychographyWithDetails = Psychography & {
@@ -44,41 +46,15 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const queryClient = useQueryClient();
 
-  // Données selon le mode avec simulation pour développement
+  // Chargement des vraies données depuis l'API
   const { data: psychographies = [], isLoading } = useQuery({
     queryKey: mode === 'personal' ? ['/api/psychographies/my'] : ['/api/psychographies/public'],
     queryFn: async () => {
-      // Simulation de données pour le développement
-      return mode === 'personal' 
-        ? [
-            {
-              id: 1,
-              title: "Réflexions matinales",
-              content: "Les premières lueurs du jour révèlent une introspection profonde...",
-              tags: ["contemplation", "matin"],
-              isPublic: false,
-              likesCount: 0,
-              createdAt: new Date().toISOString(),
-              userId: user?.id || 1,
-              username: user?.username || "Moi"
-            }
-          ]
-        : [
-            {
-              id: 2,
-              title: "Échos universels",
-              content: "Cette création explore les résonances entre notre être intérieur et le cosmos...",
-              tags: ["mystique", "universel"],
-              isPublic: true,
-              likesCount: 12,
-              createdAt: new Date().toISOString(),
-              userId: 2,
-              username: "Créateur",
-              isLiked: false
-            }
-          ];
-    },
-    enabled: !!user
+      const endpoint = mode === 'personal' ? '/api/psychographies/my' : '/api/psychographies/public';
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error('Erreur de chargement');
+      return response.json();
+    }
   });
 
   // Actions simplifiées avec feedback

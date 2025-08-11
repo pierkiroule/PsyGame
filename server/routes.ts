@@ -3,8 +3,48 @@ import { z } from "zod";
 import { insertPsychographySchema, psychographyParametersSchema, insertVoteSchema, insertCommentSchema } from "@shared/schema";
 import { storage } from "./storage";
 import { generateDocxPack } from "./docxGenerator";
+import { db } from "./db";
 
 const router = express.Router();
+
+// Get public psychographies
+router.get("/api/psychographies/public", async (req, res) => {
+  try {
+    const result = await db.execute(`
+      SELECT 
+        id, 
+        title, 
+        initial_text, 
+        final_prompt,
+        generated_text as content,
+        tags,
+        votes_count as "likesCount",
+        created_at as "createdAt",
+        user_id as "userId",
+        'demo_user' as username,
+        true as "isPublic"
+      FROM psychographies 
+      WHERE is_public = true 
+      ORDER BY votes_count DESC, created_at DESC
+    `);
+    
+    res.json(result.rows || []);
+  } catch (error) {
+    console.error("Error fetching public psychographies:", error);
+    res.status(500).json({ error: "Failed to load psychographies" });
+  }
+});
+
+// Get user's personal psychographies  
+router.get("/api/psychographies/my", async (req, res) => {
+  try {
+    // For development, return empty array (no user authentication yet)
+    res.json([]);
+  } catch (error) {
+    console.error("Error fetching personal psychographies:", error);
+    res.status(500).json({ error: "Failed to load psychographies" });
+  }
+});
 
 // Generate enriched prompts for psychography creation
 router.post("/api/psychography/generate-prompts", async (req, res) => {
