@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +39,7 @@ export const MinimalStudio: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   // Génération des prompts enrichis (étape 2)
   const generatePrompts = async () => {
@@ -93,6 +95,8 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
   // Sauvegarde
   const saveMutation = useMutation({
     mutationFn: async () => {
+      if (!user) throw new Error('Utilisateur non connecté');
+      
       return apiRequest('/api/psychographies', {
         method: 'POST',
         body: {
@@ -100,6 +104,7 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
           content: finalContent,
           tags: [selectedStyle, 'studio'],
           isPublic,
+          userId: user.id
         },
       });
     },

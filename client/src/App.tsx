@@ -24,7 +24,6 @@ import { PageTransition } from './components/PageTransition';
 import { PsychographicStudio } from './components/PsychographicStudio';
 import { Psychotheque } from './components/Psychotheque';
 import { Loader2 } from "lucide-react";
-import { EcoToggle } from './components/EcoToggle';
 
 const queryClient = new QueryClient();
 
@@ -86,14 +85,14 @@ const AppContent = () => {
           <Route path="/mes-psychographies" component={MesPsychographies} />
           <Route path="/mes-creations" component={MesPsychographies} />
           <Route path="/voice-demo" component={VoiceDemo} />
-          <Route path="/minimal" component={MinimalApp} />
-          <Route path="/">
+          <Route path="/legacy">
             {user ? (
               <PsychographicStudio />
             ) : (
               <HomeScreen />
             )}
           </Route>
+          <Route path="/" component={MinimalApp} />
           <Route path="/legacy">
             {user ? (
               <SessionProvider>
@@ -116,7 +115,6 @@ function App() {
       <AuthProvider>
         <AppContent />
         <Toaster />
-        <EcoToggle />
       </AuthProvider>
     </QueryClientProvider>
   );
