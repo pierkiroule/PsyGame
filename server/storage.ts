@@ -1,7 +1,23 @@
 // The storage interface for the application
-import { users, psychographies, type User, type InsertUser, type Psychography, type InsertPsychography } from "@shared/schema";
+import { 
+  users, 
+  psychographies, 
+  psychographyVotes,
+  psychographyComments,
+  downloadPacks,
+  type User, 
+  type InsertUser, 
+  type Psychography, 
+  type InsertPsychography,
+  type InsertVote,
+  type PsychographyVote,
+  type InsertComment,
+  type PsychographyComment,
+  type InsertDownloadPack,
+  type DownloadPack
+} from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, avg, count, sql, inArray } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -14,8 +30,24 @@ export interface IStorage {
   getPsychography(id: number): Promise<Psychography | undefined>;
   getUserPsychographies(userId: number, includePrivate?: boolean): Promise<Psychography[]>;
   getPublicPsychographies(): Promise<Psychography[]>;
+  getPsychographiesForGallery(params: {
+    userId?: number;
+    showPrivate?: boolean;
+    filter?: string;
+    sortBy?: string;
+  }): Promise<any[]>;
+  getPsychographiesByIds(ids: number[]): Promise<Psychography[]>;
   updatePsychographyVisibility(id: number, userId: number, isPublic: boolean): Promise<void>;
   deletePsychography(id: number, userId: number): Promise<void>;
+  
+  // Voting operations
+  voteOnPsychography(vote: InsertVote): Promise<void>;
+  
+  // Comment operations
+  commentOnPsychography(comment: InsertComment): Promise<PsychographyComment>;
+  
+  // Download pack operations
+  createDownloadPack(pack: InsertDownloadPack): Promise<DownloadPack>;
 }
 
 // Database storage implementation
@@ -85,6 +117,147 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(psychographies)
       .where(and(eq(psychographies.id, id), eq(psychographies.userId, userId)));
+  }
+
+  async getPsychographiesForGallery(params: {
+    userId?: number;
+    showPrivate?: boolean;
+    filter?: string;
+    sortBy?: string;
+  }): Promise<any[]> {
+    const { userId, showPrivate = false, sortBy = 'recent' } = params;
+    
+    // Build query with joins
+    let query = db
+      .select({
+        id: psychographies.id,
+        title: psychographies.title,
+        initialText: psychographies.initialText,
+        finalPrompt: psychographies.finalPrompt,
+        generatedText: psychographies.generatedText,
+        imageUrl: psychographies.imageUrl,
+        guide: psychographies.guide,
+        tags: psychographies.tags,
+        isPublic: psychographies.isPublic,
+        votesCount: psychographies.votesCount,
+        averageRating: psychographies.averageRating,
+        downloadsCount: psychographies.downloadsCount,
+        createdAt: psychographies.createdAt,
+        userId: psychographies.userId,
+        username: users.username,
+      })
+      .from(psychographies)
+      .leftJoin(users, eq(psychographies.userId, users.id));
+
+    // Apply filters
+    if (showPrivate && userId) {
+      query = query.where(eq(psychographies.userId, userId));
+    } else {
+      query = query.where(eq(psychographies.isPublic, true));
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case 'popular':
+        query = query.orderBy(desc(psychographies.downloadsCount));
+        break;
+      case 'rating':
+        query = query.orderBy(desc(psychographies.averageRating));
+        break;
+      default:
+        query = query.orderBy(desc(psychographies.createdAt));
+    }
+
+    const results = await query;
+    
+    // Get votes and comments for each psychography
+    const psychographyIds = results.map(p => p.id);
+    
+    const votes = userId ? await db
+      .select()
+      .from(psychographyVotes)
+      .where(and(
+        inArray(psychographyVotes.psychographyId, psychographyIds),
+        eq(psychographyVotes.userId, userId)
+      )) : [];
+
+    const comments = await db
+      .select({
+        id: psychographyComments.id,
+        psychographyId: psychographyComments.psychographyId,
+        content: psychographyComments.content,
+        createdAt: psychographyComments.createdAt,
+        username: users.username,
+      })
+      .from(psychographyComments)
+      .leftJoin(users, eq(psychographyComments.userId, users.id))
+      .where(inArray(psychographyComments.psychographyId, psychographyIds))
+      .orderBy(desc(psychographyComments.createdAt));
+
+    // Combine results
+    return results.map(psycho => ({
+      ...psycho,
+      user: { username: psycho.username },
+      userVote: votes.find(v => v.psychographyId === psycho.id),
+      comments: comments
+        .filter(c => c.psychographyId === psycho.id)
+        .map(c => ({
+          id: c.id,
+          content: c.content,
+          createdAt: c.createdAt,
+          user: { username: c.username }
+        }))
+    }));
+  }
+
+  async getPsychographiesByIds(ids: number[]): Promise<Psychography[]> {
+    return await db
+      .select()
+      .from(psychographies)
+      .where(inArray(psychographies.id, ids));
+  }
+
+  async voteOnPsychography(vote: InsertVote): Promise<void> {
+    // Upsert vote
+    await db
+      .insert(psychographyVotes)
+      .values(vote)
+      .onConflictDoUpdate({
+        target: [psychographyVotes.psychographyId, psychographyVotes.userId],
+        set: { rating: vote.rating }
+      });
+
+    // Update psychography stats
+    const avgResult = await db
+      .select({ avg: avg(psychographyVotes.rating), count: count() })
+      .from(psychographyVotes)
+      .where(eq(psychographyVotes.psychographyId, vote.psychographyId));
+
+    const stats = avgResult[0];
+    await db
+      .update(psychographies)
+      .set({
+        averageRating: Math.round((stats.avg || 0) * 10) / 10,
+        votesCount: stats.count || 0,
+        updatedAt: new Date()
+      })
+      .where(eq(psychographies.id, vote.psychographyId));
+  }
+
+  async commentOnPsychography(comment: InsertComment): Promise<PsychographyComment> {
+    const [created] = await db
+      .insert(psychographyComments)
+      .values(comment)
+      .returning();
+    return created;
+  }
+
+  async createDownloadPack(pack: InsertDownloadPack): Promise<DownloadPack> {
+    const [created] = await db
+      .insert(downloadPacks)
+      .values(pack)
+      .returning();
+    return created;
   }
 }
 

@@ -10,7 +10,19 @@ L'interface privilégie la fluidité totale avec voice-to-text universel, visual
 
 ## Recent Changes
 
-**2025-01-11**: Single Question Game Simplification
+**2025-01-11**: Complete Transformation to Psychographic Studio with Gallery System
+- **Studio Psychographique**: Revolutionary 3-step workflow replacing game modes entirely
+- **Step 1 - Initial Input**: Voice/text capture with universal "Qu'est-ce qui vous habite maintenant ?" question
+- **Step 2 - Psychographic Lab**: AI-generated enriched prompts (6 options, select up to 4) with creative parameters
+- **Step 3 - Generation & Save**: Real-time final prompt preview, AI generation, and save to Psychothèque
+- **Enhanced Psychothèque**: Complete gallery system with voting (1-5 stars), commenting, and social features
+- **Download Pack System**: Select multiple psychographies, generate .zip with formatted .docx files including metadata
+- **DOCX Generation**: Professional formatting with logos, legal mentions, creation dates, and structured content
+- **Advanced Database**: PostgreSQL schema with votes, comments, download packs, and gallery statistics
+- **Social Features**: Public/private visibility, community voting, comment system, download tracking
+- **Universal Voice Integration**: VoiceTextInput component across all text fields for natural expression
+
+**2025-01-11**: Legacy Interface Preservation
 - **Universal Question**: "Qu'est-ce qui vous habite maintenant ?" - one powerful question for all formats
 - **SimpleGameSelector**: New interface replacing complex multi-mode system
 - **Three Temporal Modes**: Instant Flash (30s), Contemplation (5min), Vocal Pur (2min voice-only)

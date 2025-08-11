@@ -20,6 +20,7 @@ import { GameScreen } from './components/GameScreen';
 import { ResultsScreen } from './components/ResultsScreen';
 import { PageTransition } from './components/PageTransition';
 import { PsychographicStudio } from './components/PsychographicStudio';
+import { Psychotheque } from './components/Psychotheque';
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -77,7 +78,7 @@ const AppContent = () => {
             <SimpleProfile />
           </Route>
           <Route path="/psychotheque">
-            <MinimalPsychotheque />
+            <Psychotheque />
           </Route>
           <Route path="/voice-demo" component={VoiceDemo} />
           <Route path="/">

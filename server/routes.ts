@@ -1,7 +1,8 @@
 import express from "express";
 import { z } from "zod";
-import { insertPsychographySchema, psychographyParametersSchema } from "@shared/schema";
+import { insertPsychographySchema, psychographyParametersSchema, insertVoteSchema, insertCommentSchema } from "@shared/schema";
 import { storage } from "./storage";
+import { generateDocxPack } from "./docxGenerator";
 
 const router = express.Router();
 
@@ -111,6 +112,28 @@ router.get("/api/psychography/my", async (req, res) => {
   }
 });
 
+// Get psychographies for gallery (with votes, comments, user details)
+router.get("/api/psychography/gallery", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const showPrivate = req.query.private === 'true';
+    const filter = req.query.filter as string;
+    const sortBy = req.query.sort as string;
+    
+    const psychographies = await storage.getPsychographiesForGallery({
+      userId: user?.id,
+      showPrivate,
+      filter,
+      sortBy
+    });
+    
+    res.json(psychographies);
+  } catch (error) {
+    console.error("Error fetching gallery psychographies:", error);
+    res.status(500).json({ error: "Failed to fetch psychographies" });
+  }
+});
+
 // Get public psychographies (psychothèque)
 router.get("/api/psychography/public", async (req, res) => {
   try {
@@ -119,6 +142,96 @@ router.get("/api/psychography/public", async (req, res) => {
   } catch (error) {
     console.error("Error fetching public psychographies:", error);
     res.status(500).json({ error: "Failed to fetch public psychographies" });
+  }
+});
+
+// Vote on psychography
+router.post("/api/psychography/:id/vote", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { id } = req.params;
+    const voteData = insertVoteSchema.parse({
+      ...req.body,
+      psychographyId: Number(id),
+      userId: user.id
+    });
+
+    await storage.voteOnPsychography(voteData);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error voting on psychography:", error);
+    res.status(500).json({ error: "Failed to vote" });
+  }
+});
+
+// Comment on psychography
+router.post("/api/psychography/:id/comment", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { id } = req.params;
+    const commentData = insertCommentSchema.parse({
+      ...req.body,
+      psychographyId: Number(id),
+      userId: user.id
+    });
+
+    const comment = await storage.commentOnPsychography(commentData);
+    res.json(comment);
+  } catch (error) {
+    console.error("Error commenting on psychography:", error);
+    res.status(500).json({ error: "Failed to comment" });
+  }
+});
+
+// Create download pack
+router.post("/api/psychography/download-pack", async (req, res) => {
+  try {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { psychographyIds } = req.body;
+    
+    if (!Array.isArray(psychographyIds) || psychographyIds.length === 0) {
+      return res.status(400).json({ error: "At least one psychography ID is required" });
+    }
+
+    // Get psychographies data
+    const psychographies = await storage.getPsychographiesByIds(psychographyIds);
+    
+    // Generate DOCX pack
+    const { filename, buffer } = await generateDocxPack(psychographies, user.username);
+    
+    // Create download pack record
+    const downloadPack = await storage.createDownloadPack({
+      userId: user.id,
+      psychographyIds: psychographyIds.map(String),
+      filename,
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h expiry
+    });
+
+    // In a real app, you'd upload to cloud storage and return the URL
+    // For now, we'll return the buffer as base64 for immediate download
+    const base64 = buffer.toString('base64');
+    const downloadUrl = `data:application/zip;base64,${base64}`;
+    
+    res.json({ 
+      downloadUrl,
+      filename,
+      packId: downloadPack.id
+    });
+  } catch (error) {
+    console.error("Error creating download pack:", error);
+    res.status(500).json({ error: "Failed to create download pack" });
   }
 });
 
