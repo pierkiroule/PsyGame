@@ -192,13 +192,10 @@ export const Psychotheque: React.FC<PsychothequeProps> = ({ showPrivate = false 
       {/* Header */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          {showPrivate ? 'Ma Psychothèque' : 'Psychothèque Publique'}
+          La Psychothèque
         </h1>
         <p className="text-slate-400">
-          {showPrivate 
-            ? 'Gérez vos créations et découvrez les psychographies de la communauté'
-            : 'Explorez les créations de la communauté, votez et commentez'
-          }
+          Galerie publique communautaire • Découvrez, votez et commentez les créations partagées
         </p>
       </div>
 

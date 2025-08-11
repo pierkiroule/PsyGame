@@ -10,6 +10,7 @@ import SimpleProfile from "./pages/simple-profile";
 import MinimalPsychotheque from "./pages/minimal-psychotheque";
 import MinimalHome from "./pages/minimal-home";
 import VoiceDemo from "./pages/voice-demo";
+import MesPsychographies from "./pages/mes-psychographies";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -80,6 +81,8 @@ const AppContent = () => {
           <Route path="/psychotheque">
             <Psychotheque />
           </Route>
+          <Route path="/mes-psychographies" component={MesPsychographies} />
+          <Route path="/mes-creations" component={MesPsychographies} />
           <Route path="/voice-demo" component={VoiceDemo} />
           <Route path="/">
             {user ? (
