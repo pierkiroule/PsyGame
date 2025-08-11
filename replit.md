@@ -8,6 +8,15 @@ L'application guide les utilisateurs à travers un processus créatif structuré
 
 ## Recent Changes
 
+**2025-01-11**: Single Question Game Simplification
+- **Universal Question**: "Qu'est-ce qui vous habite maintenant ?" - one powerful question for all formats
+- **SimpleGameSelector**: New interface replacing complex multi-mode system
+- **Three Temporal Modes**: Instant Flash (30s), Contemplation (5min), Vocal Pur (2min voice-only)
+- **Format Adaptation**: Same question works for Solo/Duo/Group with different psychography generation
+- **Inspiration System**: Integrated idea associations and creative prompts to spark responses
+- **Voice Integration**: Universal voice-to-text across all response fields
+- **Data Structure**: Adapted existing session system to work with simplified single-question approach
+
 **2025-01-10**: Complete Scoring System Removal and Cooperative Focus
 - **Scoring Logic Eliminated**: All scoring, points, badges, and competitive elements completely removed from application
 - **Cooperative Experience**: Focus shifted to pure collaborative creativity without metrics or competition
@@ -61,13 +70,13 @@ The application uses a **React SPA (Single Page Application)** architecture buil
 
 **Voice-to-Text Integration**: Système complet de reconnaissance vocale utilisant l'API Web Speech Recognition native pour la capture spontanée d'idées créatives. Interface fluide combinant saisie vocale et textuelle avec transcription temps réel, gestion d'erreurs et compatibilité navigateur.
 
-**Game Modes System**: Système de modes de jeu finalisé avec 5 expériences distinctes :
-- Sprint Créatif (3min) : création instinctive et rapide pour débutants
-- Exploration Profonde (7 jours) : voyage introspectif avancé avec questions évolutives  
-- Mode Synesthésie (15min) : mélange sensoriel créatif niveau intermédiaire
-- Constellation Collective (10min) : création collaborative interconnectée
-- Flux Vocal (5min) : expression entièrement vocale pour débutants
-Chaque mode inclut consignes synthétiques, exemples pertinents, expérience coopérative sans scoring
+**Simplified Game System**: Revolutionary single-question approach with universal adaptability:
+- **One Universal Question**: "Qu'est-ce qui vous habite maintenant ?" works for all contexts and players
+- **Three Temporal Modes**: Instant Flash (30s spontaneous), Contemplation (5min deep), Vocal Pur (2min voice-only)
+- **Format Scaling**: Solo (introspection), Duo (crossed resonances), Group (collective constellation)
+- **Inspiration Engine**: Integrated creative prompts and word associations to spark authentic responses
+- **Voice-First Design**: All text fields include voice-to-text for natural expression
+- **Cooperative Focus**: Pure creative collaboration without any competitive scoring elements
 
 ### Backend Architecture
 The backend uses **Express.js** with TypeScript in ESM format. Currently minimal, it's structured to support future API endpoints with a clean separation between routing (`routes.ts`) and business logic.

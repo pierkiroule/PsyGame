@@ -4,6 +4,7 @@ import { GameFormat, GameStyle, CitationType } from '../types/session';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { VoiceTextInput } from './ui/voice-text-input';
+import { SimpleGameSelector } from './SimpleGameSelector';
 import { Badge } from './ui/badge';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
@@ -13,8 +14,9 @@ import { Switch } from './ui/switch';
 import { User, Users, Home, Target, Feather, Lightbulb, Flag, Play } from 'lucide-react';
 
 export const NewSessionScreen = () => {
-  const { sessionConfig, updateSessionConfig, navigateToScreen, getPlayerCount } = useSession();
+  const { sessionConfig, updateSessionConfig, navigateToScreen, getPlayerCount, updatePlayerInputs, generateResults } = useSession();
   const [localConfig, setLocalConfig] = useState(sessionConfig);
+  const [useSimpleMode, setUseSimpleMode] = useState(true);
 
   const handleFormatChange = (format: GameFormat) => {
     const newConfig = { ...localConfig, format };
@@ -50,6 +52,33 @@ export const NewSessionScreen = () => {
     navigateToScreen('game');
   };
 
+  // Mode simplifié activé par défaut
+  if (useSimpleMode) {
+    return (
+      <SimpleGameSelector 
+        onStartGame={(responses, format, mode) => {
+          // Adapter les données pour le contexte existant
+          const playerInputs = Object.keys(responses).map((key, index) => ({
+            name: `Participant ${index + 1}`,
+            contribution: responses[key],
+            keywords: ''
+          }));
+          
+          const newConfig = {
+            ...sessionConfig,
+            format: format as any,
+            gameMode: mode
+          };
+          
+          updateSessionConfig(newConfig);
+          updatePlayerInputs(playerInputs);
+          generateResults();
+        }}
+      />
+    );
+  }
+
+  // Ancienne interface complexe (désactivée par défaut)
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -57,6 +86,14 @@ export const NewSessionScreen = () => {
           Nouvelle Session
         </h2>
         <p className="text-slate-400">Configurez votre exploration écho-créative</p>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setUseSimpleMode(true)}
+          className="mt-4"
+        >
+          Basculer vers le mode simplifié
+        </Button>
       </div>
 
       <div className="space-y-6">
