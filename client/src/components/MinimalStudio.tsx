@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,16 +41,19 @@ export const MinimalStudio: React.FC = () => {
 
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const { toast } = useToast();
 
   // Génération des prompts enrichis (étape 2)
   const generatePrompts = async () => {
     setIsGenerating(true);
     try {
-      const response = await apiRequest('/api/generate/prompts', {
+      const response = await fetch('/api/generate/prompts', {
         method: 'POST',
-        body: { initialText, style: selectedStyle }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initialText, style: selectedStyle })
       });
-      setEnrichedPrompts(response.prompts);
+      const data = await response.json();
+      setEnrichedPrompts(data.prompts);
       setCurrentStep(2);
     } catch (error) {
       console.error('Erreur génération prompts:', error);
@@ -70,11 +74,13 @@ export const MinimalStudio: React.FC = () => {
   const generateFinalContent = async () => {
     setIsGenerating(true);
     try {
-      const response = await apiRequest('/api/generate/content', {
+      const response = await fetch('/api/generate/content', {
         method: 'POST',
-        body: { initialText, selectedPrompt, style: selectedStyle }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initialText, selectedPrompt, style: selectedStyle })
       });
-      setFinalContent(response.content);
+      const data = await response.json();
+      setFinalContent(data.content);
       setCurrentStep(3);
     } catch (error) {
       console.error('Erreur génération contenu:', error);
@@ -110,6 +116,10 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/psychographies'] });
+      toast({
+        title: "Psychographie sauvegardée",
+        description: "Votre création a été enregistrée avec succès."
+      });
       // Reset pour nouvelle création
       setCurrentStep(1);
       setInitialText('');

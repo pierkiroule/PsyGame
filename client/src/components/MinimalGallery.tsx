@@ -45,65 +45,53 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
   const queryClient = useQueryClient();
 
   // Données selon le mode
-  const { data: psychographies = [], isLoading } = useQuery<
-    mode extends 'personal' ? Psychography[] : PsychographyWithDetails[]
-  >({
+  const { data: psychographies = [], isLoading } = useQuery({
     queryKey: mode === 'personal' ? ['/api/psychographies/my'] : ['/api/psychographies/public'],
+    queryFn: async () => {
+      const url = mode === 'personal' 
+        ? '/api/psychographies/my' 
+        : '/api/psychographies/public';
+      return apiRequest(url);
+    },
     enabled: !!user
   });
 
-  // Mutation pour toggle like
-  const likeMutation = useMutation({
-    mutationFn: async (psychographyId: number) => {
-      return apiRequest(`/api/psychographies/${psychographyId}/like`, {
-        method: 'POST',
+  // Actions simplifiées
+  const handleLike = async (psychographyId: number) => {
+    try {
+      await apiRequest(`/api/psychographies/${psychographyId}/like`, {
+        method: 'POST'
       });
-    },
-    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/psychographies/public'] });
-    },
-  });
+    } catch (error) {
+      console.error('Erreur like:', error);
+    }
+  };
 
-  // Mutation pour changer visibilité
-  const visibilityMutation = useMutation({
-    mutationFn: async ({ id, isPublic }: { id: number; isPublic: boolean }) => {
-      return apiRequest(`/api/psychographies/${id}/visibility`, {
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Supprimer cette psychographie ?')) {
+      try {
+        await apiRequest(`/api/psychographies/${id}`, {
+          method: 'DELETE'
+        });
+        queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
+      } catch (error) {
+        console.error('Erreur suppression:', error);
+      }
+    }
+  };
+
+  const handleVisibility = async (id: number, isPublic: boolean) => {
+    try {
+      await apiRequest(`/api/psychographies/${id}/visibility`, {
         method: 'PATCH',
-        body: { isPublic },
+        body: { isPublic }
       });
-    },
-    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
-    },
-  });
-
-  // Mutation pour supprimer
-  const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
-      return apiRequest(`/api/psychographies/${id}`, {
-        method: 'DELETE',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/psychographies/my'] });
-    },
-  });
-
-  // Mutation pour export PDF
-  const exportMutation = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await fetch(`/api/psychographies/${id}/export`, {
-        method: 'GET',
-      });
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `psychographie-${id}.pdf`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    },
-  });
+    } catch (error) {
+      console.error('Erreur visibilité:', error);
+    }
+  };
 
   // Filtrage simple
   const filteredPsychographies = psychographies.filter((psycho) => {
@@ -113,7 +101,7 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
            psycho.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
   });
 
-  const PsychographyCard = ({ psycho }: { psycho: any }) => (
+  const PsychographyCard = ({ psycho }: { psycho: PsychographyWithDetails }) => (
     <Card className="bg-slate-900 border-slate-700 hover:border-slate-600 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
@@ -124,8 +112,8 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => likeMutation.mutate(psycho.id)}
-              disabled={likeMutation.isPending}
+              onClick={() => handleLike(psycho.id)}
+              disabled={false}
               className={clsx(
                 "flex items-center gap-1 min-w-0",
                 (psycho as PsychographyWithDetails).isLiked 
@@ -178,11 +166,8 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => visibilityMutation.mutate({
-                  id: psycho.id,
-                  isPublic: !psycho.isPublic
-                })}
-                disabled={visibilityMutation.isPending}
+                onClick={() => handleVisibility(psycho.id, !psycho.isPublic)}
+                disabled={false}
                 className="flex items-center gap-2 text-slate-400 hover:text-slate-300"
               >
                 {psycho.isPublic ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -196,8 +181,8 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => exportMutation.mutate(psycho.id)}
-                disabled={exportMutation.isPending}
+                onClick={() => window.open(`/api/psychographies/${psycho.id}/export`)}
+                disabled={false}
                 className="text-slate-400 hover:text-slate-300"
               >
                 <Download className="w-4 h-4" />
@@ -205,8 +190,8 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => deleteMutation.mutate(psycho.id)}
-                disabled={deleteMutation.isPending}
+                onClick={() => handleDelete(psycho.id)}
+                disabled={false}
                 className="text-slate-400 hover:text-red-400"
               >
                 <Trash2 className="w-4 h-4" />
