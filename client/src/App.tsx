@@ -113,9 +113,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <AppContent />
-        <Toaster />
+        <MinimalApp />
       </AuthProvider>
+      <Toaster />
     </QueryClientProvider>
   );
 }
