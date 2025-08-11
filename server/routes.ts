@@ -319,4 +319,41 @@ function generateTags(initialText: string, parameters: any): string[] {
   return [...baseTags, ...emotionalTags.slice(0, 2), ...metaphoricalTags.slice(0, 1)];
 }
 
+// Routes minimalistes écoresponsables
+router.post("/api/generate/prompts", async (req, res) => {
+  try {
+    const { initialText, style } = req.body;
+    
+    // Simulation simple - remplacer par vraie IA si besoin
+    const prompts = [
+      `Explorez "${initialText}" sous un angle ${style}`,
+      `Révélez les résonances profondes de "${initialText}"`,
+      `Transformez "${initialText}" en une méditation créative`
+    ];
+    
+    res.json({ prompts });
+  } catch (error) {
+    console.error("Error generating prompts:", error);
+    res.status(500).json({ error: "Erreur lors de la génération" });
+  }
+});
+
+router.post("/api/generate/content", async (req, res) => {
+  try {
+    const { initialText, selectedPrompt, style } = req.body;
+    
+    // Simulation simple - remplacer par vraie IA si besoin
+    const content = `À partir de votre inspiration "${initialText}", voici une psychographie ${style} :
+
+${selectedPrompt}
+
+Cette réflexion révèle les dimensions cachées de votre pensée initiale, tissant des liens entre l'intuition première et les résonances profondes de votre être créatif.`;
+    
+    res.json({ content });
+  } catch (error) {
+    console.error("Error generating content:", error);
+    res.status(500).json({ error: "Erreur lors de la génération" });
+  }
+});
+
 export { router };

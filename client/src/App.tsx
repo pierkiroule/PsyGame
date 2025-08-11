@@ -11,6 +11,7 @@ import MinimalPsychotheque from "./pages/minimal-psychotheque";
 import MinimalHome from "./pages/minimal-home";
 import VoiceDemo from "./pages/voice-demo";
 import MesPsychographies from "./pages/mes-psychographies";
+import MinimalApp from "./pages/minimal-app";
 import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -23,6 +24,7 @@ import { PageTransition } from './components/PageTransition';
 import { PsychographicStudio } from './components/PsychographicStudio';
 import { Psychotheque } from './components/Psychotheque';
 import { Loader2 } from "lucide-react";
+import { EcoToggle } from './components/EcoToggle';
 
 const queryClient = new QueryClient();
 
@@ -84,6 +86,7 @@ const AppContent = () => {
           <Route path="/mes-psychographies" component={MesPsychographies} />
           <Route path="/mes-creations" component={MesPsychographies} />
           <Route path="/voice-demo" component={VoiceDemo} />
+          <Route path="/minimal" component={MinimalApp} />
           <Route path="/">
             {user ? (
               <PsychographicStudio />
@@ -113,6 +116,7 @@ function App() {
       <AuthProvider>
         <AppContent />
         <Toaster />
+        <EcoToggle />
       </AuthProvider>
     </QueryClientProvider>
   );
