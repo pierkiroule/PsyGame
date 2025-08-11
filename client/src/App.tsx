@@ -85,7 +85,7 @@ const AppContent = () => {
             {user ? (
               <PsychographicStudio />
             ) : (
-              <MinimalHome />
+              <HomeScreen />
             )}
           </Route>
           <Route path="/legacy">
@@ -94,7 +94,7 @@ const AppContent = () => {
                 <AuthenticatedApp />
               </SessionProvider>
             ) : (
-              <MinimalHome />
+              <HomeScreen />
             )}
           </Route>
           <Route component={NotFound} />
