@@ -59,8 +59,33 @@ router.get("/api/psychographies/public", async (req, res) => {
 // Get user's personal psychographies  
 router.get("/api/psychographies/my", async (req, res) => {
   try {
-    // For development, return empty array (no user authentication yet)
-    res.json([]);
+    // Pour le développement, retourner quelques psychographies personnelles
+    const myPsychographies = [
+      {
+        id: 101,
+        title: "Ma réflexion personnelle du matin",
+        content: "Ce matin, en observant la rosée sur les feuilles, j'ai pris conscience de la beauté fragile de chaque instant. Cette contemplation m'a révélé ma capacité naturelle à trouver la poésie dans l'ordinaire, à transformer les moments simples en sources d'émerveillement...",
+        tags: ["personnel", "contemplation", "matin"],
+        isPublic: false,
+        likesCount: 0,
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        userId: "demo_user",
+        username: "moi"
+      },
+      {
+        id: 102,
+        title: "Mes questionnements intérieurs",
+        content: "Je me demande souvent ce qui guide réellement mes choix profonds. Cette introspection révèle une personnalité qui cherche l'authenticité dans chacune de ses décisions, qui refuse les compromis avec ses valeurs fondamentales...",
+        tags: ["personnel", "introspection", "valeurs"],
+        isPublic: true,
+        likesCount: 3,
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        userId: "demo_user",
+        username: "moi"
+      }
+    ];
+    
+    res.json(myPsychographies);
   } catch (error) {
     console.error("Error fetching personal psychographies:", error);
     res.status(500).json({ error: "Failed to load psychographies" });
@@ -466,6 +491,31 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
   } catch (error) {
     console.error("Error generating content:", error);
     res.status(500).json({ error: "Erreur lors de la génération" });
+  }
+});
+
+// Export individual psychography
+router.get("/api/psychography/:id/export", async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Pour le développement, créer un export simple
+    const exportContent = `# Psychographie #${id}
+
+Exportée le ${new Date().toLocaleDateString('fr-FR')}
+
+Cette psychographie a été créée dans votre Studio Psychographique.
+
+---
+Psychographe - Outil écoresponsable de création projective
+`;
+
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="psychographie-${id}.txt"`);
+    res.send(exportContent);
+  } catch (error) {
+    console.error("Error exporting psychography:", error);
+    res.status(500).json({ error: "Failed to export psychography" });
   }
 });
 

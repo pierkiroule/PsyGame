@@ -191,7 +191,7 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => window.open(`/api/psychographies/${psycho.id}/export`)}
+                onClick={() => window.open(`/api/psychography/${psycho.id}/export`)}
                 disabled={false}
                 className="text-slate-400 hover:text-slate-300"
               >
