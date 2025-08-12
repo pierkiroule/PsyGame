@@ -5,14 +5,19 @@ import "./index.css";
 import NotFound from "./pages/not-found";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import MinimalApp from "./pages/minimal-app";
+import HomePage from "./pages/home";
+import CreatePage from "./pages/create";
+import MyPsychographiesPage from "./pages/my-psychographies";
+import PsychothequeePage from "./pages/psychotheque";
+import ProfilePage from "./pages/profile";
+import { Navigation } from "./components/Navigation";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
 import { Loader2 } from "lucide-react";
 
 const queryClient = new QueryClient();
 
-// Component principal avec routing simplifié
+// Component principal avec routing complet
 const AppContent = () => {
   const { user, isLoading } = useAuth();
 
@@ -28,13 +33,19 @@ const AppContent = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      {/* Navigation globale */}
+      <Navigation />
+      
+      {/* Contenu principal */}
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
-        <Route path="/mes-creations" component={MinimalApp} />
-        <Route path="/decouvrir" component={MinimalApp} />
-        <Route path="/" component={MinimalApp} />
+        <Route path="/" component={HomePage} />
+        <Route path="/creer" component={CreatePage} />
+        <Route path="/mes-creations" component={MyPsychographiesPage} />
+        <Route path="/psychotheque" component={PsychothequeePage} />
+        <Route path="/profil" component={ProfilePage} />
         <Route component={NotFound} />
       </Switch>
     </div>
