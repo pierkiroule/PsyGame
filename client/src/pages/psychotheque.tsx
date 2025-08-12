@@ -289,7 +289,7 @@ export default function PsychothequeePage() {
             
             <CardContent className="pt-0">
               <p className="text-slate-300 text-sm line-clamp-3 mb-3">
-                {psycho.finalText.substring(0, 150)}...
+                {psycho.finalText?.substring(0, 150) || 'Aucun aperçu disponible'}...
               </p>
               
               {/* Tags */}

@@ -31,25 +31,49 @@ router.post("/api/auth/logout", async (req, res) => {
 // Get public psychographies
 router.get("/api/psychographies/public", async (req, res) => {
   try {
-    const result = await db.execute(`
-      SELECT 
-        id, 
-        title, 
-        initial_text, 
-        final_prompt,
-        generated_text as content,
-        tags,
-        votes_count as "likesCount",
-        created_at as "createdAt",
-        user_id as "userId",
-        'demo_user' as username,
-        true as "isPublic"
-      FROM psychographies 
-      WHERE is_public = true 
-      ORDER BY votes_count DESC, created_at DESC
-    `);
+    // Pour le développement, données de démonstration avec structure complète
+    const publicPsychographies = [
+      {
+        id: 8,
+        title: "L'écologie du temps créatif",
+        initialPrompt: "Je ressens une urgence constante qui m'empêche de créer sereinement...",
+        enrichedPrompt: "Explorez votre rapport au temps et découvrez comment ralentir pour mieux créer",
+        finalText: "L'écologie du temps révèle comment notre rapport temporel influence notre créativité. Cette psychographie explore les rythmes naturels de l'inspiration et invite à une reconnexion profonde avec les cycles créatifs authentiques. En ralentissant, nous découvrons que la création véritable nécessite un temps non-mesurable, un espace de respiration où l'âme peut s'exprimer librement.",
+        sensoryGuide: "Ressentez le ralentissement de votre respiration, la détente de vos épaules, l'apaisement de votre mental quand vous vous accordez du temps créatif sans contrainte.",
+        metaphor: "Comme un arbre qui pousse selon son rythme naturel, votre créativité s'épanouit quand vous respectez les saisons de votre inspiration.",
+        tags: ["écologie", "temps", "créativité", "lenteur"],
+        isPublic: true,
+        authorPseudo: "TimeMaster",
+        likesCount: 15,
+        commentsCount: 8,
+        averageRating: 4.3,
+        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        imageUrl: null,
+        isLiked: false,
+        userRating: 0
+      },
+      {
+        id: 9,
+        title: "Résonances urbaines",
+        initialPrompt: "Le bruit de la ville me traverse et devient musique intérieure...",
+        enrichedPrompt: "Transformez les sons urbains en symphonie personnelle et explorez votre rapport à l'environnement sonore",
+        finalText: "Les résonances urbaines révèlent notre capacité à transformer le chaos en harmonie. Cette psychographie explore comment nous pouvons transmuter les bruits de la ville en mélodie intérieure, créant une bulle de paix au cœur de l'agitation. La ville devient alors un orchestre dont nous sommes le chef d'œuvre.",
+        sensoryGuide: "Écoutez les sons qui vous entourent sans jugement, laissez-les vous traverser comme des vagues sonores qui massent votre être intérieur.",
+        metaphor: "Tel un musicien qui trouve la mélodie dans le silence, vous orchestrez la cacophonie urbaine en symphonie personnelle.",
+        tags: ["urbain", "sons", "harmonie", "ville"],
+        isPublic: true,
+        authorPseudo: "UrbanPoet",
+        likesCount: 23,
+        commentsCount: 12,
+        averageRating: 4.7,
+        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        imageUrl: null,
+        isLiked: false,
+        userRating: 0
+      }
+    ];
     
-    res.json(result.rows || []);
+    res.json(publicPsychographies);
   } catch (error) {
     console.error("Error fetching public psychographies:", error);
     res.status(500).json({ error: "Failed to load psychographies" });
