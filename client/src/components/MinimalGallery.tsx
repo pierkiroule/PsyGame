@@ -60,9 +60,10 @@ export const MinimalGallery: React.FC<MinimalGalleryProps> = ({ mode }) => {
   // Actions simplifiées avec feedback
   const handleLike = async (psychographyId: number) => {
     try {
-      const response = await fetch(`/api/psychographies/${psychographyId}/like`, {
+      const response = await fetch(`/api/psychography/${psychographyId}/vote`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating: 5 })
       });
       if (response.ok) {
         queryClient.invalidateQueries({ queryKey: ['/api/psychographies/public'] });

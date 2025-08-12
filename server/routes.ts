@@ -101,6 +101,58 @@ router.post("/api/psychography/generate-prompts", async (req, res) => {
   }
 });
 
+// Generate final content
+router.post("/api/psychography/generate-content", async (req, res) => {
+  try {
+    const { initialText, selectedPrompt, style } = req.body;
+    
+    if (!initialText?.trim() || !selectedPrompt?.trim()) {
+      return res.status(400).json({ error: "Initial text and prompt are required" });
+    }
+
+    // Génération fallback locale pour le développement
+    const content = `À partir de votre inspiration "${initialText}", voici une psychographie ${style || 'créative'} :
+
+${selectedPrompt}
+
+Cette création révèle les dimensions cachées de votre pensée initiale, tissant des liens entre l'intuition première et les résonances profondes de votre être créatif. Votre expression authentique trouve ici une forme d'expansion poétique qui enrichit la compréhension de vos propres processus intérieurs.`;
+    
+    res.json({ content });
+  } catch (error) {
+    console.error("Error generating content:", error);
+    res.status(500).json({ error: "Failed to generate content" });
+  }
+});
+
+// Create new psychography
+router.post("/api/psychography", async (req, res) => {
+  try {
+    const { title, content, tags = [], isPublic = false } = req.body;
+    
+    if (!title?.trim() || !content?.trim()) {
+      return res.status(400).json({ error: "Title and content are required" });
+    }
+
+    // Pour le développement, on simule la création sans DB
+    const newPsychography = {
+      id: Date.now(),
+      title,
+      content,
+      tags,
+      isPublic,
+      likesCount: 0,
+      createdAt: new Date().toISOString(),
+      userId: "demo_user",
+      username: "demo_user"
+    };
+    
+    res.json(newPsychography);
+  } catch (error) {
+    console.error("Error creating psychography:", error);
+    res.status(500).json({ error: "Failed to create psychography" });
+  }
+});
+
 // Generate psychography content
 router.post("/api/psychography/generate", async (req, res) => {
   try {

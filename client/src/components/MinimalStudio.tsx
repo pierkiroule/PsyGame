@@ -74,7 +74,7 @@ export const MinimalStudio: React.FC = () => {
   const generateFinalContent = async () => {
     setIsGenerating(true);
     try {
-      const response = await fetch('/api/generate/content', {
+      const response = await fetch('/api/psychography/generate-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ initialText, selectedPrompt, style: selectedStyle })
@@ -103,7 +103,7 @@ Cette reson révèle les dimensions cachées de votre pensée initiale, tissant 
     mutationFn: async () => {
       if (!user) throw new Error('Utilisateur non connecté');
       
-      const response = await fetch('/api/psychographies', {
+      const response = await fetch('/api/psychography', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -117,7 +117,7 @@ Cette reson révèle les dimensions cachées de votre pensée initiale, tissant 
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/psychographies'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/psychographies/public'] });
       toast({
         title: "Psychographie sauvegardée",
         description: "Votre création a été enregistrée avec succès."
