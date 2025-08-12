@@ -10,6 +10,15 @@ L'interface privilégie la fluidité totale avec voice-to-text universel, visual
 
 ## Recent Changes
 
+**2025-01-12**: Nettoyage Complet Architecture Legacy
+- **Suppression Système Legacy**: Suppression complète de l'ancien système de jeu (GameScreen, NewSessionScreen, ResultsScreen)
+- **Nettoyage Composants**: Suppression des composants obsolètes (PsychographicStudio, Psychotheque, PageTransition)
+- **Pages Simplifiées**: Conservation uniquement des pages utilisées (minimal-app, login, register, not-found)
+- **Routes Épurées**: App.tsx simplifié avec routing minimal vers MinimalApp uniquement
+- **Composants UI Optimisés**: Suppression des composants UI obsolètes (psychographe-logo, voice-input variants)
+- **Gamification Supprimée**: Suppression définitive des systèmes de scores et badges legacy
+- **Performance Maximisée**: Architecture ultra-légère avec seulement les fichiers actifs conservés
+
 **2025-01-11**: Finalisation Architecture Écoresponsable Minimaliste
 - **Mode Éco Exclusif**: Application 100% écoresponsable sans mode traditionnel, optimisée pour la performance
 - **Studio Psychographique Finalisé**: 3 étapes fluides avec UX enrichie (Saisie → Enrichissement → Création)

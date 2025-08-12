@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { apiRequest } from '@/lib/queryClient';
-import { VoiceTextInput } from '@/components/ui/voice-text-input';
+// VoiceTextInput supprimé - utilisation standard du textarea
 
 const STYLES = [
   { id: 'poetique', label: 'Poétique', icon: '🌱', desc: 'Expression créative et métaphorique' },
@@ -165,9 +165,9 @@ Cette réflexion révèle les dimensions cachées de votre pensée initiale, tis
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <VoiceTextInput
+            <Textarea
               value={initialText}
-              onChange={setInitialText}
+              onChange={(e) => setInitialText(e.target.value)}
               placeholder="Partagez ce qui vous habite en ce moment... Vos pensées, émotions ou réflexions"
               className="min-h-32 bg-slate-800 border-slate-600 text-slate-100 placeholder:text-slate-400"
             />

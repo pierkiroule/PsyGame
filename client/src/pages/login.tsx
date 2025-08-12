@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link, useLocation } from 'wouter';
 import { Loader2 } from 'lucide-react';
-import { PsychographeLogo } from '../components/ui/psychographe-logo';
+import { Logo } from '../components/Logo';
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
@@ -41,7 +41,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <PsychographeLogo size="md" animate={true} />
+            <Logo size={80} />
           </div>
           <p className="text-slate-400">
             Outil écho-créatif de projections poétiques
