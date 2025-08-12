@@ -32,6 +32,8 @@ const AppContent = () => {
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/mes-creations" component={MinimalApp} />
+        <Route path="/decouvrir" component={MinimalApp} />
         <Route path="/" component={MinimalApp} />
         <Route component={NotFound} />
       </Switch>
