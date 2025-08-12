@@ -7,6 +7,27 @@ import { db } from "./db";
 
 const router = express.Router();
 
+// Authentication routes
+router.get("/api/auth/me", async (req, res) => {
+  // For development, return null user (no authentication yet)
+  res.json({ user: null });
+});
+
+router.post("/api/auth/login", async (req, res) => {
+  // For development, return success without actual authentication
+  res.json({ user: { id: 1, username: "demo", email: "demo@example.com" } });
+});
+
+router.post("/api/auth/register", async (req, res) => {
+  // For development, return success without actual registration
+  res.json({ user: { id: 1, username: "demo", email: "demo@example.com" } });
+});
+
+router.post("/api/auth/logout", async (req, res) => {
+  // For development, return success
+  res.json({ success: true });
+});
+
 // Get public psychographies
 router.get("/api/psychographies/public", async (req, res) => {
   try {

@@ -89,7 +89,7 @@ export const MinimalStudio: React.FC = () => {
 
 ${selectedPrompt}
 
-Cette réflexion révèle les dimensions cachées de votre pensée initiale, tissant des liens entre l'intuition première et les résonances profondes de votre être créatif.`;
+Cette reson révèle les dimensions cachées de votre pensée initiale, tissant des liens entre l'intuition première et les résonances profondes de votre être créatif.`;
       
       setFinalContent(content);
       setCurrentStep(3);

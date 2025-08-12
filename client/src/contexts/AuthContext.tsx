@@ -27,23 +27,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const checkAuthStatus = async () => {
-    try {
-      const response = await fetch('/api/auth/me', {
-        credentials: 'include',
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (err) {
-      console.error('Erreur lors de la vérification du statut d\'authentification:', err);
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
+    // Pour le développement, on désactive l'authentification
+    // L'utilisateur peut naviguer librement sans se connecter
+    setUser(null);
+    setIsLoading(false);
   };
 
   const login = async (username: string, password: string) => {
