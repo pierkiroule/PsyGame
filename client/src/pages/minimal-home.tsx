@@ -14,7 +14,7 @@ export default function MinimalHome() {
   const onboardingSteps = [
     {
       target: '#create-button',
-      title: 'Créer votre première psychographie',
+      title: 'Cocréer votre première psychographie',
       description: 'Commencez votre exploration créative en cliquant ici. L\'IA vous guidera à travers un processus d\'exploration personnalisé.',
       position: 'bottom' as const
     },
