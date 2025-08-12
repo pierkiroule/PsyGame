@@ -16,7 +16,7 @@ import { SessionProvider, useSession } from './contexts/SessionContext';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
 import { MinimalHeader } from './components/MinimalHeader';
-import { HomeScreen } from './components/HomeScreen';
+
 import { NewSessionScreen } from './components/NewSessionScreen';
 import { GameScreen } from './components/GameScreen';
 import { ResultsScreen } from './components/ResultsScreen';
@@ -33,8 +33,6 @@ const AuthenticatedApp = () => {
 
   const renderCurrentScreen = () => {
     switch (currentScreen) {
-      case 'home':
-        return <HomeScreen />;
       case 'new-session':
         return <NewSessionScreen />;
       case 'game':
@@ -42,7 +40,7 @@ const AuthenticatedApp = () => {
       case 'results':
         return <ResultsScreen />;
       default:
-        return <HomeScreen />;
+        return <MinimalApp />;
     }
   };
 
@@ -89,19 +87,10 @@ const AppContent = () => {
             {user ? (
               <PsychographicStudio />
             ) : (
-              <HomeScreen />
+              <MinimalApp />
             )}
           </Route>
           <Route path="/" component={MinimalApp} />
-          <Route path="/legacy">
-            {user ? (
-              <SessionProvider>
-                <AuthenticatedApp />
-              </SessionProvider>
-            ) : (
-              <HomeScreen />
-            )}
-          </Route>
           <Route component={NotFound} />
         </Switch>
       </PageTransition>

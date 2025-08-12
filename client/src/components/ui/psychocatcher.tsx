@@ -391,7 +391,7 @@ export default function Psychocatcher({ width = 800, height = 500, className = "
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-orange-400">
             <Sparkles className="w-5 h-5 text-orange-400" />
-            Psychocatcher des Résonances
+            Psychocatcher de votre reseau de tags
           </CardTitle>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={handleZoomIn}>

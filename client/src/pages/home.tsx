@@ -17,7 +17,7 @@ export default function Home() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-slate-100 mb-6">
-            Bienvenue dans l'univers
+            Bienvenue dans votre labo psychographique
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">
               Psychographe
             </span>

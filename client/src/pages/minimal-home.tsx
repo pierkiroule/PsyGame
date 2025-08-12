@@ -15,7 +15,7 @@ export default function MinimalHome() {
     {
       target: '#create-button',
       title: 'Créer votre première psychographie',
-      description: 'Commencez votre voyage créatif en cliquant ici. L\'IA vous guidera à travers un processus d\'exploration personnalisé.',
+      description: 'Commencez votre exploration créative en cliquant ici. L\'IA vous guidera à travers un processus d\'exploration personnalisé.',
       position: 'bottom' as const
     },
     {
