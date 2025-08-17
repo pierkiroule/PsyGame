@@ -5,11 +5,18 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-if (!process.env.DATABASE_URL) {
+// Temporairement désactiver la base de données en mode développement
+if (!process.env.DATABASE_URL && process.env.NODE_ENV === 'production') {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "DATABASE_URL must be set in production. Did you forget to provision a database?",
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+// En mode développement, créer une base de données factice
+export const pool = process.env.DATABASE_URL 
+  ? new Pool({ connectionString: process.env.DATABASE_URL })
+  : null as any;
+
+export const db = process.env.DATABASE_URL 
+  ? drizzle({ client: pool, schema })
+  : null as any;

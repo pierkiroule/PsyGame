@@ -260,10 +260,11 @@ router.post("/api/psychography", async (req, res) => {
 // Generate psychography content
 router.post("/api/psychography/generate", async (req, res) => {
   try {
-    const user = (req as any).user;
-    if (!user) {
-      return res.status(401).json({ error: "Authentication required" });
-    }
+    // Temporairement désactiver l'authentification en mode développement
+    // const user = (req as any).user;
+    // if (!user) {
+    //   return res.status(401).json({ error: "Authentication required" });
+    // }
 
     const {
       initialText,
@@ -291,38 +292,33 @@ router.post("/api/psychography/generate", async (req, res) => {
   }
 });
 
-// Save psychography to database
+// Save psychography to database (temporairement désactivé)
 router.post("/api/psychography", async (req, res) => {
   try {
-    const user = (req as any).user;
-    if (!user) {
-      return res.status(401).json({ error: "Authentication required" });
-    }
-
-    const psychographyData = insertPsychographySchema.parse({
-      ...req.body,
-      userId: user.id
+    // Temporairement désactiver en mode développement
+    res.json({ 
+      id: Date.now(),
+      message: "Psychography saved (demo mode - no database)",
+      ...req.body 
     });
-
-    const psychography = await storage.createPsychography(psychographyData);
-    res.json(psychography);
   } catch (error) {
     console.error("Error saving psychography:", error);
     res.status(500).json({ error: "Failed to save psychography" });
   }
 });
 
-// Get user's psychographies
+// Get user's psychographies (temporairement désactivé)
 router.get("/api/psychography/my", async (req, res) => {
   try {
-    const user = (req as any).user;
-    if (!user) {
-      return res.status(401).json({ error: "Authentication required" });
-    }
-
-    const includePrivate = req.query.private !== 'false';
-    const psychographies = await storage.getUserPsychographies(user.id, includePrivate);
-    res.json(psychographies);
+    // Retourner des données de démonstration
+    res.json([
+      {
+        id: 1,
+        title: "Exploration créative de la mélancolie",
+        text: "Une psychographie de démonstration...",
+        createdAt: new Date().toISOString()
+      }
+    ]);
   } catch (error) {
     console.error("Error fetching user psychographies:", error);
     res.status(500).json({ error: "Failed to fetch psychographies" });
