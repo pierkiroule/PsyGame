@@ -1,74 +1,153 @@
-# Psychographe Écoresponsable
+# Tagzai
 
-> Studio psychographique minimaliste pour l'exploration créative de soi
+Un projet moderne et innovant pour la gestion et l'organisation de tags et de catégories.
 
-## 🌱 Vision
+## 🚀 Description
 
-Psychographe est un outil de brainstorming projectif révolutionnaire qui transforme le processus créatif en un studio psychographique fluide. L'application privilégie une approche écoresponsable et minimaliste, permettant aux utilisateurs d'enrichir et développer leurs idées à travers un processus d'IA collaborative en 3 étapes simples.
+Tagzai est une application web moderne qui permet de gérer, organiser et catégoriser efficacement vos contenus à travers un système de tags intelligent.
 
 ## ✨ Fonctionnalités
 
-### Studio Psychographique (3 étapes)
-1. **Saisie** - Expression libre de vos pensées avec support vocal
-2. **Enrichissement** - Génération de prompts créatifs personnalisés  
-3. **Création** - Génération finale et sauvegarde dans votre psychothèque
+- Gestion avancée des tags
+- Interface utilisateur moderne et intuitive
+- Système de catégorisation flexible
+- Recherche et filtrage puissants
+- API REST complète
 
-### Galeries
-- **Mes Créations** - Gestion personnelle de vos psychographies
-- **Découvrir** - Exploration des créations publiques de la communauté
+## 🛠️ Technologies
 
-### Design Écoresponsable
-- Interface minimaliste optimisée pour la performance
-- Réduction de l'empreinte numérique par design
-- Navigation fluide entre 3 pages essentielles seulement
-- Architecture allégée sans fonctionnalités superflues
+- **Frontend**: React.js, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Base de données**: PostgreSQL (prévu)
+- **ORM**: Prisma (prévu)
+- **Authentification**: JWT
+- **Déploiement**: Vercel
 
-## 🚀 Technologies
+## 📦 Installation
 
-- **Frontend**: React 18, TypeScript, Tailwind CSS
-- **Backend**: Express.js, PostgreSQL avec Drizzle ORM
-- **UI**: shadcn/ui composants avec Radix UI primitives
-- **Déploiement**: Optimisé pour Vercel
+### Développement local
 
-## 🛠️ Installation
-
+1. Clonez le repository :
 ```bash
-# Installation des dépendances
-npm install
+git clone <url-du-repo>
+cd tagzai
+```
 
-# Configuration base de données
-npm run db:push
+2. Installez toutes les dépendances :
+```bash
+npm run install:all
+```
 
-# Démarrage développement
+3. Configurez les variables d'environnement :
+```bash
+cp .env.example .env
+# Éditez le fichier .env avec vos configurations
+```
+
+4. Lancez l'application en mode développement :
+```bash
 npm run dev
 ```
 
-## 📦 Structure
+### Déploiement Vercel
+
+1. **Prérequis** :
+   - Compte Vercel
+   - Repository GitHub connecté
+
+2. **Configuration automatique** :
+   - Connectez votre repository GitHub à Vercel
+   - Vercel détectera automatiquement la configuration
+
+3. **Variables d'environnement** (dans le dashboard Vercel) :
+   ```
+   NODE_ENV=production
+   JWT_SECRET=votre-secret-jwt-super-securise
+   ```
+
+4. **Déploiement** :
+   - Chaque push sur `main` déclenche un déploiement automatique
+   - Les previews sont créées pour chaque Pull Request
+
+## 🔧 Scripts disponibles
+
+### Développement
+- `npm run dev` - Lance le serveur de développement (client + serveur)
+- `npm run dev:server` - Lance uniquement le serveur backend
+- `npm run dev:client` - Lance uniquement le client frontend
+
+### Production
+- `npm run build` - Construit l'application pour la production
+- `npm run start` - Lance l'application en mode production
+- `npm run vercel-build` - Script de build pour Vercel
+
+### Tests
+- `npm run test` - Lance tous les tests
+- `npm run test:server` - Tests backend uniquement
+- `npm run test:client` - Tests frontend uniquement
+
+## 📁 Structure du projet
 
 ```
-├── client/src/           # Application React frontend
-│   ├── components/       # Composants UI réutilisables
-│   ├── contexts/         # Contextes React (Auth, etc.)
-│   └── pages/           # Pages principales
-├── server/              # API Express.js backend  
-├── shared/              # Types et schémas partagés
-└── vercel.json          # Configuration déploiement
+tagzai/
+├── client/              # Application frontend React
+│   ├── src/            # Code source
+│   ├── public/         # Assets statiques
+│   └── dist/           # Build de production
+├── server/              # API backend Node.js
+│   ├── routes/          # Routes API
+│   ├── controllers/     # Contrôleurs
+│   └── middleware/      # Middleware Express
+├── shared/              # Code partagé entre client et serveur
+├── docs/                # Documentation
+├── tests/               # Tests automatisés
+├── vercel.json          # Configuration Vercel
+└── package.json         # Dépendances racine
 ```
 
-## 🌍 Déploiement
+## 🌐 Déploiement
 
-L'application est optimisée pour un déploiement Vercel avec:
-- Build automatique frontend/backend
-- Variables d'environnement configurées
-- Base de données PostgreSQL intégrée
+### Vercel (Recommandé)
 
-## 📱 Expérience Utilisateur
+Le projet est configuré pour un déploiement automatique sur Vercel :
 
-- **Navigation minimaliste** entre Créer / Mes Créations / Découvrir
-- **Saisie vocale universelle** pour une expression naturelle
-- **Design épuré** focalisé sur l'essentiel créatif
-- **Performance optimisée** pour une fluidité maximale
+- **Frontend** : Build automatique avec Vite
+- **Backend** : Serverless functions avec Express
+- **API Routes** : `/api/*` redirigées vers le serveur
+- **Static Files** : Served depuis le build client
+
+### Variables d'environnement Vercel
+
+```bash
+NODE_ENV=production
+JWT_SECRET=votre-secret-jwt
+ALLOWED_ORIGINS=https://votre-domaine.vercel.app
+```
+
+## 🚀 URLs de déploiement
+
+- **Frontend** : `https://votre-projet.vercel.app`
+- **API** : `https://votre-projet.vercel.app/api`
+- **Health Check** : `https://votre-projet.vercel.app/api/health`
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+
+1. Fork le projet
+2. Créer une branche pour votre fonctionnalité
+3. Commiter vos changements
+4. Pousser vers la branche
+5. Ouvrir une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 📞 Contact
+
+Pour toute question ou suggestion, n'hésitez pas à ouvrir une issue sur GitHub.
 
 ---
 
-*Psychographe - Révélez votre créativité intérieure de manière écoresponsable*
+**Tagzai** - Organisez vos idées avec intelligence ✨

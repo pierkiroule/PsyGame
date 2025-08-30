@@ -1,66 +1,48 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Route, Switch } from "wouter";
-import "./index.css";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Sidebar from './components/Sidebar'
+import Dashboard from './pages/Dashboard'
+import Tags from './pages/Tags'
+import Categories from './pages/Categories'
+import Login from './pages/Login'
+import './App.css'
 
-import NotFound from "./pages/not-found";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import HomePage from "./pages/home";
-import CreatePage from "./pages/create";
-import MyPsychographiesPage from "./pages/my-psychographies";
-import PsychothequeePage from "./pages/psychotheque";
-import ProfilePage from "./pages/profile";
-import { Navigation } from "./components/Navigation";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { Toaster } from "./components/ui/toaster";
-import { Loader2 } from "lucide-react";
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+  const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
-const queryClient = new QueryClient();
+  // Simuler une vérification d'authentification
+  React.useEffect(() => {
+    const token = localStorage.getItem('tagzai_token')
+    if (token) {
+      setIsAuthenticated(true)
+    }
+  }, [])
 
-// Component principal avec routing complet
-const AppContent = () => {
-  const { user, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/20 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-slate-400 mx-auto" />
-          <p className="text-slate-400">Chargement de votre studio psychographique...</p>
-        </div>
-      </div>
-    );
+  if (!isAuthenticated) {
+    return <Login onLogin={() => setIsAuthenticated(true)} />
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Navigation globale */}
-      <Navigation />
-      
-      {/* Contenu principal */}
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-        <Route path="/" component={HomePage} />
-        <Route path="/creer" component={CreatePage} />
-        <Route path="/mes-creations" component={MyPsychographiesPage} />
-        <Route path="/psychotheque" component={PsychothequeePage} />
-        <Route path="/profil" component={ProfilePage} />
-        <Route component={NotFound} />
-      </Switch>
-    </div>
-  );
-};
-
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-      <Toaster />
-    </QueryClientProvider>
-  );
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+        
+        <div className="flex">
+          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          
+          <main className="flex-1 p-6">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/tags" element={<Tags />} />
+              <Route path="/categories" element={<Categories />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </Router>
+  )
 }
 
-export default App;
+export default App
