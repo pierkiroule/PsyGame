@@ -1,0 +1,36 @@
+-- Schema for tagzai (PostgreSQL)
+
+CREATE TABLE IF NOT EXISTS tags (
+  id BIGSERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  norm TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_tags_norm ON tags(norm);
+
+CREATE TABLE IF NOT EXISTS poem_tags (
+  poem_id TEXT NOT NULL,
+  tag_id BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (poem_id, tag_id)
+);
+
+CREATE TABLE IF NOT EXISTS tag_stats (
+  tag_id BIGINT PRIMARY KEY REFERENCES tags(id) ON DELETE CASCADE,
+  freq INTEGER NOT NULL DEFAULT 0,
+  last_seen TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS tag_co (
+  a BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+  b BIGINT NOT NULL REFERENCES tags(id) ON DELETE CASCADE,
+  weight INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (a, b),
+  CHECK (a < b)
+);
+
+-- Helpful indexes
+CREATE INDEX IF NOT EXISTS idx_tag_stats_last_seen ON tag_stats(last_seen DESC);
+CREATE INDEX IF NOT EXISTS idx_tag_co_weight ON tag_co(weight DESC);
+
