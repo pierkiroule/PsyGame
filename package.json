@@ -1,27 +1,41 @@
 {
   "name": "tagzai",
   "version": "1.0.0",
-  "description": "Tag extraction and suggestion API for PoemZaï",
-  "type": "module",
-  "main": "server.js",
+  "description": "Un projet moderne et innovant pour la gestion et l'organisation de tags et de catégories",
+  "main": "server/index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js",
-    "init:db": "psql \"$DATABASE_URL\" -f sql/init.sql | cat"
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "test": "npm run test:server && npm run test:client",
+    "test:server": "cd server && npm test",
+    "test:client": "cd client && npm test",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "vercel-build": "npm run build:client"
   },
   "keywords": [
     "tags",
-    "poetry",
-    "express",
-    "postgres"
+    "categorization",
+    "organization",
+    "web-app",
+    "react",
+    "nodejs"
   ],
-  "author": "",
+  "author": "Tagzai Team",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.19.2",
-    "pg": "^8.12.0"
-  },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "server",
+    "client",
+    "shared"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
