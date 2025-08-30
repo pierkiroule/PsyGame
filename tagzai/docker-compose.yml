@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: tagzai-postgres
+    environment:
+      POSTGRES_DB: tagzai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tagzai123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tagzai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API TagZai
+  api:
+    build: .
+    container_name: tagzai-api
+    ports:
+      - "4002:4002"
+    environment:
+      DB_USER: postgres
+      DB_HOST: postgres
+      DB_NAME: tagzai
+      DB_PASSWORD: tagzai123
+      DB_PORT: 5432
+      PORT: 4002
+      NODE_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+
+volumes:
+  postgres_data:
